@@ -24,8 +24,7 @@ const Home: NextPage<{ articles: Article[] }> = (props) => {
 }
 
 export const getStaticProps: GetStaticProps = async (ctx) => {
-    const res = await fetch('http://localhost:3000/article-meta.json')
-    const articleMeta = (await res.json()) as {
+    const articleMeta = (await import('../../public/article-meta.json')) as {
         articles: {
             [key: string]: Article
         }
