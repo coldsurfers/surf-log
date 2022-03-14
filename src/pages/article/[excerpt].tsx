@@ -19,8 +19,7 @@ const Excerpt: NextPage<{ article?: Article | null }> = (props) => {
 }
 
 export const getStaticPaths: GetStaticPaths = async (ctx) => {
-    const res = await fetch('http://localhost:3000/article-meta.json')
-    const articleMeta = (await res.json()) as {
+    const articleMeta = (await import('../../../public/article-meta.json')) as {
         articles: {
             [key: string]: Article
         }
@@ -51,15 +50,15 @@ export const getStaticProps: GetStaticProps<
         }
     }
     const { excerpt } = ctx.params
-    const res = await fetch('http://localhost:3000/article-meta.json')
-    const articleMeta = (await res.json()) as {
+    const articleMeta = (await import('../../../public/article-meta.json')) as {
         articles: {
             [key: string]: Article
         }
     }
+    const article = articleMeta.articles[encodeURI(excerpt)]
     return {
         props: {
-            article: articleMeta.articles[encodeURI(excerpt)],
+            article: article ? article : null,
         },
     }
 }
