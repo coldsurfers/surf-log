@@ -1,5 +1,6 @@
 import { GetStaticPaths, GetStaticProps, NextPage } from 'next'
 import { Article } from '../../types/article'
+import { marked } from 'marked'
 
 const Excerpt: NextPage<{ article?: Article | null }> = (props) => {
     const { article } = props
@@ -8,8 +9,11 @@ const Excerpt: NextPage<{ article?: Article | null }> = (props) => {
     }
     return (
         <div>
-            <p>{article.data.title}</p>
-            <p>{article.content}</p>
+            <div
+                dangerouslySetInnerHTML={{
+                    __html: marked.parse(article.content),
+                }}
+            />
         </div>
     )
 }

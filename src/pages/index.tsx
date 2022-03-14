@@ -5,7 +5,7 @@ import { Article } from '../types/article'
 const Home: NextPage<{ articles: Article[] }> = (props) => {
     const { articles } = props
     return (
-        <div>
+        <div style={{ display: 'flex', flexDirection: 'column' }}>
             {articles.map((article) => {
                 return (
                     <Link
@@ -13,9 +13,9 @@ const Home: NextPage<{ articles: Article[] }> = (props) => {
                         href={`/article/${article.excerpt}`}
                         passHref
                     >
-                        <p>
+                        <a>
                             {article.data.title} / {article.data.createdAt}
-                        </p>
+                        </a>
                     </Link>
                 )
             })}
