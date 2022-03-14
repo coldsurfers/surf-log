@@ -4,6 +4,7 @@ export interface Article {
         title?: string
         category?: string
         createdAt?: string
+        excerpt?: string
     }
     excerpt: string
     isEmpty: boolean
