@@ -1,9 +1,10 @@
-import { GetStaticPaths, GetStaticProps, NextPage } from 'next'
+import { GetServerSideProps, NextPage } from 'next'
 import { Article } from '../../types/article'
 import { marked } from 'marked'
 
 const Excerpt: NextPage<{ article?: Article | null }> = (props) => {
     const { article } = props
+
     if (!article) {
         return null
     }
@@ -18,23 +19,7 @@ const Excerpt: NextPage<{ article?: Article | null }> = (props) => {
     )
 }
 
-export const getStaticPaths: GetStaticPaths = async (ctx) => {
-    const articleMeta = (await import('../../../public/article-meta.json')) as {
-        articles: {
-            [key: string]: Article
-        }
-    }
-    return {
-        paths: Object.entries(articleMeta.articles).map(([key, content]) => ({
-            params: {
-                excerpt: content.excerpt,
-            },
-        })),
-        fallback: true, // false or 'blocking'
-    }
-}
-
-export const getStaticProps: GetStaticProps<
+export const getServerSideProps: GetServerSideProps<
     {
         article: Article | null
     },
@@ -58,7 +43,7 @@ export const getStaticProps: GetStaticProps<
     const article = articleMeta.articles[encodeURI(excerpt)]
     return {
         props: {
-            article: article ? article : null,
+            article: article,
         },
     }
 }
