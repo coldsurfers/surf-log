@@ -6,10 +6,10 @@ import App from 'next/app'
 import 'open-color/open-color.css'
 
 function MyApp({ Component, pageProps }: AppProps) {
-    const { categories } = pageProps
+    const { categories, article } = pageProps
     return (
         <>
-            <Layout categories={categories}>
+            <Layout categories={categories} currentArticle={article}>
                 <Component {...pageProps} />
             </Layout>
             <Global

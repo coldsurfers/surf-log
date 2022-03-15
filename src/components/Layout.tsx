@@ -1,5 +1,6 @@
 import styled from '@emotion/styled'
 import { FC } from 'react'
+import { Article } from '../types/article'
 import Header from './Header'
 import SideBar from './SideBar'
 
@@ -26,14 +27,18 @@ const ChildrenWrapper = styled.div`
 
 interface Props {
     categories: string[]
+    currentArticle?: Article
 }
 
-const Layout: FC<Props> = ({ children, categories }) => {
+const Layout: FC<Props> = ({ children, categories, currentArticle }) => {
     return (
         <Container>
             <Header />
             <ChildrenWithSideBar>
-                <SideBar categories={categories} />
+                <SideBar
+                    categories={categories}
+                    currentArticleCategory={currentArticle?.data.category}
+                />
                 <ChildrenWrapper>{children}</ChildrenWrapper>
             </ChildrenWithSideBar>
         </Container>

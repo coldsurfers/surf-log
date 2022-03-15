@@ -69,9 +69,11 @@ const NavLinkText = styled.span`
 
 interface Props {
     categories: string[]
+    currentArticleCategory?: string
 }
 
-const SideBar: FC<Props> = ({ categories }) => {
+const SideBar: FC<Props> = (props) => {
+    const { categories, currentArticleCategory } = props
     const router = useRouter()
     return (
         <Container>
@@ -87,7 +89,10 @@ const SideBar: FC<Props> = ({ categories }) => {
                     <NavItem key={category}>
                         <Link href={`/category/${category}`} passHref>
                             <NavLink
-                                matched={category === router.query.category}
+                                matched={
+                                    category === router.query.category ||
+                                    category === currentArticleCategory
+                                }
                             >
                                 <NavLinkText>{category}</NavLinkText>
                             </NavLink>
