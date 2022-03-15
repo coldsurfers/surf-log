@@ -1,6 +1,6 @@
 {
   "name": "surf-log",
-  "version": "0.1.4",
+  "version": "0.1.5",
   "private": true,
   "scripts": {
     "dev": "next dev",
@@ -10,6 +10,9 @@
     "generate:article-meta": "node ./bin/createArticleMeta.js"
   },
   "dependencies": {
+    "@emotion/css": "^11.7.1",
+    "@emotion/react": "^11.8.2",
+    "@emotion/styled": "^11.8.1",
     "gray-matter": "^4.0.3",
     "marked": "^4.0.12",
     "next": "12.1.0",

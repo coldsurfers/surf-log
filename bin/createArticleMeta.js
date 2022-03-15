@@ -2,6 +2,13 @@ const fs = require('fs')
 const path = require('path')
 const matter = require('gray-matter')
 
+function generateUniqSerial() {
+    return 'xxxx-xxxx-xxx-xxxx'.replace(/[x]/g, (c) => {
+        const r = Math.floor(Math.random() * 16)
+        return r.toString(16)
+    })
+}
+
 function main() {
     const mdFilesDirectoryPath = path.resolve(__dirname, '../articles')
     const mdFileNames = fs.readdirSync(mdFilesDirectoryPath, 'utf8')
@@ -24,7 +31,7 @@ function main() {
         })
         .reduce((prev, curr) => {
             if (prev.find((prevItem) => prevItem.excerpt === curr.excerpt)) {
-                curr.excerpt = `${curr.excerpt}-`
+                curr.excerpt = `${curr.excerpt}-${generateUniqSerial()}`
             }
             return prev.concat(curr)
         }, [])
