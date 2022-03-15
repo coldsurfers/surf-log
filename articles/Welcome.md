@@ -10,3 +10,7 @@ thumbnail: welcome.jpg
 저는 콜드서프 입니다.
 
 ## Who am I ?
+
+```javascript
+const hello = 'world';
+```

@@ -3,6 +3,7 @@ import { Global, css } from '@emotion/react'
 import Layout from '../components/Layout'
 import { Article } from '../types/article'
 import App from 'next/app'
+import 'open-color/open-color.css'
 
 function MyApp({ Component, pageProps }: AppProps) {
     const { categories } = pageProps
@@ -14,7 +15,7 @@ function MyApp({ Component, pageProps }: AppProps) {
             <Global
                 styles={css`
                     html {
-                        background-color: #f2f3f7;
+                        background-color: var(--oc-gray-0);
                     }
                     body {
                         font-family: ui-monospace, SFMono-Regular, SF Mono,
