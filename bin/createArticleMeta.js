@@ -3,20 +3,21 @@ const path = require('path')
 const matter = require('gray-matter')
 
 function main() {
-    const articlesPath = path.resolve(__dirname, '../articles')
-    const articles = fs.readdirSync(articlesPath, 'utf8')
-    const read = articles
-        .map((article) => {
-            const read = fs.readFileSync(
-                path.resolve(__dirname, `../articles/${article}`),
-                'utf8'
+    const mdFilesDirectoryPath = path.resolve(__dirname, '../articles')
+    const mdFileNames = fs.readdirSync(mdFilesDirectoryPath, 'utf8')
+    const mdFilesMeta = mdFileNames
+        .map((fileName) => {
+            const mdFilePath = path.resolve(
+                __dirname,
+                `../articles/${fileName}`
             )
-            const mattered = matter(read, {
+            const mdFileContent = fs.readFileSync(mdFilePath, 'utf8')
+            const mdFileMeta = matter(mdFileContent, {
                 excerpt: function (file, options) {
                     file.excerpt = encodeURI(file.data.excerpt)
                 },
             })
-            return mattered
+            return mdFileMeta
         })
         .sort((a, b) => {
             return new Date(a.data.createdAt) - new Date(b.data.createdAt)
@@ -30,15 +31,16 @@ function main() {
         .sort((a, b) => {
             return new Date(b.data.createdAt) - new Date(a.data.createdAt)
         })
+        .reduce((prev, curr) => {
+            prev[curr.excerpt] = curr
+            return prev
+        }, {})
 
-    const meta = path.resolve(__dirname, '../public/article-meta.json')
+    const metaFilePath = path.resolve(__dirname, '../public/article-meta.json')
     fs.writeFileSync(
-        meta,
+        metaFilePath,
         JSON.stringify({
-            articles: read.reduce((prev, curr) => {
-                prev[curr.excerpt] = curr
-                return prev
-            }, {}),
+            articles: mdFilesMeta,
         })
     )
 }
