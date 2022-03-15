@@ -5,11 +5,14 @@ const Container = styled.header`
     height: 56px;
     width: 100%;
     background-color: #000000;
-    display: inline-flex;
-    align-items: center;
+`
 
+const ContainerInner = styled.div`
     padding-left: 24px;
     padding-right: 24px;
+    display: inline-flex;
+    align-items: center;
+    height: 100%;
 `
 
 const Logo = styled.button`
@@ -35,9 +38,11 @@ const LogoText = styled.p`
 const Header: FC = () => {
     return (
         <Container>
-            <Logo>
-                <LogoText>Surf.log</LogoText>
-            </Logo>
+            <ContainerInner>
+                <Logo>
+                    <LogoText>Surf.log</LogoText>
+                </Logo>
+            </ContainerInner>
         </Container>
     )
 }
