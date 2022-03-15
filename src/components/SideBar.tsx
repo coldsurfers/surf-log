@@ -7,6 +7,7 @@ const Container = styled.nav`
     width: 230px;
     height: 100vh;
     background-color: transparent;
+    margin-top: 90px;
 `
 
 const NavItemList = styled.ul`

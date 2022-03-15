@@ -16,12 +16,12 @@ const ChildrenWithSideBar = styled.div`
     margin-left: auto;
     margin-right: auto;
     width: 80%;
-    margin-top: 90px;
 `
 
 const ChildrenWrapper = styled.div`
     flex: 1;
     padding-left: 2.5rem;
+    margin-top: calc(90px - 2vw);
 `
 
 interface Props {
