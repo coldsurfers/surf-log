@@ -1,5 +1,5 @@
 import { GetServerSideProps, NextPage } from 'next'
-import Link from 'next/link'
+import ArticleListTemplate from '../../components/ArticleListTemplate'
 import { Article } from '../../types/article'
 
 interface ServerProps {
@@ -8,21 +8,7 @@ interface ServerProps {
 
 const Category: NextPage<ServerProps> = (props) => {
     const { articles } = props
-    return (
-        <div>
-            {articles.map((article) => {
-                return (
-                    <Link
-                        key={article.excerpt}
-                        href={`/article/${article.excerpt}`}
-                        passHref
-                    >
-                        <a>{article.data.title}</a>
-                    </Link>
-                )
-            })}
-        </div>
-    )
+    return <ArticleListTemplate articles={articles} />
 }
 
 export const getServerSideProps: GetServerSideProps<
