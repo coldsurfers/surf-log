@@ -3,36 +3,44 @@ const path = require('path')
 const matter = require('gray-matter')
 
 function main() {
-    const articlesPath = path.resolve(__dirname, '../articles')
-    const articles = fs.readdirSync(articlesPath, 'utf8')
-    const read = articles.map((article) => {
-        const read = fs.readFileSync(
-            path.resolve(__dirname, `../articles/${article}`),
-            'utf8'
-        )
-        const mattered = matter(read, {
-            excerpt: function (file, options) {
-                file.excerpt = encodeURI(file.data.excerpt)
-            },
+    const mdFilesDirectoryPath = path.resolve(__dirname, '../articles')
+    const mdFileNames = fs.readdirSync(mdFilesDirectoryPath, 'utf8')
+    const mdFilesMeta = mdFileNames
+        .map((fileName) => {
+            const mdFilePath = path.resolve(
+                __dirname,
+                `../articles/${fileName}`
+            )
+            const mdFileContent = fs.readFileSync(mdFilePath, 'utf8')
+            const mdFileMeta = matter(mdFileContent, {
+                excerpt: function (file, options) {
+                    file.excerpt = encodeURI(file.data.excerpt)
+                },
+            })
+            return mdFileMeta
         })
-        return mattered
-    })
-    const meta = path.resolve(__dirname, '../public/article-meta.json')
+        .sort((a, b) => {
+            return new Date(a.data.createdAt) - new Date(b.data.createdAt)
+        })
+        .reduce((prev, curr) => {
+            if (prev.find((prevItem) => prevItem.excerpt === curr.excerpt)) {
+                curr.excerpt = `${curr.excerpt}-`
+            }
+            return prev.concat(curr)
+        }, [])
+        .sort((a, b) => {
+            return new Date(b.data.createdAt) - new Date(a.data.createdAt)
+        })
+        .reduce((prev, curr) => {
+            prev[curr.excerpt] = curr
+            return prev
+        }, {})
+
+    const metaFilePath = path.resolve(__dirname, '../public/article-meta.json')
     fs.writeFileSync(
-        meta,
+        metaFilePath,
         JSON.stringify({
-            articles: read.reduce((prev, curr) => {
-                if (prev[curr.excerpt]) {
-                    prev[`${curr.excerpt}-`] = {
-                        ...curr,
-                    }
-                } else {
-                    prev[curr.excerpt] = {
-                        ...curr,
-                    }
-                }
-                return prev
-            }, {}),
+            articles: mdFilesMeta,
         })
     )
 }
