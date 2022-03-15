@@ -1,6 +1,6 @@
 {
   "name": "surf-log",
-  "version": "0.1.5",
+  "version": "1.0.0",
   "private": true,
   "scripts": {
     "dev": "next dev",
@@ -16,12 +16,15 @@
     "gray-matter": "^4.0.3",
     "marked": "^4.0.12",
     "next": "12.1.0",
+    "open-color": "^1.9.1",
+    "prismjs": "^1.27.0",
     "react": "17.0.2",
     "react-dom": "17.0.2"
   },
   "devDependencies": {
     "@types/marked": "^4.0.2",
     "@types/node": "17.0.21",
+    "@types/prismjs": "^1.26.0",
     "@types/react": "17.0.40",
     "eslint": "8.11.0",
     "eslint-config-next": "12.1.0",

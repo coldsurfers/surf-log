@@ -28,9 +28,6 @@ const NavItem = styled.li`
 const NavLink = styled.a<{ matched?: boolean }>`
     transition: all 0.1s ease;
     width: 100%;
-    font-size: 18px;
-    font-weight: 600;
-    line-height: 1.4;
     margin-bottom: 3px;
 
     padding-top: 7px;
@@ -64,22 +61,38 @@ const NavLink = styled.a<{ matched?: boolean }>`
 
 const NavLinkText = styled.span`
     padding-left: 25px;
+    text-transform: uppercase;
+    font-size: 18px;
+    font-weight: 600;
+    line-height: 1.4;
 `
 
 interface Props {
     categories: string[]
+    currentArticleCategory?: string
 }
 
-const SideBar: FC<Props> = ({ categories }) => {
+const SideBar: FC<Props> = (props) => {
+    const { categories, currentArticleCategory } = props
     const router = useRouter()
     return (
         <Container>
             <NavItemList>
+                <NavItem>
+                    <Link href={`/`} passHref>
+                        <NavLink matched={router.pathname === '/'}>
+                            <NavLinkText>All</NavLinkText>
+                        </NavLink>
+                    </Link>
+                </NavItem>
                 {categories.map((category) => (
                     <NavItem key={category}>
                         <Link href={`/category/${category}`} passHref>
                             <NavLink
-                                matched={category === router.query.category}
+                                matched={
+                                    category === router.query.category ||
+                                    category === currentArticleCategory
+                                }
                             >
                                 <NavLinkText>{category}</NavLinkText>
                             </NavLink>
