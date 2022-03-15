@@ -1,5 +1,6 @@
 import { FC } from 'react'
 import styled from '@emotion/styled'
+import Link from 'next/link'
 
 const Container = styled.header`
     height: 56px;
@@ -15,7 +16,7 @@ const ContainerInner = styled.div`
     height: 100%;
 `
 
-const Logo = styled.button`
+const Logo = styled.a`
     width: auto;
     height: 38px;
     border-radius: 13px;
@@ -39,9 +40,11 @@ const Header: FC = () => {
     return (
         <Container>
             <ContainerInner>
-                <Logo>
-                    <LogoText>Surf.log</LogoText>
-                </Logo>
+                <Link href="/" passHref>
+                    <Logo>
+                        <LogoText>Surf.log</LogoText>
+                    </Logo>
+                </Link>
             </ContainerInner>
         </Container>
     )

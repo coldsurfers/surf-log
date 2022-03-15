@@ -4,22 +4,12 @@ import { Article } from '../types/article'
 
 interface ServerProps {
     articles: Article[]
-    categories: string[]
 }
 
 const Home: NextPage<ServerProps> = (props) => {
-    const { articles, categories } = props
+    const { articles } = props
     return (
         <div style={{ display: 'flex', flexDirection: 'column' }}>
-            <li style={{ listStyle: 'none' }}>
-                {categories.map((category) => (
-                    <ul key={category}>
-                        <Link href={`/category/${category}`} passHref>
-                            <a>{category}</a>
-                        </Link>
-                    </ul>
-                ))}
-            </li>
             {articles.map((article) => {
                 return (
                     <Link
@@ -49,7 +39,6 @@ export const getStaticProps: GetStaticProps<ServerProps> = async (ctx) => {
             articles: Object.entries(articleMeta.articles).map(
                 ([key, content]) => content
             ),
-            categories: articleMeta.categories,
         },
     }
 }

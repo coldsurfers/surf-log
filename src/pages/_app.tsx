@@ -1,23 +1,52 @@
-import type { AppProps } from 'next/app'
+import type { AppContext, AppInitialProps, AppProps } from 'next/app'
 import { Global, css } from '@emotion/react'
-import Header from '../components/Header'
+import Layout from '../components/Layout'
+import { Article } from '../types/article'
+import App from 'next/app'
 
 function MyApp({ Component, pageProps }: AppProps) {
+    const { categories } = pageProps
     return (
         <>
-            <Header />
-            <Component {...pageProps} />
+            <Layout categories={categories}>
+                <Component {...pageProps} />
+            </Layout>
             <Global
                 styles={css`
+                    html {
+                        background-color: #f2f3f7;
+                    }
                     body {
                         font-family: ui-monospace, SFMono-Regular, SF Mono,
                             Menlo, Consolas, Liberation Mono, monospace !important;
                         margin: 0px;
                     }
+                    a {
+                        text-decoration: none;
+                        color: inherit;
+                    }
                 `}
             />
         </>
     )
+}
+
+MyApp.getInitialProps = async (appContext: AppContext) => {
+    const appProps = await App.getInitialProps(appContext)
+    const articleMeta = (await import('../../public/article-meta.json')) as {
+        articles: {
+            [key: string]: Article
+        }
+        categories: string[]
+    }
+
+    appProps.pageProps = {
+        categories: articleMeta.categories,
+    }
+
+    return {
+        ...appProps,
+    }
 }
 
 export default MyApp
