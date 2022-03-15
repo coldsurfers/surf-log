@@ -2,6 +2,8 @@ const fs = require('fs')
 const path = require('path')
 const matter = require('gray-matter')
 
+const thumbnailDirPathStr = '../thumbnails'
+
 function generateUniqSerial() {
     return 'xxxx-xxxx-xxx-xxxx'.replace(/[x]/g, (c) => {
         const r = Math.floor(Math.random() * 16)
@@ -22,6 +24,16 @@ function main() {
             const mdFileMeta = matter(mdFileContent, {
                 excerpt: function (file, options) {
                     file.excerpt = encodeURI(file.data.excerpt)
+                    if (file.data.thumbnail) {
+                        const thumbnailFileBase64Encoded = fs.readFileSync(
+                            path.resolve(
+                                __dirname,
+                                `${thumbnailDirPathStr}/${file.data.thumbnail}`
+                            ),
+                            'base64'
+                        )
+                        file.thumbnailBase64 = thumbnailFileBase64Encoded
+                    }
                 },
             })
             return mdFileMeta

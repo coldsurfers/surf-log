@@ -1,17 +1,19 @@
 import styled from '@emotion/styled'
 import type { GetStaticProps, NextPage } from 'next'
+import Image from 'next/image'
 import Link from 'next/link'
 import { Article } from '../types/article'
 
 const ArticleListContainer = styled.div`
     display: flex;
     flex-direction: row;
+    align-items: flex-start;
     flex-wrap: wrap;
 `
 
 const ArticleContainer = styled.a`
     width: calc(100% / 3 - 2vw * 2);
-    height: 150px;
+    max-height: 250px;
     border-radius: 12px;
     background-color: #ffffff;
     box-shadow: 10px 20px 20px 0 rgb(92 95 112 / 8%);
@@ -21,10 +23,27 @@ const ArticleContainer = styled.a`
     &:nth-child(3n + 1) {
         margin-left: none;
     }
+
+    &:hover {
+        transform: translateY(-7px);
+        transition: all 0.15s;
+    }
+`
+
+const ThumbnailWrapper = styled.div`
+    width: 100%;
+    height: 120px;
+    border-top-left-radius: 12px;
+    border-top-right-radius: 12px;
+    overflow: hidden;
+    position: relative;
+
+    background-color: #dee2e6;
 `
 
 const ArticleInner = styled.div`
-    padding: 20px;
+    padding: 13px;
+    height: 120px;
 `
 
 const ArticleTitle = styled.h1`
@@ -35,19 +54,15 @@ const ArticleTitle = styled.h1`
     margin-block-end: 0px;
     margin-inline-start: 0px;
     margin-inline-end: 0px;
-    height: 30px;
-    width: 100%;
-    white-space: nowrap;
-    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 3;
     overflow: hidden;
+    word-wrap: break-word;
+    word-break: keep-all;
 `
 
 const ArticleSubTitle = styled.p`
-    width: 100%;
-    height: 60px;
-    text-overflow: ellipsis;
-    overflow: hidden;
-
     color: #7a7c85;
     display: block;
     font-size: 13.5px;
@@ -55,6 +70,18 @@ const ArticleSubTitle = styled.p`
     line-height: 1.6;
     transition: all 0.15s;
     word-break: break-word;
+
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+    overflow: hidden;
+    word-wrap: break-word;
+    word-break: keep-all;
+
+    margin-block-start: 8px;
+    margin-block-end: 0px;
+    margin-inline-start: 0px;
+    margin-inline-end: 0px;
 `
 
 interface ServerProps {
@@ -74,6 +101,18 @@ const Home: NextPage<ServerProps> = (props) => {
                         passHref
                     >
                         <ArticleContainer>
+                            <ThumbnailWrapper>
+                                {article.thumbnailBase64 ? (
+                                    <Image
+                                        src={`data:image/png;base64, ${article.thumbnailBase64}`}
+                                        alt="thumbnail"
+                                        layout="fill"
+                                        objectFit="fill"
+                                    />
+                                ) : (
+                                    <div />
+                                )}
+                            </ThumbnailWrapper>
                             <ArticleInner>
                                 <ArticleTitle>
                                     {article.data.title}

@@ -3,6 +3,7 @@ title: 3 > but 4 <
 category: life
 createdAt: 2022-03-15 14:20
 excerpt: 나는 중니어 개발자다. 따라서 고찰해보았다.
+thumbnail: ocean.png
 ---
 
 velog.io 에 올린 원 글을 복사 해서 만들었습니다.
