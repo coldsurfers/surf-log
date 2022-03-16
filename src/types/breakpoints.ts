@@ -6,8 +6,8 @@ export enum BREAK_POINTS_SIZE {
 }
 
 export enum BREAK_POINTS_METRIC {
-    SMALL = 350,
-    MEDIUM = 690,
-    LARGE = 1200,
-    XLARGE = 1800,
+    SMALL = 700,
+    MEDIUM = 1200,
+    LARGE = 1800,
+    XLARGE = 3200,
 }

@@ -2,6 +2,7 @@ import styled from '@emotion/styled'
 import Image from 'next/image'
 import Link from 'next/link'
 import { FC } from 'react'
+import mediaQuery from '../lib/mediaQuery'
 import { Article } from '../types/article'
 
 const ArticleListContainer = styled.div`
@@ -9,6 +10,14 @@ const ArticleListContainer = styled.div`
     flex-direction: row;
     align-items: flex-start;
     flex-wrap: wrap;
+
+    ${mediaQuery.medium} {
+        justify-content: space-between;
+    }
+    ${mediaQuery.small} {
+        flex-direction: column;
+        justify-content: unset;
+    }
 `
 
 const ArticleContainer = styled.a`
@@ -30,6 +39,19 @@ const ArticleContainer = styled.a`
     &:hover {
         transform: translateY(-7px);
         transition: all 0.15s;
+    }
+
+    ${mediaQuery.medium} {
+        width: calc(100% / 3 - 1vw);
+        margin-left: unset;
+        &:nth-child(3n + 1) {
+            margin-left: unset;
+        }
+    }
+
+    ${mediaQuery.small} {
+        width: 100%;
+        margin-top: 3vw;
     }
 `
 
