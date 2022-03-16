@@ -42,7 +42,7 @@ const Header: FC = () => {
             <ContainerInner>
                 <Link href="/" passHref>
                     <Logo>
-                        <LogoText>Surf.log</LogoText>
+                        <LogoText>Surf.Log</LogoText>
                     </Logo>
                 </Link>
             </ContainerInner>

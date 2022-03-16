@@ -4,11 +4,15 @@ import Layout from '../components/Layout'
 import { Article } from '../types/article'
 import App from 'next/app'
 import 'open-color/open-color.css'
+import Head from 'next/head'
 
 function MyApp({ Component, pageProps }: AppProps) {
     const { categories, article } = pageProps
     return (
         <>
+            <Head>
+                <title>Surf.Log</title>
+            </Head>
             <Layout categories={categories} currentArticle={article}>
                 <Component {...pageProps} />
             </Layout>
