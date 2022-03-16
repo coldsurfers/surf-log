@@ -1,5 +1,6 @@
 import styled from '@emotion/styled'
 import { FC } from 'react'
+import mediaQuery from '../lib/mediaQuery'
 import { Article } from '../types/article'
 import Header from './Header'
 import SideBar from './SideBar'
@@ -17,12 +18,23 @@ const ChildrenWithSideBar = styled.div`
     margin-left: auto;
     margin-right: auto;
     width: 80%;
+
+    ${mediaQuery.medium} {
+        flex-direction: column;
+        padding: 0px;
+        width: 90%;
+    }
 `
 
 const ChildrenWrapper = styled.div`
     flex: 1;
     padding-left: 2.5rem;
     margin-top: calc(90px - 2vw);
+
+    ${mediaQuery.medium} {
+        margin-top: 15px;
+        padding-left: 0px;
+    }
 `
 
 interface Props {

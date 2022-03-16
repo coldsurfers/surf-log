@@ -2,12 +2,18 @@ import { FC } from 'react'
 import styled from '@emotion/styled'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
+import mediaQuery from '../lib/mediaQuery'
 
 const Container = styled.nav`
     width: 230px;
     height: 100vh;
     background-color: transparent;
     margin-top: 90px;
+
+    ${mediaQuery.medium} {
+        width: 100%;
+        height: auto;
+    }
 `
 
 const NavItemList = styled.ul`
@@ -18,6 +24,14 @@ const NavItemList = styled.ul`
     margin-inline-end: 0px;
     padding-inline-start: 0px;
     width: 100%;
+
+    overflow: auto;
+
+    ${mediaQuery.medium} {
+        display: flex;
+        flex-direction: row;
+        width: 100%;
+    }
 `
 const NavItem = styled.li`
     height: 48px;
