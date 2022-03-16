@@ -11,6 +11,7 @@ const Container = styled.nav`
     margin-top: 90px;
 
     ${mediaQuery.medium} {
+        width: 100%;
         height: auto;
     }
 `
@@ -24,9 +25,12 @@ const NavItemList = styled.ul`
     padding-inline-start: 0px;
     width: 100%;
 
+    overflow: auto;
+
     ${mediaQuery.medium} {
         display: flex;
         flex-direction: row;
+        width: 100%;
     }
 `
 const NavItem = styled.li`
