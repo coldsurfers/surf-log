@@ -21,6 +21,8 @@ const ChildrenWithSideBar = styled.div`
 
     ${mediaQuery.medium} {
         flex-direction: column;
+        padding: 0px;
+        width: 90%;
     }
 `
 

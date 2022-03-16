@@ -4,6 +4,20 @@ import { marked } from 'marked'
 import { css } from '@emotion/css'
 import { useEffect } from 'react'
 import 'prismjs/themes/prism-tomorrow.css'
+import styled from '@emotion/styled'
+import mediaQuery from '../../lib/mediaQuery'
+
+const ContentContainer = styled.div`
+    background: #ffffff;
+    padding: 2rem;
+    border-radius: 12px;
+    box-shadow: 0px -5px 20px 10px rgb(92 95 112 / 8%);
+    margin-bottom: 1rem;
+
+    ${mediaQuery.small} {
+        padding: 1.25rem;
+    }
+`
 
 let prism: any = null
 const isBrowser = typeof window !== 'undefined'
@@ -26,15 +40,7 @@ const Excerpt: NextPage<{ article?: Article | null }> = (props) => {
         return null
     }
     return (
-        <div
-            style={{
-                background: '#ffffff',
-                padding: '2rem',
-                borderRadius: '12px',
-                boxShadow: '0px -5px 20px 10px rgb(92 95 112 / 8%)',
-                marginBottom: '1rem',
-            }}
-        >
+        <ContentContainer>
             <div
                 className={css`
                     blockquote {
@@ -124,7 +130,7 @@ const Excerpt: NextPage<{ article?: Article | null }> = (props) => {
                     }),
                 }}
             />
-        </div>
+        </ContentContainer>
     )
 }
 
