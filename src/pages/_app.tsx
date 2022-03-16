@@ -4,22 +4,26 @@ import Layout from '../components/Layout'
 import { Article } from '../types/article'
 import App from 'next/app'
 import 'open-color/open-color.css'
+import Head from 'next/head'
 
 function MyApp({ Component, pageProps }: AppProps) {
     const { categories, article } = pageProps
     return (
         <>
+            <Head>
+                <title>Surf.Log</title>
+            </Head>
             <Layout categories={categories} currentArticle={article}>
                 <Component {...pageProps} />
             </Layout>
             <Global
                 styles={css`
+                    @import url('//fonts.googleapis.com/css2?family=Fira+Sans:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;1,100;1,200;1,300;1,400;1,500;1,600&display=swap');
                     html {
                         background-color: var(--oc-gray-0);
                     }
                     body {
-                        font-family: ui-monospace, SFMono-Regular, SF Mono,
-                            Menlo, Consolas, Liberation Mono, monospace !important;
+                        font-family: 'Fira Sans', sans-serif;
                         margin: 0px;
                     }
                     a {
