@@ -61,11 +61,15 @@ const Excerpt: NextPage<{ article?: Article | null }> = (props) => {
                     h3,
                     h4,
                     h5,
+                    li,
                     p {
+                        line-height: 1.5em;
                         code {
-                            /* font-family: 'D2 Coding'; */
+                            font-family: ui-monospace, SFMono-Regular, SF Mono,
+                                Menlo, Consolas, Liberation Mono, monospace;
                             background: var(--oc-gray-0);
                             padding: 0.25rem;
+                            font-size: 0.8em;
                             color: var(--oc-blue-6);
                             border: 1px solid var(--oc-gray-2);
                             border-radius: 2px;
@@ -75,7 +79,8 @@ const Excerpt: NextPage<{ article?: Article | null }> = (props) => {
                     // 코드 블록
                     code[class*='language-'],
                     pre[class*='language-'] {
-                        /* font-family: 'D2 Coding'; */
+                        font-family: ui-monospace, SFMono-Regular, SF Mono,
+                            Menlo, Consolas, Liberation Mono, monospace;
                     }
 
                     a {
