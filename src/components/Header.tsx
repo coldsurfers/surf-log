@@ -1,11 +1,14 @@
 import { FC } from 'react'
 import styled from '@emotion/styled'
 import Link from 'next/link'
+import breakpoints from '../lib/breakpoints'
+import mediaQuery from '../lib/mediaQuery'
 
 const Container = styled.header`
     height: 56px;
     width: 100%;
     background-color: #000000;
+    display: flex;
 `
 
 const ContainerInner = styled.div`
@@ -14,6 +17,14 @@ const ContainerInner = styled.div`
     display: inline-flex;
     align-items: center;
     height: 100%;
+
+    width: ${breakpoints.large}px;
+    margin-left: auto;
+    margin-right: auto;
+
+    ${mediaQuery.large} {
+        width: 100%;
+    }
 `
 
 const Logo = styled.a`
