@@ -5,7 +5,7 @@ import breakpoints from '../lib/breakpoints'
 import mediaQuery from '../lib/mediaQuery'
 
 const Container = styled.header`
-    height: 56px;
+    height: var(--header-height);
     width: 100%;
     background-color: #000000;
     display: flex;
