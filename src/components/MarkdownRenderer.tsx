@@ -51,6 +51,7 @@ const MarkdownRenderer: FC<Props> = ({ text }) => {
                 li,
                 p {
                     line-height: 1.5em;
+                    word-break: break-word;
                     code {
                         font-family: ui-monospace, SFMono-Regular, SF Mono,
                             Menlo, Consolas, Liberation Mono, monospace;
