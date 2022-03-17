@@ -1,4 +1,3 @@
-import styled from '@emotion/styled'
 import type { GetStaticProps, NextPage } from 'next'
 import ArticleListTemplate from '../components/ArticleListTemplate'
 import { Article } from '../types/article'
