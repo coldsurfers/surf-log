@@ -2,10 +2,18 @@ import 'codemirror/lib/codemirror.css'
 import 'codemirror/theme/oceanic-next.css'
 import styled from '@emotion/styled'
 import { NextPage } from 'next'
-import { useEffect, useRef, useState } from 'react'
+import {
+    ChangeEventHandler,
+    useCallback,
+    useEffect,
+    useRef,
+    useState,
+} from 'react'
 import MarkdownRenderer from '../../components/MarkdownRenderer'
 import { Editor, EditorConfiguration, Position } from 'codemirror'
 import { css } from '@emotion/css'
+import Modal from '../../components/Modal'
+import { useRouter } from 'next/router'
 
 let CodeMirror: any = null
 
@@ -75,22 +83,83 @@ const SaveButton = styled.button`
     }
 `
 
+const SaveModal = styled.div`
+    width: 500px;
+    height: auto;
+    background-color: #ffffff;
+    border-radius: 8px;
+    box-shadow: 10px 20px 20px 20px rgb(92 95 112 / 8%);
+    padding: 1rem;
+    display: flex;
+    flex-direction: column;
+`
+
 let codeMirror: Editor | null = null
 let codeMirrorCursor: Position | null = null
 
 const Editor: NextPage = () => {
+    const router = useRouter()
     const [text, setText] = useState<string>('')
     const editorRef = useRef<HTMLDivElement>(null)
+    const [modalOpen, setModalOpen] = useState<boolean>(false)
+    const [modalValues, setModalValues] = useState<{
+        title: string
+        excerpt: string
+        thumbnail: string
+        category: string
+    }>({
+        title: '',
+        excerpt: '',
+        thumbnail: '',
+        category: '',
+    })
+
+    const onClickSaveButton = useCallback(() => {
+        setModalOpen(true)
+    }, [])
+
+    const handleChange: ChangeEventHandler<HTMLInputElement> = useCallback(
+        (e) => {
+            const { name, value } = e.target
+            setModalValues((prevState) => ({
+                ...prevState,
+                [name]: value,
+            }))
+        },
+        []
+    )
+
+    const handleClickSaveModalSave = useCallback(async () => {
+        const res = await fetch('http://localhost:3000/api/save', {
+            method: 'POST',
+            body: JSON.stringify({
+                ...modalValues,
+                text,
+            }),
+            headers: new Headers({
+                'Content-Type': 'application/json',
+                Accept: 'application/json',
+            }),
+        })
+        const json = await res.json()
+        if (json.error === null) {
+            setModalOpen(false)
+            router.push('/')
+        }
+    }, [modalValues, router, text])
 
     useEffect(() => {
-        codeMirror = CodeMirror(editorRef.current, {
-            mode: {
-                name: 'markdown',
-            },
-            theme: 'oceanic-next',
-            lineNumbers: true,
-            lineWrapping: true,
-        } as EditorConfiguration)
+        if (!codeMirror) {
+            codeMirror = CodeMirror(editorRef.current, {
+                mode: {
+                    name: 'markdown',
+                },
+                theme: 'oceanic-next',
+                lineNumbers: true,
+                lineWrapping: true,
+            } as EditorConfiguration)
+        }
+
         if (!codeMirror) return
         codeMirror.on('change', (editor, changeObj) => {
             const value = editor.getValue()
@@ -105,6 +174,28 @@ const Editor: NextPage = () => {
             codeMirror.setCursor(codeMirrorCursor)
         }
     }, [text])
+
+    useEffect(() => {
+        return () => {
+            if (codeMirror) {
+                codeMirror = null
+            }
+            if (codeMirrorCursor) {
+                codeMirrorCursor = null
+            }
+        }
+    }, [])
+
+    useEffect(() => {
+        if (!modalOpen) {
+            setModalValues({
+                title: '',
+                excerpt: '',
+                thumbnail: '',
+                category: '',
+            })
+        }
+    }, [modalOpen])
 
     if (process.env.NODE_ENV !== 'development') {
         return null
@@ -125,7 +216,69 @@ const Editor: NextPage = () => {
             <PreviewPanel>
                 <MarkdownRenderer text={text} />
             </PreviewPanel>
-            <SaveButton>Save</SaveButton>
+            <SaveButton onClick={onClickSaveButton}>Save</SaveButton>
+            <Modal
+                open={modalOpen}
+                onClickBackground={() => setModalOpen(false)}
+            >
+                <SaveModal
+                    className={css`
+                        label {
+                            font-weight: bold;
+                        }
+                        input {
+                            height: 1.5rem;
+                            margin-top: 0.5rem;
+                        }
+
+                        input + label {
+                            margin-top: 0.8rem;
+                        }
+
+                        button {
+                            margin-top: 1rem;
+                            font-weight: bold;
+                            background-color: #000000;
+                            border: 1px solid #000000;
+                            border-radius: 3px;
+                            color: #ffffff;
+                            cursor: pointer;
+                            height: 1.95rem;
+
+                            &:active {
+                                background-color: #ffffff;
+                                color: #000000;
+                            }
+                        }
+                    `}
+                >
+                    <label>Title</label>
+                    <input
+                        name="title"
+                        value={modalValues.title}
+                        onChange={handleChange}
+                    />
+                    <label>Excerpt</label>
+                    <input
+                        name="excerpt"
+                        value={modalValues.excerpt}
+                        onChange={handleChange}
+                    />
+                    <label>Category</label>
+                    <input
+                        name="category"
+                        value={modalValues.category}
+                        onChange={handleChange}
+                    />
+                    <label>Thumbnail</label>
+                    <input
+                        name="thumbnail"
+                        value={modalValues.thumbnail}
+                        onChange={handleChange}
+                    />
+                    <button onClick={handleClickSaveModalSave}>save</button>
+                </SaveModal>
+            </Modal>
         </Container>
     )
 }

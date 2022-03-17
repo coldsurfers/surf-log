@@ -5,7 +5,7 @@ export interface Article {
         category?: string
         createdAt?: string
         excerpt?: string
-        thumbnail?: string
+        thumbnail?: string | null
     }
     excerpt: string
     isEmpty: boolean
