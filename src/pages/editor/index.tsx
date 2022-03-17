@@ -1,5 +1,5 @@
 import 'codemirror/lib/codemirror.css'
-import 'codemirror/theme/monokai.css'
+import 'codemirror/theme/oceanic-next.css'
 import styled from '@emotion/styled'
 import { NextPage } from 'next'
 import { useEffect, useRef, useState } from 'react'
@@ -84,8 +84,10 @@ const Editor: NextPage = () => {
 
     useEffect(() => {
         codeMirror = CodeMirror(editorRef.current, {
-            mode: 'markdown',
-            theme: 'monokai',
+            mode: {
+                name: 'markdown',
+            },
+            theme: 'oceanic-next',
             lineNumbers: true,
             lineWrapping: true,
         } as EditorConfiguration)

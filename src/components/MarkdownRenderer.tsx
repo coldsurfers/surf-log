@@ -20,7 +20,8 @@ interface Props {
 const MarkdownRenderer: FC<Props> = ({ text }) => {
     useEffect(() => {
         prism.highlightAll()
-    }, [])
+    }, [text])
+
     return (
         <div
             className={css`
