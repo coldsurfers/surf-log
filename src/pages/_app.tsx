@@ -118,6 +118,10 @@ function MyApp({ Component, pageProps }: AppProps) {
                     href="/favicons/favicon-16x16.png"
                 />
                 <link rel="manifest" href="/favicons/manifest.json" />
+                <meta
+                    name="google-site-verification"
+                    content="a1QJe85e-crwO_Y7-_gcbKZWxm3Wea76vMbzFhuIvvA"
+                />
                 <meta name="msapplication-TileColor" content="#ffffff" />
                 <meta
                     name="msapplication-TileImage"
