@@ -1,11 +1,11 @@
-import { FC } from 'react'
+import { FC, useMemo } from 'react'
 import styled from '@emotion/styled'
 import Link from 'next/link'
 import breakpoints from '../lib/breakpoints'
 import mediaQuery from '../lib/mediaQuery'
 
 const Container = styled.header`
-    height: 56px;
+    height: var(--header-height);
     width: 100%;
     background-color: #000000;
     display: flex;

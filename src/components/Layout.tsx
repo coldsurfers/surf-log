@@ -1,4 +1,5 @@
 import styled from '@emotion/styled'
+import { useRouter } from 'next/router'
 import { FC } from 'react'
 import breakpoints from '../lib/breakpoints'
 import mediaQuery from '../lib/mediaQuery'
@@ -50,16 +51,21 @@ interface Props {
 }
 
 const Layout: FC<Props> = ({ children, categories, currentArticle }) => {
+    const router = useRouter()
     return (
         <Container>
             <Header />
-            <ChildrenWithSideBar>
-                <SideBar
-                    categories={categories}
-                    currentArticleCategory={currentArticle?.data.category}
-                />
-                <ChildrenWrapper>{children}</ChildrenWrapper>
-            </ChildrenWithSideBar>
+            {router.pathname === '/editor' ? (
+                children
+            ) : (
+                <ChildrenWithSideBar>
+                    <SideBar
+                        categories={categories}
+                        currentArticleCategory={currentArticle?.data.category}
+                    />
+                    <ChildrenWrapper>{children}</ChildrenWrapper>
+                </ChildrenWithSideBar>
+            )}
         </Container>
     )
 }
