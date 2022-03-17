@@ -174,13 +174,19 @@ MyApp.getInitialProps = async (appContext: AppContext) => {
 
     const { res } = appContext.ctx
 
+    let isNotFound = false
+    if (res?.statusCode === 404) {
+        isNotFound = true
+    }
+    if (appContext.router.pathname === 'editor') {
+        if (process.env.NODE_ENV !== 'development') {
+            isNotFound = true
+        }
+    }
+
     appProps.pageProps = {
         categories: articleMeta.categories,
-        statusCode: res?.statusCode
-            ? res.statusCode
-            : isEditorPageNotFound
-            ? 404
-            : 404,
+        statusCode: isNotFound ? 404 : res?.statusCode ?? 200,
     }
 
     return {
