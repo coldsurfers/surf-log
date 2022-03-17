@@ -43,6 +43,36 @@ const PreviewPanel = styled.section`
     overflow: auto;
     padding-left: 1rem;
     padding-right: 1rem;
+    padding-bottom: 120px;
+`
+
+const SaveButton = styled.button`
+    margin-left: auto;
+    border: 1px solid #ffffff;
+    border-radius: 50%;
+    width: 60px;
+    height: 60px;
+    box-shadow: 10px 20px 20px 20px rgb(92 95 112 / 8%);
+    background-color: #ffffff;
+    padding-left: 15px;
+    padding-right: 15px;
+    padding-top: 4px;
+    padding-bottom: 4px;
+    cursor: pointer;
+
+    font-size: 13px;
+    font-weight: bold;
+
+    position: fixed;
+    right: 10px;
+    bottom: 10px;
+
+    transition: all 0.5s linear;
+
+    &:hover {
+        background-color: rgba(0, 0, 0, 0.9);
+        color: #ffffff;
+    }
 `
 
 let codeMirror: Editor | null = null
@@ -93,6 +123,7 @@ const Editor: NextPage = () => {
             <PreviewPanel>
                 <MarkdownRenderer text={text} />
             </PreviewPanel>
+            <SaveButton>Save</SaveButton>
         </Container>
     )
 }
