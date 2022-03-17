@@ -95,6 +95,9 @@ interface Props {
 const SideBar: FC<Props> = (props) => {
     const { categories, currentArticleCategory } = props
     const router = useRouter()
+    if (router.pathname === '/editor') {
+        return null
+    }
     return (
         <Container>
             <NavItemList>
