@@ -5,9 +5,39 @@ import { Article } from '../types/article'
 import App from 'next/app'
 import 'open-color/open-color.css'
 import Head from 'next/head'
+import { useEffect, useState } from 'react'
+import NetworkOfflineTemplate from '../components/NetworkOfflineTemplate'
 
 function MyApp({ Component, pageProps }: AppProps) {
     const { categories, article } = pageProps
+    const [isOnline, setIsOnline] = useState<boolean>(() => {
+        if (typeof window !== 'undefined') {
+            return window.navigator.onLine
+        } else {
+            return true
+        }
+    })
+    useEffect(() => {
+        if (!window.navigator.onLine) {
+            setIsOnline(false)
+        }
+
+        const onOnline = () => {
+            setIsOnline(true)
+        }
+
+        const onOffline = () => {
+            setIsOnline(false)
+        }
+
+        window.addEventListener('online', onOnline)
+        window.addEventListener('offline', onOffline)
+
+        return () => {
+            window.removeEventListener('online', onOnline)
+            window.removeEventListener('offline', onOffline)
+        }
+    }, [])
     return (
         <>
             <Head>
@@ -89,9 +119,13 @@ function MyApp({ Component, pageProps }: AppProps) {
                 />
                 <meta name="theme-color" content="#ffffff" />
             </Head>
-            <Layout categories={categories} currentArticle={article}>
-                <Component {...pageProps} />
-            </Layout>
+            {isOnline ? (
+                <Layout categories={categories} currentArticle={article}>
+                    <Component {...pageProps} />
+                </Layout>
+            ) : (
+                <NetworkOfflineTemplate />
+            )}
             <Global
                 styles={css`
                     @import url('//fonts.googleapis.com/css2?family=Fira+Sans:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;1,100;1,200;1,300;1,400;1,500;1,600&display=swap');
