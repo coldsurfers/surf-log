@@ -1,8 +1,9 @@
-import { FC } from 'react'
+import { FC, useMemo } from 'react'
 import styled from '@emotion/styled'
 import Link from 'next/link'
 import breakpoints from '../lib/breakpoints'
 import mediaQuery from '../lib/mediaQuery'
+import { useRouter } from 'next/router'
 
 const Container = styled.header`
     height: var(--header-height);
@@ -47,7 +48,24 @@ const LogoText = styled.p`
     color: #ffffff;
 `
 
+const SaveButton = styled.button`
+    margin-left: auto;
+    border: 1px solid #ffffff;
+    border-radius: 3px;
+    background-color: #ffffff;
+    padding-left: 15px;
+    padding-right: 15px;
+    padding-top: 4px;
+    padding-bottom: 4px;
+    cursor: pointer;
+`
+
 const Header: FC = () => {
+    const router = useRouter()
+    const isEditorPage = useMemo(
+        () => router.pathname === '/editor',
+        [router.pathname]
+    )
     return (
         <Container>
             <ContainerInner>
@@ -56,6 +74,7 @@ const Header: FC = () => {
                         <LogoText>Surf.Log</LogoText>
                     </Logo>
                 </Link>
+                {isEditorPage && <SaveButton>Save</SaveButton>}
             </ContainerInner>
         </Container>
     )

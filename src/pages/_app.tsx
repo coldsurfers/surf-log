@@ -143,6 +143,9 @@ function MyApp({ Component, pageProps }: AppProps) {
                         text-decoration: none;
                         color: inherit;
                     }
+                    button {
+                        font-family: 'Fira Sans', sans-serif;
+                    }
                 `}
             />
         </>
