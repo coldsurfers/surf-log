@@ -1,5 +1,6 @@
 import styled from '@emotion/styled'
 import { FC } from 'react'
+import breakpoints from '../lib/breakpoints'
 import mediaQuery from '../lib/mediaQuery'
 import { Article } from '../types/article'
 import Header from './Header'
@@ -13,23 +14,29 @@ const Container = styled.main`
 
 const ChildrenWithSideBar = styled.div`
     display: flex;
-    padding-left: 20px;
-    padding-right: 20px;
+    flex-direction: row;
     margin-left: auto;
     margin-right: auto;
-    width: 80%;
+    width: ${breakpoints.large}px;
+
+    ${mediaQuery.large} {
+        width: 100%;
+    }
 
     ${mediaQuery.medium} {
         flex-direction: column;
-        padding: 0px;
-        width: 90%;
+    }
+
+    ${mediaQuery.small} {
+        margin-left: 0px;
+        margin-right: 0px;
     }
 `
 
 const ChildrenWrapper = styled.div`
     flex: 1;
     padding-left: 2.5rem;
-    margin-top: calc(90px - 2vw);
+    margin-top: 90px;
 
     ${mediaQuery.medium} {
         margin-top: 15px;

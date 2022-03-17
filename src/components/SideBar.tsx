@@ -37,6 +37,14 @@ const NavItem = styled.li`
     height: 48px;
     display: flex;
     align-items: center;
+
+    ${mediaQuery.medium} {
+        margin-left: 1rem;
+        margin-right: 1rem;
+        & + & {
+            margin-left: 2vw;
+        }
+    }
 `
 
 const NavLink = styled.a<{ matched?: boolean }>`
@@ -46,8 +54,6 @@ const NavLink = styled.a<{ matched?: boolean }>`
 
     padding-top: 7px;
     padding-bottom: 7px;
-    padding-left: 12px;
-    padding-right: 12px;
 
     position: relative;
 
@@ -64,11 +70,11 @@ const NavLink = styled.a<{ matched?: boolean }>`
         left: 0;
         transition: all 0.15s ease;
         z-index: -1;
-        transform: scale3d(0.85, 1, 0.5);
+        transform: scale3d(1, 1, 0.5);
     }
 
     &:hover:after {
-        transform: scale3d(1, 1, 0.5);
+        transform: scale3d(1, 1.25, 0.5);
         opacity: 1;
     }
 `
