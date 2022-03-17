@@ -9,6 +9,7 @@ if (isBrowser) {
     prism = require('prismjs')
     require('prismjs/components/prism-bash.min.js')
     require('prismjs/components/prism-javascript.min.js')
+    require('prismjs/components/prism-typescript.min.js')
     require('prismjs/components/prism-jsx.min.js')
     require('prismjs/components/prism-css.min.js')
 }
