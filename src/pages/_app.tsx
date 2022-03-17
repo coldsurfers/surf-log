@@ -148,6 +148,7 @@ function MyApp({ Component, pageProps }: AppProps) {
                     }
                 `}
             />
+            <div id="modal-root" />
         </>
     )
 }
