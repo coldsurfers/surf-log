@@ -7,9 +7,10 @@ import 'open-color/open-color.css'
 import Head from 'next/head'
 import { useEffect, useState } from 'react'
 import NetworkOfflineTemplate from '../components/NetworkOfflineTemplate'
+import Error from 'next/error'
 
 function MyApp({ Component, pageProps }: AppProps) {
-    const { categories, article } = pageProps
+    const { categories, article, statusCode } = pageProps
     const [isOnline, setIsOnline] = useState<boolean>(() => {
         if (typeof window !== 'undefined') {
             return window.navigator.onLine
@@ -38,6 +39,11 @@ function MyApp({ Component, pageProps }: AppProps) {
             window.removeEventListener('offline', onOffline)
         }
     }, [])
+
+    if (statusCode === 404) {
+        return <Error statusCode={statusCode} />
+    }
+
     return (
         <>
             <Head>
@@ -162,8 +168,19 @@ MyApp.getInitialProps = async (appContext: AppContext) => {
         categories: string[]
     }
 
+    const isEditorPageNotFound =
+        appContext.router.pathname === '/editor' &&
+        process.env.NODE_ENV !== 'development'
+
+    const { res } = appContext.ctx
+
     appProps.pageProps = {
         categories: articleMeta.categories,
+        statusCode: res?.statusCode
+            ? res.statusCode
+            : isEditorPageNotFound
+            ? 404
+            : 404,
     }
 
     return {
