@@ -15,7 +15,7 @@ injectGlobal`
         --header-height: 56px;
     }
     html {
-        background-color: var(--oc-gray-0);
+        background-color: var(--oc-gray-1);
     }
     body {
         font-family: 'Fira Sans', sans-serif;
