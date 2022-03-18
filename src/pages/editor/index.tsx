@@ -10,7 +10,7 @@ import {
     useState,
 } from 'react'
 import MarkdownRenderer from '../../components/MarkdownRenderer'
-import { Editor, EditorConfiguration, Position } from 'codemirror'
+import type { Editor, EditorConfiguration, Position } from 'codemirror'
 import { css } from '@emotion/css'
 import Modal from '../../components/Modal'
 import { useRouter } from 'next/router'
@@ -97,7 +97,7 @@ const SaveModal = styled.div`
 let codeMirror: Editor | null = null
 let codeMirrorCursor: Position | null = null
 
-const Editor: NextPage = () => {
+const EditorPage: NextPage = () => {
     const router = useRouter()
     const [text, setText] = useState<string>('')
     const editorRef = useRef<HTMLDivElement>(null)
@@ -283,4 +283,4 @@ const Editor: NextPage = () => {
     )
 }
 
-export default Editor
+export default EditorPage
