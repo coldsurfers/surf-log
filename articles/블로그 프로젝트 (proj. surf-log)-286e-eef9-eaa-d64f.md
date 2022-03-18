@@ -169,10 +169,78 @@ export const getStaticProps: GetStaticProps<ServerProps> = async (ctx) => {
 }
 ```
 
-## 7. 배포
+## 7. emotion으로 스타일링
+[emotion](https://emotion.sh/docs/introduction)을 사용하여 style 코드 작성.
+꽤나 편리하다. styled-components가 제공해주는 기능도 제공하면서 css로 children의 tag들도 모조리 styling 할 수 있는게 장점이다.
+```jsx
+import { css } from '@emotion/css'
+
+...
+
+<SaveModal
+    className={css`
+        label {
+            font-weight: bold;
+        }
+        input {
+            height: 1.5rem;
+            margin-top: 0.5rem;
+        }
+
+        input + label {
+            margin-top: 0.8rem;
+        }
+
+        button {
+            margin-top: 1rem;
+            font-weight: bold;
+            background-color: #000000;
+            border: 1px solid #000000;
+            border-radius: 3px;
+            color: #ffffff;
+            cursor: pointer;
+            height: 1.95rem;
+
+            &:active {
+                background-color: #ffffff;
+                color: #000000;
+            }
+        }
+    `}
+>
+    <label>Title</label>
+    <input
+        name="title"
+        value={modalValues.title}
+        onChange={handleChange}
+    />
+    <label>Excerpt</label>
+    <input
+        name="excerpt"
+        value={modalValues.excerpt}
+        onChange={handleChange}
+    />
+    <label>Category</label>
+    <input
+        name="category"
+        value={modalValues.category}
+        onChange={handleChange}
+    />
+    <label>Thumbnail</label>
+    <input
+        name="thumbnail"
+        value={modalValues.thumbnail}
+        onChange={handleChange}
+    />
+    <button onClick={handleClickSaveModalSave}>save</button>
+</SaveModal>
+```
+앞으로 애용할 것 같다.
+
+## 8. 배포
 
 vercel을 사용하여 domain 연결 후 배포
 
-## 8. 깃 전략
+## 9. 깃 전략
 
 git flow를 사용
