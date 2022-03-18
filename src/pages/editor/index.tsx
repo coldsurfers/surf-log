@@ -113,6 +113,7 @@ const EditorPage: NextPage = () => {
         thumbnail: '',
         category: '',
     })
+    const intervalTimerRef: { current: NodeJS.Timer | null } = useRef(null)
 
     const onClickSaveButton = useCallback(() => {
         setModalOpen(true)
@@ -148,6 +149,20 @@ const EditorPage: NextPage = () => {
         }
     }, [modalValues, router, text])
 
+    const temporarilySave = useCallback(async () => {
+        console.log('temp save!')
+        return await fetch('http://localhost:3000/api/save/temp', {
+            method: 'POST',
+            body: JSON.stringify({
+                text,
+            }),
+            headers: new Headers({
+                'Content-Type': 'application/json',
+                Accept: 'application/json',
+            }),
+        })
+    }, [text])
+
     useEffect(() => {
         if (!codeMirror) {
             codeMirror = CodeMirror(editorRef.current, {
@@ -167,15 +182,7 @@ const EditorPage: NextPage = () => {
             codeMirrorCursor = cursor
             setText(value)
         })
-    }, [])
 
-    useEffect(() => {
-        if (codeMirrorCursor && codeMirror) {
-            codeMirror.setCursor(codeMirrorCursor)
-        }
-    }, [text])
-
-    useEffect(() => {
         return () => {
             if (codeMirror) {
                 codeMirror = null
@@ -185,6 +192,27 @@ const EditorPage: NextPage = () => {
             }
         }
     }, [])
+
+    useEffect(() => {
+        if (intervalTimerRef.current) {
+            clearInterval(intervalTimerRef.current)
+        }
+        intervalTimerRef.current = setInterval(() => {
+            temporarilySave()
+        }, 3500)
+
+        return () => {
+            if (intervalTimerRef.current) {
+                clearInterval(intervalTimerRef.current)
+            }
+        }
+    }, [temporarilySave])
+
+    useEffect(() => {
+        if (codeMirrorCursor && codeMirror) {
+            codeMirror.setCursor(codeMirrorCursor)
+        }
+    }, [text])
 
     useEffect(() => {
         if (!modalOpen) {

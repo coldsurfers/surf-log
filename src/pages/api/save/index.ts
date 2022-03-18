@@ -11,15 +11,16 @@ function generateUniqSerial() {
 
 const SaveAPI: NextApiHandler = (req, res) => {
     if (req.method === 'POST') {
+        const articlesPathString = `../../../../../articles`
         const { title, excerpt, category, thumbnail, text } = req.body
         let articlePath = path.resolve(
             __dirname,
-            `../../../../articles/${title}.md`
+            `${articlesPathString}/${title}.md`
         )
         if (fs.existsSync(articlePath)) {
             articlePath = path.resolve(
                 __dirname,
-                `../../../../articles/${`${title}-${generateUniqSerial()}`}.md`
+                `${articlesPathString}/${`${title}-${generateUniqSerial()}`}.md`
             )
         }
         let content = `---
