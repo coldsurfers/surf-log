@@ -113,6 +113,7 @@ const EditorPage: NextPage = () => {
         thumbnail: '',
         category: '',
     })
+    const intervalTimerRef: { current: NodeJS.Timer | null } = useRef(null)
 
     const onClickSaveButton = useCallback(() => {
         setModalOpen(true)
@@ -129,7 +130,25 @@ const EditorPage: NextPage = () => {
         []
     )
 
+    const checkIsTempFileExists = useCallback(async () => {
+        const res = await fetch('http://localhost:3000/api/save/temp', {
+            method: 'GET',
+            headers: new Headers({
+                'Content-Type': 'application/json',
+                Accept: 'application/json',
+            }),
+        })
+        const json = await res.json()
+        return json as {
+            error: string | null
+            tempArticleText: string | null
+        }
+    }, [])
+
     const handleClickSaveModalSave = useCallback(async () => {
+        if (intervalTimerRef.current) {
+            clearInterval(intervalTimerRef.current)
+        }
         const res = await fetch('http://localhost:3000/api/save', {
             method: 'POST',
             body: JSON.stringify({
@@ -147,6 +166,19 @@ const EditorPage: NextPage = () => {
             router.push('/')
         }
     }, [modalValues, router, text])
+
+    const temporarilySave = useCallback(async () => {
+        return await fetch('http://localhost:3000/api/save/temp', {
+            method: 'POST',
+            body: JSON.stringify({
+                text,
+            }),
+            headers: new Headers({
+                'Content-Type': 'application/json',
+                Accept: 'application/json',
+            }),
+        })
+    }, [text])
 
     useEffect(() => {
         if (!codeMirror) {
@@ -167,15 +199,7 @@ const EditorPage: NextPage = () => {
             codeMirrorCursor = cursor
             setText(value)
         })
-    }, [])
 
-    useEffect(() => {
-        if (codeMirrorCursor && codeMirror) {
-            codeMirror.setCursor(codeMirrorCursor)
-        }
-    }, [text])
-
-    useEffect(() => {
         return () => {
             if (codeMirror) {
                 codeMirror = null
@@ -185,6 +209,48 @@ const EditorPage: NextPage = () => {
             }
         }
     }, [])
+
+    useEffect(() => {
+        const check = async () => {
+            const { error, tempArticleText } = await checkIsTempFileExists()
+            if (!error && tempArticleText) {
+                setText(tempArticleText)
+                if (!codeMirror) {
+                    codeMirror = CodeMirror(editorRef.current, {
+                        mode: {
+                            name: 'markdown',
+                        },
+                        theme: 'oceanic-next',
+                        lineNumbers: true,
+                        lineWrapping: true,
+                    } as EditorConfiguration)
+                }
+                codeMirror?.setValue(tempArticleText)
+            }
+        }
+        check()
+    }, [checkIsTempFileExists])
+
+    useEffect(() => {
+        if (intervalTimerRef.current) {
+            clearInterval(intervalTimerRef.current)
+        }
+        intervalTimerRef.current = setInterval(() => {
+            temporarilySave()
+        }, 3500)
+
+        return () => {
+            if (intervalTimerRef.current) {
+                clearInterval(intervalTimerRef.current)
+            }
+        }
+    }, [temporarilySave])
+
+    useEffect(() => {
+        if (codeMirrorCursor && codeMirror) {
+            codeMirror.setCursor(codeMirrorCursor)
+        }
+    }, [text])
 
     useEffect(() => {
         if (!modalOpen) {
