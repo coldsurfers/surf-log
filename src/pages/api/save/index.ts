@@ -11,7 +11,24 @@ function generateUniqSerial() {
 
 const SaveAPI: NextApiHandler = (req, res) => {
     if (req.method === 'POST') {
-        const articlesPathString = `../../../../../articles`
+        const articlesPathString = `../../../../articles`
+        const temporaryArticlesPathString = `${articlesPathString}/temporary`
+        const tempFilenames = fs.readdirSync(
+            path.resolve(__dirname, temporaryArticlesPathString)
+        )
+        if (tempFilenames.length > 0) {
+            tempFilenames.forEach((filename) => {
+                if (filename === '.gitinclude') {
+                    return
+                }
+                fs.unlinkSync(
+                    path.resolve(
+                        __dirname,
+                        `${temporaryArticlesPathString}/${filename}`
+                    )
+                )
+            })
+        }
         const { title, excerpt, category, thumbnail, text } = req.body
         let articlePath = path.resolve(
             __dirname,

@@ -130,7 +130,25 @@ const EditorPage: NextPage = () => {
         []
     )
 
+    const checkIsTempFileExists = useCallback(async () => {
+        const res = await fetch('http://localhost:3000/api/save/temp', {
+            method: 'GET',
+            headers: new Headers({
+                'Content-Type': 'application/json',
+                Accept: 'application/json',
+            }),
+        })
+        const json = await res.json()
+        return json as {
+            error: string | null
+            tempArticleText: string | null
+        }
+    }, [])
+
     const handleClickSaveModalSave = useCallback(async () => {
+        if (intervalTimerRef.current) {
+            clearInterval(intervalTimerRef.current)
+        }
         const res = await fetch('http://localhost:3000/api/save', {
             method: 'POST',
             body: JSON.stringify({
@@ -150,7 +168,6 @@ const EditorPage: NextPage = () => {
     }, [modalValues, router, text])
 
     const temporarilySave = useCallback(async () => {
-        console.log('temp save!')
         return await fetch('http://localhost:3000/api/save/temp', {
             method: 'POST',
             body: JSON.stringify({
@@ -192,6 +209,27 @@ const EditorPage: NextPage = () => {
             }
         }
     }, [])
+
+    useEffect(() => {
+        const check = async () => {
+            const { error, tempArticleText } = await checkIsTempFileExists()
+            if (!error && tempArticleText) {
+                setText(tempArticleText)
+                if (!codeMirror) {
+                    codeMirror = CodeMirror(editorRef.current, {
+                        mode: {
+                            name: 'markdown',
+                        },
+                        theme: 'oceanic-next',
+                        lineNumbers: true,
+                        lineWrapping: true,
+                    } as EditorConfiguration)
+                }
+                codeMirror?.setValue(tempArticleText)
+            }
+        }
+        check()
+    }, [checkIsTempFileExists])
 
     useEffect(() => {
         if (intervalTimerRef.current) {

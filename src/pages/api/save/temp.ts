@@ -2,10 +2,37 @@ import { NextApiHandler } from 'next'
 import path from 'path'
 import fs from 'fs'
 
+const temporaryArticleDirPathString = '../../../../../articles/temporary'
+
 const TempSaveAPI: NextApiHandler = (req, res) => {
+    if (req.method === 'GET') {
+        const temporaryArticleFileNames = fs.readdirSync(
+            path.resolve(__dirname, temporaryArticleDirPathString)
+        )
+        let tempArticleText: string | null = null
+        if (temporaryArticleFileNames.length > 0) {
+            temporaryArticleFileNames.forEach((filename) => {
+                if (tempArticleText !== null) {
+                    return
+                }
+                if (filename === '.gitinclude') {
+                    return
+                }
+                tempArticleText = fs.readFileSync(
+                    path.resolve(
+                        __dirname,
+                        `${temporaryArticleDirPathString}/${filename}`
+                    ),
+                    'utf8'
+                )
+            })
+        }
+        return res.json({
+            error: null,
+            tempArticleText,
+        })
+    }
     if (req.method === 'POST') {
-        const temporaryArticleDirPathString =
-            '../../../../../articles/temporary'
         const temporaryArticleFilenames = fs.readdirSync(
             path.resolve(__dirname, temporaryArticleDirPathString)
         )
