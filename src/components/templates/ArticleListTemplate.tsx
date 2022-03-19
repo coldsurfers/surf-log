@@ -2,8 +2,8 @@ import styled from '@emotion/styled'
 import Image from 'next/image'
 import Link from 'next/link'
 import { FC } from 'react'
-import mediaQuery from '../lib/mediaQuery'
-import { Article } from '../types/article'
+import mediaQuery from '../../lib/mediaQuery'
+import { Article } from '../../types/article'
 
 const ArticleListContainer = styled.div`
     display: flex;

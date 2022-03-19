@@ -1,5 +1,5 @@
 import { GetServerSideProps, NextPage } from 'next'
-import ArticleListTemplate from '../../components/ArticleListTemplate'
+import ArticleListTemplate from '../../components/templates/ArticleListTemplate'
 import { Article } from '../../types/article'
 
 interface ServerProps {

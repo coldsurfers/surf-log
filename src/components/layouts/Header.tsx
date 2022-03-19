@@ -1,8 +1,8 @@
-import { FC, useMemo } from 'react'
+import { FC } from 'react'
 import styled from '@emotion/styled'
 import Link from 'next/link'
-import breakpoints from '../lib/breakpoints'
-import mediaQuery from '../lib/mediaQuery'
+import breakpoints from '../../lib/breakpoints'
+import mediaQuery from '../../lib/mediaQuery'
 
 const Container = styled.header`
     height: var(--header-height);

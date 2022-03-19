@@ -1,9 +1,9 @@
 import styled from '@emotion/styled'
 import { useRouter } from 'next/router'
 import { FC } from 'react'
-import breakpoints from '../lib/breakpoints'
-import mediaQuery from '../lib/mediaQuery'
-import { Article } from '../types/article'
+import breakpoints from '../../lib/breakpoints'
+import mediaQuery from '../../lib/mediaQuery'
+import { Article } from '../../types/article'
 import Header from './Header'
 import SideBar from './SideBar'
 
@@ -50,7 +50,7 @@ interface Props {
     currentArticle?: Article
 }
 
-const Layout: FC<Props> = ({ children, categories, currentArticle }) => {
+const PageLayout: FC<Props> = ({ children, categories, currentArticle }) => {
     const router = useRouter()
     return (
         <Container>
@@ -70,4 +70,4 @@ const Layout: FC<Props> = ({ children, categories, currentArticle }) => {
     )
 }
 
-export default Layout
+export default PageLayout
