@@ -9,10 +9,10 @@ import {
     useRef,
     useState,
 } from 'react'
-import MarkdownRenderer from '../../components/MarkdownRenderer'
+import MarkdownRenderer from '../../components/templates/MarkdownRenderer'
 import type { Editor, EditorConfiguration, Position } from 'codemirror'
 import { css } from '@emotion/css'
-import Modal from '../../components/Modal'
+import Modal from '../../components/modal/Modal'
 import { useRouter } from 'next/router'
 
 let CodeMirror: any = null

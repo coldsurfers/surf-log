@@ -2,7 +2,7 @@ import { FC } from 'react'
 import styled from '@emotion/styled'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
-import mediaQuery from '../lib/mediaQuery'
+import mediaQuery from '../../lib/mediaQuery'
 
 const Container = styled.nav`
     width: 230px;
