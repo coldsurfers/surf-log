@@ -4,6 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
+    "prebuild": "yarn generate:article-meta && yarn generate:site-map",
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
