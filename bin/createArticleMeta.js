@@ -15,6 +15,7 @@ function main() {
     const mdFilesDirectoryPath = path.resolve(__dirname, '../articles')
     const mdFileNames = fs.readdirSync(mdFilesDirectoryPath, 'utf8')
     const mdFilesMetaArray = mdFileNames
+        .filter((fileName) => fileName !== 'temporary')
         .map((fileName) => {
             const mdFilePath = path.resolve(
                 __dirname,
