@@ -2,7 +2,7 @@ import { GetServerSideProps, NextPage } from 'next'
 import { Article } from '../../types/article'
 import styled from '@emotion/styled'
 import mediaQuery from '../../lib/mediaQuery'
-import MarkdownRenderer from '../../components/MarkdownRenderer'
+import MarkdownRenderer from '../../components/templates/MarkdownRenderer'
 
 const ContentContainer = styled.div`
     background: #ffffff;
