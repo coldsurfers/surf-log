@@ -7,7 +7,8 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "generate:article-meta": "node ./bin/createArticleMeta.js"
+    "generate:article-meta": "node ./bin/createArticleMeta.js",
+    "generate:site-map": "node ./bin/generateSitemap.js"
   },
   "dependencies": {
     "@emotion/css": "^11.7.1",
