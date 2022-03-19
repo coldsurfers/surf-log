@@ -24,7 +24,7 @@ function main() {
             const mdFileContent = fs.readFileSync(mdFilePath, 'utf8')
             const mdFileMeta = matter(mdFileContent, {
                 excerpt: function (file, options) {
-                    file.excerpt = encodeURI(file.data.excerpt)
+                    file.excerpt = encodeURIComponent(file.data.excerpt)
                     if (file.data.thumbnail) {
                         const thumbnailFileBase64Encoded = fs.readFileSync(
                             path.resolve(

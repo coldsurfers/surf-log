@@ -50,10 +50,10 @@ export const getServerSideProps: GetServerSideProps<
             [key: string]: Article
         }
     }
-    const article = articleMeta.articles[encodeURI(excerpt)]
+    const article = articleMeta.articles[encodeURIComponent(excerpt)]
     return {
         props: {
-            article: article,
+            article,
         },
     }
 }
