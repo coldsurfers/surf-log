@@ -7,7 +7,8 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "generate:article-meta": "node ./bin/createArticleMeta.js"
+    "generate:article-meta": "node ./bin/createArticleMeta.js",
+    "generate:site-map": "yarn generate:article-meta && node ./bin/generateSitemap.js"
   },
   "dependencies": {
     "@emotion/css": "^11.7.1",
@@ -15,6 +16,7 @@
     "@emotion/server": "^11.4.0",
     "@emotion/styled": "^11.8.1",
     "codemirror": "^5.65.2",
+    "date-fns": "^2.28.0",
     "gray-matter": "^4.0.3",
     "marked": "^4.0.12",
     "next": "12.1.0",
