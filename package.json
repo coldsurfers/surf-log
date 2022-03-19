@@ -1,9 +1,10 @@
 {
   "name": "surf-log",
-  "version": "1.4.1",
+  "version": "1.5.0",
   "private": true,
   "scripts": {
     "dev": "next dev",
+    "prebuild": "yarn generate:article-meta && yarn generate:site-map",
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
