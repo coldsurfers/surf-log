@@ -4,16 +4,20 @@
         <loc>https://blog.coldsurf.io/</loc>
     </url>
     <url>
-        <loc>https://blog.coldsurf.io/category/dev</loc>
+        <loc>https://blog.coldsurf.io/category/univ</loc>
     </url>
     <url>
-        <loc>https://blog.coldsurf.io/category/univ</loc>
+        <loc>https://blog.coldsurf.io/category/dev</loc>
     </url>
     <url>
         <loc>https://blog.coldsurf.io/category/life</loc>
     </url>
     <url>
         <loc>https://blog.coldsurf.io/category/etc</loc>
+    </url>
+    <url>
+        <loc>https://blog.coldsurf.io/article/%EC%8B%A0%EC%B2%B4%EA%B1%B4%EA%B0%95%20%EB%AC%B8%EC%A0%9C%EC%99%80%20%EA%B4%80%EB%A6%AC(2)</loc>
+        <lastmod>2022-03-20</lastmod>
     </url>
     <url>
         <loc>https://blog.coldsurf.io/article/%EA%B0%84%EB%8B%A8%ED%9E%88%20SOLID%20%EC%9B%90%EC%B9%99%20%EC%A0%95%EB%A6%AC</loc>
