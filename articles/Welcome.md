@@ -1,7 +1,7 @@
 ---
 title: Welcome to ColdSurf blog
 category: etc
-createdAt: 2022-03-14 22:20
+createdAt: 2022/03/14 22:20
 excerpt: 어서오세요
 thumbnail: welcome.jpg
 ---
