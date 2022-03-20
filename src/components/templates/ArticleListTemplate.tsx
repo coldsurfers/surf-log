@@ -2,6 +2,8 @@ import styled from '@emotion/styled'
 import Image from 'next/image'
 import Link from 'next/link'
 import { FC } from 'react'
+import { format } from 'date-fns'
+import { ko } from 'date-fns/locale'
 import mediaQuery from '../../lib/mediaQuery'
 import { Article } from '../../types/article'
 
@@ -139,7 +141,17 @@ const ArticleListTemplate: FC<{ articles: Article[] }> = ({ articles }) => {
                                     {article.data.excerpt}
                                 </ArticleSubTitle>
                             </ArticleDescWarpper>
-                            <ArticleDate>{article.data.createdAt}</ArticleDate>
+                            {article.data.createdAt && (
+                                <ArticleDate>
+                                    {format(
+                                        new Date(article.data.createdAt),
+                                        'yyyy-MM-dd HH:mm',
+                                        {
+                                            locale: ko,
+                                        }
+                                    )}
+                                </ArticleDate>
+                            )}
                         </ArticleContainer>
                     </Link>
                 )
