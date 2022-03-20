@@ -52,9 +52,9 @@ function main() {
             return new Date(b.data.createdAt) - new Date(a.data.createdAt)
         })
 
-    const categories = mdFilesMetaArray
-        .map((meta) => meta.data.category)
-        .filter((value, index, self) => self.indexOf(value) === index)
+    const categories = [
+        ...new Set(mdFilesMetaArray.map((meta) => meta.data.category)),
+    ]
 
     const mdFilesMeta = mdFilesMetaArray.reduce((prev, curr) => {
         prev[curr.excerpt] = curr

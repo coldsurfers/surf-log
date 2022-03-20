@@ -27,9 +27,12 @@ function generateSitemap() {
     ]
 
     const { articles } = articleMetaJSON
-    const categories = Object.entries(articles)
-        .map(([key, data]) => data.data.category)
-        .filter((value, index, self) => self.indexOf(value) === index)
+    const categories = [
+        ...new Set(
+            Object.entries(articles).map(([key, data]) => data.data.category)
+        ),
+    ]
+
     // category route
     categories.forEach((category) => {
         routes.push({
