@@ -5,6 +5,11 @@ import fs from 'fs'
 const temporaryArticleDirPathString = '../../../../../articles/temporary'
 
 const TempSaveAPI: NextApiHandler = (req, res) => {
+    if (process.env.NODE_ENV !== 'development') {
+        return res.status(400).json({
+            error: 'this api only works in development mode',
+        })
+    }
     if (req.method === 'GET') {
         const temporaryArticleFileNames = fs.readdirSync(
             path.resolve(__dirname, temporaryArticleDirPathString)
