@@ -31,7 +31,7 @@ function generateSitemap() {
         ...new Set(
             Object.entries(articles).map(([key, data]) => data.data.category)
         ),
-    ]
+    ].sort()
 
     // category route
     categories.forEach((category) => {
