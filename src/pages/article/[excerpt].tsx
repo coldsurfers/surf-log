@@ -4,6 +4,8 @@ import styled from '@emotion/styled'
 import mediaQuery from '../../lib/mediaQuery'
 import MarkdownRenderer from '../../components/templates/MarkdownRenderer'
 import FloatingButton from '../../components/buttons/FloatingButton'
+import { useRouter } from 'next/router'
+import { useCallback } from 'react'
 
 const ContentContainer = styled.div`
     background: #ffffff;
@@ -19,6 +21,11 @@ const ContentContainer = styled.div`
 
 const Excerpt: NextPage<{ article?: Article | null }> = (props) => {
     const { article } = props
+    const router = useRouter()
+    const onClickEdit = useCallback(() => {
+        if (!article) return
+        router.push(`/editor?excerpt=${article.excerpt}`)
+    }, [article, router])
 
     if (!article) {
         return null
@@ -27,7 +34,7 @@ const Excerpt: NextPage<{ article?: Article | null }> = (props) => {
         <ContentContainer>
             <MarkdownRenderer text={article.content} />
             {process.env.NODE_ENV === 'development' && (
-                <FloatingButton>Edit</FloatingButton>
+                <FloatingButton onClick={onClickEdit}>Edit</FloatingButton>
             )}
         </ContentContainer>
     )
