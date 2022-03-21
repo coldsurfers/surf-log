@@ -13,6 +13,11 @@ const articlesPathString = `../../../../articles`
 const temporaryArticlesPathString = `${articlesPathString}/temporary`
 
 const SaveAPI: NextApiHandler = (req, res) => {
+    if (process.env.NODE_ENV !== 'development') {
+        return res.status(400).json({
+            error: 'this api only works in development mode',
+        })
+    }
     if (req.method === 'POST') {
         const tempFilenames = fs.readdirSync(
             path.resolve(__dirname, temporaryArticlesPathString)
