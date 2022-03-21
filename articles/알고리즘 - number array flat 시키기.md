@@ -4,6 +4,7 @@ excerpt: depth에 관계없이 number array를 모두 flat 시켜보자
 category: dev
 thumbnail: unsplash-programming.jpg
 createdAt: 2022-03-21T09:16:03.780Z
+updatedAt: 2022-03-21T09:18:32.904Z
 ---
 # 알고리즘 - number array flat 시키기
 
@@ -25,7 +26,7 @@ function flat(numbers) {
 console.log("문제 1:", flat([1, [2, 3], [4, 5]]));
 ```
 
-답안 설명: 간단하게 flatMap을 쓰면 2 depth array까지는 flatten이 가능하다.
+답안 설명: 간단하게 flatMap을 쓰면 1 depth array까지는 flatten이 가능하다.
 
 ### 문제 2
 > [1, [2, 3], [4, 5], [4, [5, 6, [6, 7]]]]를 모두 flat 해보세요
