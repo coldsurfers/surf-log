@@ -14,6 +14,8 @@ import type { Editor, EditorConfiguration, Position } from 'codemirror'
 import { css } from '@emotion/css'
 import Modal from '../../components/modal/Modal'
 import { useRouter } from 'next/router'
+import FloatingButton from '../../components/buttons/FloatingButton'
+import { Article } from '../../types/article'
 
 let CodeMirror: any = null
 
@@ -54,35 +56,6 @@ const PreviewPanel = styled.section`
     padding-bottom: 120px;
 `
 
-const SaveButton = styled.button`
-    margin-left: auto;
-    border: 1px solid #ffffff;
-    border-radius: 50%;
-    width: 60px;
-    height: 60px;
-    box-shadow: 10px 20px 20px 20px rgb(92 95 112 / 8%);
-    background-color: #ffffff;
-    padding-left: 15px;
-    padding-right: 15px;
-    padding-top: 4px;
-    padding-bottom: 4px;
-    cursor: pointer;
-
-    font-size: 13px;
-    font-weight: bold;
-
-    position: fixed;
-    right: 10px;
-    bottom: 10px;
-
-    transition: all 0.5s linear;
-
-    &:hover {
-        background-color: rgba(0, 0, 0, 0.9);
-        color: #ffffff;
-    }
-`
-
 const SaveModal = styled.div`
     width: 500px;
     height: auto;
@@ -99,6 +72,7 @@ let codeMirrorCursor: Position | null = null
 
 const EditorPage: NextPage = () => {
     const router = useRouter()
+    const { excerpt } = router.query
     const [text, setText] = useState<string>('')
     const editorRef = useRef<HTMLDivElement>(null)
     const [modalOpen, setModalOpen] = useState<boolean>(false)
@@ -107,6 +81,7 @@ const EditorPage: NextPage = () => {
         excerpt: string
         thumbnail: string
         category: string
+        createdAt?: string
     }>({
         title: '',
         excerpt: '',
@@ -145,12 +120,33 @@ const EditorPage: NextPage = () => {
         }
     }, [])
 
+    const getExistingData = useCallback(async () => {
+        if (!excerpt) {
+            return null
+        }
+        const encodedExcerpt = encodeURIComponent(excerpt as string)
+        const res = await fetch(
+            `http://localhost:3000/api/article/${encodedExcerpt}`,
+            {
+                method: 'GET',
+                headers: new Headers({
+                    'Content-Type': 'application/json',
+                    Accept: 'application/json',
+                }),
+            }
+        )
+        const json = (await res.json()) as {
+            data: Article | null
+        }
+        return json.data
+    }, [excerpt])
+
     const handleClickSaveModalSave = useCallback(async () => {
         if (intervalTimerRef.current) {
             clearInterval(intervalTimerRef.current)
         }
         const res = await fetch('http://localhost:3000/api/save', {
-            method: 'POST',
+            method: excerpt ? 'PATCH' : 'POST',
             body: JSON.stringify({
                 ...modalValues,
                 text,
@@ -165,7 +161,7 @@ const EditorPage: NextPage = () => {
             setModalOpen(false)
             router.push('/')
         }
-    }, [modalValues, router, text])
+    }, [excerpt, modalValues, router, text])
 
     const temporarilySave = useCallback(async () => {
         return await fetch('http://localhost:3000/api/save/temp', {
@@ -228,23 +224,59 @@ const EditorPage: NextPage = () => {
                 codeMirror?.setValue(tempArticleText)
             }
         }
-        check()
-    }, [checkIsTempFileExists])
+        const getExisting = async () => {
+            const data = await getExistingData()
+            if (data) {
+                const {
+                    content,
+                    data: { title, category, excerpt, thumbnail, createdAt },
+                } = data
+                setText(content)
+                setModalValues({
+                    title: title ?? '',
+                    category: category ?? '',
+                    excerpt: excerpt ?? '',
+                    thumbnail: thumbnail ?? '',
+                    createdAt: createdAt ?? '',
+                })
+                if (!codeMirror) {
+                    codeMirror = CodeMirror(editorRef.current, {
+                        mode: {
+                            name: 'markdown',
+                        },
+                        theme: 'oceanic-next',
+                        lineNumbers: true,
+                        lineWrapping: true,
+                    } as EditorConfiguration)
+                }
+                codeMirror?.setValue(content)
+            }
+        }
+        if (excerpt) {
+            getExisting()
+        } else {
+            check()
+        }
+    }, [checkIsTempFileExists, excerpt, getExistingData])
 
     useEffect(() => {
-        if (intervalTimerRef.current) {
-            clearInterval(intervalTimerRef.current)
-        }
-        intervalTimerRef.current = setInterval(() => {
-            temporarilySave()
-        }, 3500)
-
-        return () => {
+        if (!excerpt) {
             if (intervalTimerRef.current) {
                 clearInterval(intervalTimerRef.current)
             }
+            intervalTimerRef.current = setInterval(() => {
+                temporarilySave()
+            }, 3500)
         }
-    }, [temporarilySave])
+
+        return () => {
+            if (!excerpt) {
+                if (intervalTimerRef.current) {
+                    clearInterval(intervalTimerRef.current)
+                }
+            }
+        }
+    }, [temporarilySave, excerpt])
 
     useEffect(() => {
         if (codeMirrorCursor && codeMirror) {
@@ -282,7 +314,7 @@ const EditorPage: NextPage = () => {
             <PreviewPanel>
                 <MarkdownRenderer text={text} />
             </PreviewPanel>
-            <SaveButton onClick={onClickSaveButton}>Save</SaveButton>
+            <FloatingButton onClick={onClickSaveButton}>Save</FloatingButton>
             <Modal
                 open={modalOpen}
                 onClickBackground={() => setModalOpen(false)}

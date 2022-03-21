@@ -3,13 +3,16 @@ import { Article } from '../../types/article'
 import styled from '@emotion/styled'
 import mediaQuery from '../../lib/mediaQuery'
 import MarkdownRenderer from '../../components/templates/MarkdownRenderer'
+import FloatingButton from '../../components/buttons/FloatingButton'
+import { useRouter } from 'next/router'
+import { useCallback } from 'react'
 
 const ContentContainer = styled.div`
     background: #ffffff;
     padding: 2rem;
     border-radius: 12px;
     box-shadow: 0px -5px 20px 10px rgb(92 95 112 / 8%);
-    margin-bottom: 1rem;
+    margin-bottom: ${process.env.NODE_ENV === 'development' ? '100px' : '1rem'};
 
     ${mediaQuery.small} {
         padding: 1.25rem;
@@ -18,6 +21,11 @@ const ContentContainer = styled.div`
 
 const Excerpt: NextPage<{ article?: Article | null }> = (props) => {
     const { article } = props
+    const router = useRouter()
+    const onClickEdit = useCallback(() => {
+        if (!article) return
+        router.push(`/editor?excerpt=${article.excerpt}`)
+    }, [article, router])
 
     if (!article) {
         return null
@@ -25,6 +33,9 @@ const Excerpt: NextPage<{ article?: Article | null }> = (props) => {
     return (
         <ContentContainer>
             <MarkdownRenderer text={article.content} />
+            {process.env.NODE_ENV === 'development' && (
+                <FloatingButton onClick={onClickEdit}>Edit</FloatingButton>
+            )}
         </ContentContainer>
     )
 }
