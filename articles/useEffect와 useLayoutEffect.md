@@ -32,6 +32,7 @@ const Page = () => {
 위 코드에서 name값의 초기값은 ""이다.
 useEffect를 사용하여 초기 렌더링 시 name값을 "John Doe"로 바꾸어준다.
 실제로 이 코드를 실행 시켜 보면, 잠깐동안 layout shifting (깜빡이는 현상)이 일어날 것 이다.
+(layout shifting을 경험해보기 위해서는, 브라우저의 네트워크 설정에서 throttling을 걸어서 느리게 할 필요가 있다.)
 
 이것을 방지하기 위해서 `useLayoutEffect`를 사용할 수 있다.
 
@@ -54,8 +55,12 @@ const Page = () => {
 
 이렇게 사용한다면 John Doe라는 글자가 layout shifting이 없이 초기 화면에서 그려질 것이다.
 
-useLayoutEffect는 **DOM이 그려지기 전**에 실행 되기 때문이다.
-useEffect는 **DOM이 그려지고 나서** 실행 된다.
+* useLayoutEffect
+	* **DOM이 그려지기 전**에 실행
+	* 동기적
+* useEffect
+	* **DOM이 그려지고 나서** 실행
+	* 비동기적
 
 ### 참고 자료
 > https://merrily-code.tistory.com/46
