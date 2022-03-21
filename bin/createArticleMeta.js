@@ -54,7 +54,7 @@ function main() {
 
     const categories = [
         ...new Set(mdFilesMetaArray.map((meta) => meta.data.category)),
-    ]
+    ].sort()
 
     const mdFilesMeta = mdFilesMetaArray.reduce((prev, curr) => {
         prev[curr.excerpt] = curr
