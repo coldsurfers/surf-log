@@ -61,8 +61,8 @@ const TempSaveAPI: NextApiHandler = (req, res) => {
             error: null,
         })
     }
-    return res.status(501).json({
-        error: 'not implemented',
+    return res.status(405).json({
+        error: `${req.method} method is not supported`,
     })
 }
 

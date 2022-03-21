@@ -9,10 +9,11 @@ function generateUniqSerial() {
     })
 }
 
+const articlesPathString = `../../../../articles`
+const temporaryArticlesPathString = `${articlesPathString}/temporary`
+
 const SaveAPI: NextApiHandler = (req, res) => {
     if (req.method === 'POST') {
-        const articlesPathString = `../../../../articles`
-        const temporaryArticlesPathString = `${articlesPathString}/temporary`
         const tempFilenames = fs.readdirSync(
             path.resolve(__dirname, temporaryArticlesPathString)
         )
@@ -53,8 +54,29 @@ ${text}`
             error: null,
         })
     }
-    return res.status(501).json({
-        error: 'not implemented',
+    if (req.method === 'PATCH') {
+        const { title, excerpt, category, thumbnail, text, createdAt } =
+            req.body
+        let content = `---
+title: ${title}
+excerpt: ${excerpt}
+category: ${category}
+thumbnail: ${thumbnail}
+createdAt: ${createdAt}
+updatedAt: ${new Date().toISOString()}
+---
+${text}`
+        let articlePath = path.resolve(
+            __dirname,
+            `${articlesPathString}/${title}.md`
+        )
+        fs.writeFileSync(articlePath, content)
+        return res.status(200).json({
+            error: null,
+        })
+    }
+    return res.status(405).json({
+        error: `${req.method} method is not supported`,
     })
 }
 
