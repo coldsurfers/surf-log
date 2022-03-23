@@ -15,12 +15,9 @@ import LoadingBar, { LoadingBarRef } from 'react-top-loading-bar'
 import { useEffect, useRef } from 'react'
 import { useRouter } from 'next/router'
 
-const { GA_TRACKING_ID } = process.env
-if (GA_TRACKING_ID) {
-    ReactGA.initialize(GA_TRACKING_ID, {
-        debug: process.env.NODE_ENV === 'development',
-    })
-}
+ReactGA.initialize('UA-125829499-2', {
+    debug: process.env.NODE_ENV === 'development',
+})
 
 function MyApp({ Component, pageProps }: AppProps) {
     const loadingBarRef = useRef<LoadingBarRef>(null)
