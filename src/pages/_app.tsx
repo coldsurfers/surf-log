@@ -1,5 +1,5 @@
 import '../lib/injectGlobalStyle'
-import ReactGA from 'react-ga'
+import '../lib/ga/initialize'
 import 'open-color/open-color.css'
 import type { AppContext, AppProps } from 'next/app'
 import Layout from '../components/layouts/PageLayout'
@@ -14,10 +14,7 @@ import useNetworkStatus from '../lib/hooks/useNetworkStatus'
 import LoadingBar, { LoadingBarRef } from 'react-top-loading-bar'
 import { useEffect, useRef } from 'react'
 import { useRouter } from 'next/router'
-
-ReactGA.initialize('UA-125829499-2', {
-    debug: process.env.NODE_ENV === 'development',
-})
+import { pageView } from '../lib/ga/utils'
 
 function MyApp({ Component, pageProps }: AppProps) {
     const loadingBarRef = useRef<LoadingBarRef>(null)
@@ -26,11 +23,16 @@ function MyApp({ Component, pageProps }: AppProps) {
     const router = useRouter()
 
     useEffect(() => {
+        pageView(router.asPath)
+    }, [router.asPath])
+
+    useEffect(() => {
         const onRouteChangeStart = () => {
             loadingBarRef.current?.continuousStart(0, 100)
         }
-        const onRouteChangeComplete = () => {
+        const onRouteChangeComplete = (pathname: string) => {
             loadingBarRef.current?.complete()
+            pageView(pathname)
         }
         router.events.on('routeChangeStart', onRouteChangeStart)
         router.events.on('routeChangeComplete', onRouteChangeComplete)
