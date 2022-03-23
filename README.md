@@ -6,3 +6,4 @@
 * [ ] 채널 톡 같은 기능 넣어보기
 * [ ] excerpt page 리팩토링
 * [ ] IntersectionObserver의 기능과 React의 최적화에서 어떻게 활용 할 수 있는지 알아보는 글을 써보기
+* [x] velog 글 crawling (?)
