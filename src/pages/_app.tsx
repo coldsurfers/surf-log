@@ -1,4 +1,5 @@
 import '../lib/injectGlobalStyle'
+import ReactGA from 'react-ga'
 import 'open-color/open-color.css'
 import type { AppContext, AppProps } from 'next/app'
 import Layout from '../components/layouts/PageLayout'
@@ -13,6 +14,13 @@ import useNetworkStatus from '../lib/hooks/useNetworkStatus'
 import LoadingBar, { LoadingBarRef } from 'react-top-loading-bar'
 import { useEffect, useRef } from 'react'
 import { useRouter } from 'next/router'
+
+const { GA_TRACKING_ID } = process.env
+if (GA_TRACKING_ID) {
+    ReactGA.initialize(GA_TRACKING_ID, {
+        debug: process.env.NODE_ENV === 'development',
+    })
+}
 
 function MyApp({ Component, pageProps }: AppProps) {
     const loadingBarRef = useRef<LoadingBarRef>(null)
