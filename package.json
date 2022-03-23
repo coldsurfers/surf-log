@@ -4,12 +4,11 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "prebuild": "yarn generate:article-meta && yarn generate:site-map",
+    "prebuild": "yarn ready",
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "generate:article-meta": "node ./bin/createArticleMeta.js",
-    "generate:site-map": "yarn generate:article-meta && node ./bin/generateSitemap.js"
+    "ready": "node ./bin/parseVelogPosts.js && node ./bin/createArticleMeta.js && node ./bin/generateSitemap.js"
   },
   "dependencies": {
     "@emotion/css": "^11.7.1",
