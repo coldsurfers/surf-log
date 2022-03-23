@@ -16,21 +16,25 @@ const Container = styled.main`
 const ChildrenWithSideBar = styled.div`
     display: flex;
     flex-direction: row;
-    margin-left: auto;
-    margin-right: auto;
+    margin-left: 8rem;
+    margin-right: 8rem;
     width: ${breakpoints.large}px;
 
     ${mediaQuery.large} {
-        width: 100%;
+        width: calc(100% - 8rem * 2);
     }
 
     ${mediaQuery.medium} {
+        margin-left: 2rem;
+        margin-right: 2rem;
+        width: calc(100% - 2rem * 2);
         flex-direction: column;
     }
 
     ${mediaQuery.small} {
         margin-left: 0px;
         margin-right: 0px;
+        width: 100%;
     }
 `
 
