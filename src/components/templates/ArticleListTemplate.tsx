@@ -26,7 +26,7 @@ const ArticleContainer = styled.a`
     margin: 1rem;
     height: 280px;
     border-radius: 12px;
-    background-color: #ffffff;
+    background-color: var(--article-container-background);
     box-shadow: 10px 20px 20px 0 rgb(92 95 112 / 8%);
 
     display: flex;
