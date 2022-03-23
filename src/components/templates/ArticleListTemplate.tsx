@@ -6,6 +6,7 @@ import { format } from 'date-fns'
 import { ko } from 'date-fns/locale'
 import mediaQuery from '../../lib/mediaQuery'
 import { Article } from '../../types/article'
+import { themedPalette } from '../../lib/theme'
 
 const ArticleListContainer = styled.div`
     display: flex;
@@ -26,7 +27,7 @@ const ArticleContainer = styled.a`
     margin: 1rem;
     height: 280px;
     border-radius: 12px;
-    background-color: var(--article-container-background);
+    background-color: ${themedPalette['article-container-background']};
     box-shadow: 10px 20px 20px 0 rgb(92 95 112 / 8%);
 
     display: flex;

@@ -1,4 +1,5 @@
 import { injectGlobal } from '@emotion/css'
+import { themedPalette } from './theme'
 
 const lightTheme = `
     --body-background: var(--oc-gray-1);
@@ -17,7 +18,7 @@ injectGlobal`
     }
     body {
         ${lightTheme}
-        background: var(--body-background);
+        background: ${themedPalette['body-background']};
         font-family: var(--common-font-family);
         margin: 0px;
     }
