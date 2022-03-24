@@ -4,5 +4,7 @@ export const pageView = (
     trackerNames?: ReactGA.TrackerNames | undefined,
     title?: string | undefined
 ) => {
-    ReactGA.pageview(path, trackerNames, title)
+    if (process.env.NODE_ENV === 'production') {
+        ReactGA.pageview(path, trackerNames, title)
+    }
 }
