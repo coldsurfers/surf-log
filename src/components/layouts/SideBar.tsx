@@ -3,6 +3,7 @@ import styled from '@emotion/styled'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
 import mediaQuery from '../../lib/mediaQuery'
+import { themedPalette } from '../../lib/theme'
 
 const Container = styled.nav`
     width: 230px;
@@ -58,7 +59,7 @@ const NavLink = styled.a<{ matched?: boolean }>`
     position: relative;
 
     &:after {
-        background: #ffffff;
+        background: ${themedPalette['sidebar-nav-item-highlighted-background']};
         border-radius: 9px;
         content: '';
         display: block;
@@ -85,6 +86,7 @@ const NavLinkText = styled.span`
     font-size: 18px;
     font-weight: 600;
     line-height: 1.4;
+    color: ${themedPalette['sidebar-nav-item-text-color']};
 `
 
 interface Props {

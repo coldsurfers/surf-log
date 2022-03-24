@@ -75,10 +75,12 @@ const ArticleTitle = styled.h1`
     overflow: hidden;
     word-wrap: break-word;
     word-break: keep-all;
+
+    color: ${themedPalette['article-title-text-color']};
 `
 
 const ArticleSubTitle = styled.p`
-    color: #7a7c85;
+    color: ${themedPalette['article-subtitle-text-color']};
     display: block;
     font-size: 13.5px;
     font-weight: 400;
@@ -100,8 +102,8 @@ const ArticleSubTitle = styled.p`
 `
 
 const ArticleDate = styled.div`
-    border-top: 1px solid #eff0f5;
-    color: #7a7c85;
+    border-top: 1px solid ${themedPalette['article-date-border-top-color']};
+    color: ${themedPalette['article-subtitle-text-color']};
     font-size: 12px;
     font-weight: 400;
     line-height: 25px;

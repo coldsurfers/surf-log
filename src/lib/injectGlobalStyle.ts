@@ -4,10 +4,20 @@ import { themedPalette } from './theme'
 const lightTheme = `
     --body-background: var(--oc-gray-1);
     --article-container-background: #ffffff;
+    --article-title-text-color: #000000;
+    --article-subtitle-text-color: #7a7c85;
+    --article-date-border-top-color: #eff0f5;
+    --sidebar-nav-item-text-color: #000000;
+    --sidebar-nav-item-highlighted-background: #ffffff;
 `
 const darkTheme = `
     --body-background: var(--oc-gray-6);
     --article-container-background: var(--oc-gray-8);
+    --article-title-text-color: var(--oc-gray-1);
+    --article-subtitle-text-color: var(--oc-gray-2);
+    --article-date-border-top-color: var(--oc-gray-6);
+    --sidebar-nav-item-text-color: var(--oc-gray-0);
+    --sidebar-nav-item-highlighted-background: var(--oc-gray-7);
 `
 
 injectGlobal`
