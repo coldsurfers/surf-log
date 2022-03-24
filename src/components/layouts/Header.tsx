@@ -73,12 +73,12 @@ const Header: FC = () => {
         }
         window
             .matchMedia('(prefers-color-scheme: dark)')
-            .addEventListener('change', onPrefersColorSchemeChanged)
+            .addListener(onPrefersColorSchemeChanged)
 
         return () => {
             window
                 .matchMedia('(prefers-color-scheme: dark)')
-                .removeEventListener('change', onPrefersColorSchemeChanged)
+                .addListener(onPrefersColorSchemeChanged)
         }
     }, [])
 
