@@ -7,3 +7,5 @@
 * [ ] excerpt page 리팩토링
 * [ ] IntersectionObserver의 기능과 React의 최적화에서 어떻게 활용 할 수 있는지 알아보는 글을 써보기
 * [x] velog 글 crawling (?)
+* [x] SEO / url 복붙 했을시 나타나지는게 없다.
+* [ ] dark / light theme

@@ -1,6 +1,6 @@
 {
   "name": "surf-log",
-  "version": "1.6.0",
+  "version": "2.0.0",
   "private": true,
   "scripts": {
     "dev": "next dev",
@@ -25,6 +25,7 @@
     "react": "17.0.2",
     "react-dom": "17.0.2",
     "react-ga": "^3.3.0",
+    "react-toggle": "^4.1.2",
     "react-top-loading-bar": "^2.1.0"
   },
   "devDependencies": {
@@ -35,6 +36,7 @@
     "@types/prismjs": "^1.26.0",
     "@types/react": "17.0.40",
     "@types/react-dom": "^17.0.13",
+    "@types/react-toggle": "^4.0.3",
     "eslint": "8.11.0",
     "eslint-config-next": "12.1.0",
     "eslint-config-prettier": "^8.5.0",
