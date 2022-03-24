@@ -11,11 +11,11 @@ const lightTheme = `
     --sidebar-nav-item-highlighted-background: #ffffff;
 `
 const darkTheme = `
-    --body-background: var(--oc-gray-6);
+    --body-background: var(--oc-gray-9);
     --article-container-background: var(--oc-gray-8);
     --article-title-text-color: var(--oc-gray-1);
     --article-subtitle-text-color: var(--oc-gray-2);
-    --article-date-border-top-color: var(--oc-gray-6);
+    --article-date-border-top-color: var(--oc-gray-9);
     --sidebar-nav-item-text-color: var(--oc-gray-0);
     --sidebar-nav-item-highlighted-background: var(--oc-gray-7);
 `
