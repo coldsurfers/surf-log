@@ -35,7 +35,6 @@ const NavItemList = styled.ul`
     }
 `
 const NavItem = styled.li`
-    height: 48px;
     display: flex;
     align-items: center;
 
@@ -51,12 +50,21 @@ const NavItem = styled.li`
 const NavLink = styled.a<{ matched?: boolean }>`
     transition: all 0.1s ease;
     width: 100%;
+    height: 33px;
+    line-height: 38px;
     margin-bottom: 3px;
 
     padding-top: 7px;
     padding-bottom: 7px;
 
     position: relative;
+    padding-left: 25px;
+
+    border-radius: 9px;
+    background: ${(p) =>
+        p.matched
+            ? `${themedPalette['sidebar-nav-item-highlighted-background']}`
+            : 'transparent'};
 
     &:after {
         background: ${themedPalette['sidebar-nav-item-highlighted-background']};
@@ -65,23 +73,36 @@ const NavLink = styled.a<{ matched?: boolean }>`
         display: block;
         width: 100%;
         height: 100%;
-        opacity: ${(p) => (p.matched ? 1 : 0)};
+        opacity: 0;
         position: absolute;
         top: 0;
         left: 0;
         transition: all 0.15s ease;
         z-index: -1;
-        transform: scale3d(1, 1, 0.5);
+        transform: scale3d(0.85, 1, 1);
+    }
+
+    &:hover {
+        padding-left: 50px;
     }
 
     &:hover:after {
-        transform: scale3d(1, 1.25, 0.5);
+        transform: scale3d(1, 1, 1);
         opacity: 1;
+    }
+
+    ${mediaQuery.medium} {
+        height: 28px;
+        line-height: 28px;
+        padding-right: 1rem;
+        padding-left: 1rem;
+    }
+
+    ${mediaQuery.small} {
     }
 `
 
 const NavLinkText = styled.span`
-    padding-left: 25px;
     text-transform: uppercase;
     font-size: 18px;
     font-weight: 600;

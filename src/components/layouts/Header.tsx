@@ -16,18 +16,26 @@ const Container = styled.header`
 `
 
 const ContainerInner = styled.div`
-    padding-left: 24px;
-    padding-right: 24px;
+    padding-left: 8rem;
+    padding-right: 8rem;
     display: inline-flex;
     align-items: center;
     height: 100%;
 
     width: ${breakpoints.large}px;
-    margin-left: auto;
-    margin-right: auto;
 
     ${mediaQuery.large} {
         width: 100%;
+    }
+
+    ${mediaQuery.medium} {
+        padding-left: 3rem;
+        padding-right: 3rem;
+    }
+
+    ${mediaQuery.small} {
+        padding-left: 1rem;
+        padding-right: 1rem;
     }
 `
 
