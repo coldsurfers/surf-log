@@ -26,6 +26,7 @@ if (typeof window !== 'undefined') {
     require('codemirror/mode/jsx/jsx')
     require('codemirror/mode/css/css')
     require('codemirror/mode/shell/shell')
+    require('codemirror/mode/clike/clike')
 }
 
 const Container = styled.div`

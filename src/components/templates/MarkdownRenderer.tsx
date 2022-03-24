@@ -12,6 +12,7 @@ if (isBrowser) {
     require('prismjs/components/prism-typescript.min.js')
     require('prismjs/components/prism-jsx.min.js')
     require('prismjs/components/prism-css.min.js')
+    require('prismjs/components/prism-c.min.js')
 }
 
 interface Props {
