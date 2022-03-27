@@ -11,3 +11,7 @@
 * [x] dark / light theme
 * [ ] 소개 페이지 작성
 * [ ] 1차 기술 면접기 작성
+    * 자신의 기술에 대한 기본적인 지식과 이해도 (ex. React 개발자라면 React가 어떻게 동작하는지에 대한 기본적인 이해)
+    * 라이브코딩에 대응할 수 있을 만한 기본적인 알고리즘 문제 풀이 능력
+    * 트렌드에 대한 관심도 (ex. IntersectionObserver)
+* [ ] Macro Task와 Micro Task의 차이에 대한 글.
