@@ -9,6 +9,9 @@ const lightTheme = `
     --article-date-border-top-color: #eff0f5;
     --sidebar-nav-item-text-color: #000000;
     --sidebar-nav-item-highlighted-background: #ffffff;
+    --header-background: #ffffff;
+    --header-logo-background: var(--oc-gray-3);
+    --header-logo-text-color: #000000;
 `
 const darkTheme = `
     --body-background: var(--oc-gray-9);
@@ -18,6 +21,9 @@ const darkTheme = `
     --article-date-border-top-color: var(--oc-gray-9);
     --sidebar-nav-item-text-color: var(--oc-gray-0);
     --sidebar-nav-item-highlighted-background: var(--oc-gray-7);
+    --header-background: #000000;
+    --header-logo-background: var(--oc-gray-8);
+    --header-logo-text-color: #ffffff;
 `
 
 injectGlobal`

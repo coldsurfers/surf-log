@@ -10,4 +10,7 @@ export const themedPalette = {
     'sidebar-nav-item-highlighted-background': cssVar(
         'sidebar-nav-item-highlighted-background'
     ),
+    'header-background': cssVar('header-background'),
+    'header-logo-background': cssVar('header-logo-background'),
+    'header-logo-text-color': cssVar('header-logo-text-color'),
 }

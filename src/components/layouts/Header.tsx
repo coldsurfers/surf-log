@@ -7,11 +7,12 @@ import Toggle from 'react-toggle'
 import { css } from '@emotion/css'
 import SunIcon from '../icons/SunIcon'
 import DoNotDisturbIcon from '../icons/DoNotDisturbIcon'
+import { themedPalette } from '../../lib/theme'
 
 const Container = styled.header`
     height: var(--header-height);
     width: 100%;
-    background-color: #000000;
+    background-color: ${themedPalette['header-background']};
     display: flex;
 `
 
@@ -43,7 +44,7 @@ const Logo = styled.a`
     width: auto;
     height: 38px;
     border-radius: 13px;
-    background-color: #343a40;
+    background-color: ${themedPalette['header-logo-background']};
     padding-left: 0.8rem;
     padding-right: 0.8rem;
     border: none;
@@ -56,7 +57,7 @@ const LogoText = styled.p`
     font-size: 18px;
     line-height: 38px;
     font-weight: bold;
-    color: #ffffff;
+    color: ${themedPalette['header-logo-text-color']};
 `
 
 const MeButton = styled.button`
