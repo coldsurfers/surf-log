@@ -260,6 +260,7 @@ const Header: FC = () => {
                         <LogoText>Surf.Log</LogoText>
                     </Logo>
                 </Link>
+                <div style={{ flex: 1 }} />
                 {theme !== 'default' && (
                     <Toggle
                         checked={theme === 'dark'}
