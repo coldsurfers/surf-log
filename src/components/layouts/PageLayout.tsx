@@ -54,12 +54,14 @@ interface Props {
     currentArticle?: Article
 }
 
+const sideBarBlackListRoutes = ['/editor', '/me']
+
 const PageLayout: FC<Props> = ({ children, categories, currentArticle }) => {
     const router = useRouter()
     return (
         <Container>
             <Header />
-            {router.pathname === '/editor' ? (
+            {sideBarBlackListRoutes.some((v) => v === router.pathname) ? (
                 children
             ) : (
                 <ChildrenWithSideBar>
