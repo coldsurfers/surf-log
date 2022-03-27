@@ -2,7 +2,7 @@ import styled from '@emotion/styled'
 import { FC, MouseEventHandler, useCallback, useRef } from 'react'
 import ModalPortal from './ModalPortal'
 
-const ModalBackground = styled.div`
+const ModalBackground = styled.div<{ open: boolean }>`
     position: fixed;
     top: 0;
     left: 0;
@@ -10,9 +10,14 @@ const ModalBackground = styled.div`
     bottom: 0;
     background-color: rgba(0, 0, 0, 0.5);
 
-    display: flex;
+    display: ${(p) => (p.open ? 'flex' : 'none')};
     align-items: center;
     justify-content: center;
+`
+
+const Dialog = styled.dialog`
+    padding: 0px;
+    border: unset;
 `
 
 interface Props {
@@ -21,12 +26,12 @@ interface Props {
 }
 
 const Modal: FC<Props> = ({ open, children, onClickBackground }) => {
-    const childrenRef = useRef<HTMLDivElement | null>(null)
+    const dialogRef = useRef<HTMLDivElement | null>(null)
     const handleClickBackground: MouseEventHandler<HTMLDivElement> =
         useCallback(
             (e) => {
                 const node = e.target as Node
-                if (childrenRef.current?.contains(node)) {
+                if (dialogRef.current?.contains(node)) {
                     return
                 }
                 if (onClickBackground) {
@@ -35,13 +40,15 @@ const Modal: FC<Props> = ({ open, children, onClickBackground }) => {
             },
             [onClickBackground]
         )
-    return open ? (
+    return (
         <ModalPortal>
-            <ModalBackground onClick={handleClickBackground}>
-                <div ref={childrenRef}>{children}</div>
+            <ModalBackground open={open} onClick={handleClickBackground}>
+                <Dialog open={open} ref={dialogRef}>
+                    {children}
+                </Dialog>
             </ModalBackground>
         </ModalPortal>
-    ) : null
+    )
 }
 
 export default Modal
