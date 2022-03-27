@@ -257,7 +257,7 @@ const Header: FC = () => {
             >
                 <Link href="/" passHref>
                     <Logo>
-                        <LogoText>Surf.Log</LogoText>
+                        <LogoText>🌊 Surf.Log</LogoText>
                     </Logo>
                 </Link>
                 <div style={{ flex: 1 }} />
