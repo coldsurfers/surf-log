@@ -102,8 +102,6 @@ const Header: FC = () => {
         document.body.dataset.theme = theme
     }, [theme])
 
-    console.log(theme)
-
     return (
         <Container>
             <ContainerInner
