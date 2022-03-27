@@ -152,7 +152,7 @@ const Header: FC = () => {
                         height: 24px;
                         padding: 0;
                         border-radius: 30px;
-                        background-color: #4d4d4d;
+                        background-color: var(--oc-gray-3);
                         -webkit-transition: all 0.2s ease;
                         -moz-transition: all 0.2s ease;
                         transition: all 0.2s ease;
@@ -160,7 +160,7 @@ const Header: FC = () => {
 
                     .react-toggle:hover:not(.react-toggle--disabled)
                         .react-toggle-track {
-                        background-color: #ffffff;
+                        background-color: var(--oc-gray-5);
                     }
 
                     .react-toggle--checked .react-toggle-track {
@@ -169,7 +169,7 @@ const Header: FC = () => {
 
                     .react-toggle--checked:hover:not(.react-toggle--disabled)
                         .react-toggle-track {
-                        background-color: #000000;
+                        background-color: var(--oc-gray-9);
                     }
 
                     .react-toggle-track-check {
