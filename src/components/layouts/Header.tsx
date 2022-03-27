@@ -59,6 +59,14 @@ const LogoText = styled.p`
     color: #ffffff;
 `
 
+const MeButton = styled.button`
+    margin-left: 1rem;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    font-size: 1.5rem;
+`
+
 const Header: FC = () => {
     const [theme, setTheme] = useState<'light' | 'dark' | 'default'>('default')
     const onChangeToggle = useCallback((e: ChangeEvent<HTMLInputElement>) => {
@@ -272,6 +280,11 @@ const Header: FC = () => {
                         onChange={onChangeToggle}
                     />
                 )}
+                <Link href="/me" passHref>
+                    <a>
+                        <MeButton>🧘🏻‍♂️</MeButton>
+                    </a>
+                </Link>
             </ContainerInner>
         </Container>
     )
