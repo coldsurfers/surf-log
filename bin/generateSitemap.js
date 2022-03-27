@@ -24,6 +24,9 @@ function generateSitemap() {
         {
             pathname: '/',
         },
+        {
+            pathname: '/me',
+        },
     ]
 
     const { articles } = articleMetaJSON
