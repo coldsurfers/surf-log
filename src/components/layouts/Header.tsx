@@ -60,12 +60,19 @@ const LogoText = styled.p`
     color: ${themedPalette['header-logo-text-color']};
 `
 
-const MeButton = styled.button`
-    margin-left: 1rem;
+const MeButton = styled.p`
+    margin-top: 0px;
+    margin-right: 0px;
+    margin-bottom: 0px;
+    margin-left: 20px;
     background: transparent;
     border: none;
-    cursor: pointer;
+
     font-size: 1.5rem;
+
+    ${mediaQuery.small} {
+        margin-left: 10px;
+    }
 `
 
 const Header: FC = () => {
