@@ -1,15 +1,21 @@
 import { Article } from '../types/article'
 import { EditorSaveModalValues } from '../types/modal'
-import { LOCAL_API_HEADERS, LOCAL_API_HOST } from './constants'
+
+const headers = new Headers({
+    'Content-Type': 'application/json',
+    Accept: 'application/json',
+})
+
+const { PAGE_API_PRE_URL: preURL } = process.env
 
 const fetcher = {
     fetch: (input: RequestInfo, init?: RequestInit | undefined) => {
         return fetch(input, init)
     },
     getTempSaved: function () {
-        return this.fetch(`${LOCAL_API_HOST}/save/temp`, {
+        return this.fetch(`${preURL}/save/temp`, {
             method: 'GET',
-            headers: LOCAL_API_HEADERS,
+            headers,
         })
     },
     getArticleByExcerpt: function ({
@@ -17,9 +23,9 @@ const fetcher = {
     }: {
         encodedExcerpt: string
     }) {
-        return this.fetch(`${LOCAL_API_HOST}/article/${encodedExcerpt}`, {
+        return this.fetch(`${preURL}/article/${encodedExcerpt}`, {
             method: 'GET',
-            headers: LOCAL_API_HEADERS,
+            headers,
         })
     },
     saveArticle: function ({
@@ -31,22 +37,22 @@ const fetcher = {
         modalValues: EditorSaveModalValues
         editorText: string
     }) {
-        return this.fetch(`${LOCAL_API_HOST}/save`, {
+        return this.fetch(`${preURL}/save`, {
             method: excerpt ? 'PATCH' : 'POST',
             body: JSON.stringify({
                 ...modalValues,
                 text: editorText,
             }),
-            headers: LOCAL_API_HEADERS,
+            headers,
         })
     },
     temporarySaveArticle: function ({ editorText }: { editorText: string }) {
-        return this.fetch(`${LOCAL_API_HOST}/save/temp`, {
+        return this.fetch(`${preURL}/save/temp`, {
             method: 'POST',
             body: JSON.stringify({
                 text: editorText,
             }),
-            headers: LOCAL_API_HEADERS,
+            headers,
         })
     },
     articleList: async function ({
@@ -59,13 +65,13 @@ const fetcher = {
         list: Article[]
         error?: string
     }> {
-        let url = `${LOCAL_API_HOST}/article/list?page=${page}`
+        let url = `${preURL}/article/list?page=${page}`
         if (category) {
             url += `&category=${category}`
         }
         const res = await this.fetch(url, {
             method: 'GET',
-            headers: LOCAL_API_HEADERS,
+            headers,
         })
 
         return await res.json()
