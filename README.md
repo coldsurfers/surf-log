@@ -15,3 +15,4 @@
     * 라이브코딩에 대응할 수 있을 만한 기본적인 알고리즘 문제 풀이 능력
     * 트렌드에 대한 관심도 (ex. IntersectionObserver)
 * [ ] Macro Task와 Micro Task의 차이에 대한 글.
+* [ ] article pagination local api 만들기 + infinite scroll 구현
