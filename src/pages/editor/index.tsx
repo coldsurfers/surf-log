@@ -32,6 +32,12 @@ const PreviewPanel = styled.section`
     padding-bottom: 120px;
 `
 
+const LOCAL_API_HOST = 'http://localhost:3000/api'
+const LOCAL_API_HEADERS = new Headers({
+    'Content-Type': 'application/json',
+    Accept: 'application/json',
+})
+
 const EditorPage: NextPage = () => {
     const router = useRouter()
     const { excerpt } = router.query
@@ -50,12 +56,9 @@ const EditorPage: NextPage = () => {
     }, [])
 
     const checkIsTempFileExists = useCallback(async () => {
-        const res = await fetch('http://localhost:3000/api/save/temp', {
+        const res = await fetch(`${LOCAL_API_HOST}/save/temp`, {
             method: 'GET',
-            headers: new Headers({
-                'Content-Type': 'application/json',
-                Accept: 'application/json',
-            }),
+            headers: LOCAL_API_HEADERS,
         })
         const json = await res.json()
         return json as {
@@ -69,16 +72,10 @@ const EditorPage: NextPage = () => {
             return null
         }
         const encodedExcerpt = encodeURIComponent(excerpt as string)
-        const res = await fetch(
-            `http://localhost:3000/api/article/${encodedExcerpt}`,
-            {
-                method: 'GET',
-                headers: new Headers({
-                    'Content-Type': 'application/json',
-                    Accept: 'application/json',
-                }),
-            }
-        )
+        const res = await fetch(`${LOCAL_API_HOST}/article/${encodedExcerpt}`, {
+            method: 'GET',
+            headers: LOCAL_API_HEADERS,
+        })
         const json = (await res.json()) as {
             data: Article | null
         }
@@ -90,16 +87,13 @@ const EditorPage: NextPage = () => {
             if (intervalTimerRef.current) {
                 clearInterval(intervalTimerRef.current)
             }
-            const res = await fetch('http://localhost:3000/api/save', {
+            const res = await fetch(`${LOCAL_API_HOST}/save`, {
                 method: excerpt ? 'PATCH' : 'POST',
                 body: JSON.stringify({
                     ...modalValues,
                     text: editorText,
                 }),
-                headers: new Headers({
-                    'Content-Type': 'application/json',
-                    Accept: 'application/json',
-                }),
+                headers: LOCAL_API_HEADERS,
             })
             const json = await res.json()
             if (json.error === null) {
@@ -111,15 +105,12 @@ const EditorPage: NextPage = () => {
     )
 
     const temporarilySave = useCallback(async () => {
-        return await fetch('http://localhost:3000/api/save/temp', {
+        return await fetch(`${LOCAL_API_HOST}/save/temp`, {
             method: 'POST',
             body: JSON.stringify({
                 text: editorText,
             }),
-            headers: new Headers({
-                'Content-Type': 'application/json',
-                Accept: 'application/json',
-            }),
+            headers: LOCAL_API_HEADERS,
         })
     }, [editorText])
 
