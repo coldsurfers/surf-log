@@ -11,6 +11,7 @@ import EditorSaveModal from '../../components/modal/EditorSaveModal'
 import EditorRenderer from '../../components/templates/EditorRenderer'
 import fetcher from '../../lib/fetcher'
 import useTempSave from '../../lib/hooks/useTempSave'
+import useSave from '../../lib/hooks/useSave'
 
 const Container = styled.div`
     display: flex;
@@ -39,6 +40,7 @@ const EditorPage: NextPage = () => {
     const { excerpt } = router.query
     const [editorText, setEditorText] = useState<string>('')
     useTempSave({ editorText, excerpt: excerpt as string })
+    const { save } = useSave({ editorText, excerpt: excerpt as string })
     const [defaultEditorValue, setDefaultEditorValue] = useState<
         string | undefined
     >(undefined)
@@ -72,22 +74,6 @@ const EditorPage: NextPage = () => {
         return json.data
     }, [excerpt])
 
-    const onClickSave = useCallback(
-        async (modalValues: EditorSaveModalValues) => {
-            const res = await fetcher.saveArticle({
-                excerpt: excerpt as string,
-                modalValues,
-                editorText,
-            })
-            const json = await res.json()
-            if (json.error === null) {
-                setModalOpen(false)
-                router.push('/')
-            }
-        },
-        [excerpt, router, editorText]
-    )
-
     useEffect(() => {
         const check = async () => {
             const { error, tempArticleText } = await checkIsTempFileExists()
@@ -119,6 +105,14 @@ const EditorPage: NextPage = () => {
         }
     }, [checkIsTempFileExists, excerpt, getExistingData])
 
+    useEffect(() => {
+        return () => {
+            if (modalOpen) {
+                setModalOpen(false)
+            }
+        }
+    }, [modalOpen])
+
     if (process.env.NODE_ENV !== 'development') {
         return null
     }
@@ -149,7 +143,7 @@ const EditorPage: NextPage = () => {
                 open={modalOpen}
                 onClickBackground={() => setModalOpen(false)}
                 defaultModalValues={defaultModalValues}
-                onClickSave={onClickSave}
+                onClickSave={save}
             />
         </Container>
     )
