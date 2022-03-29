@@ -1,29 +1,40 @@
 import type { GetStaticProps, NextPage } from 'next'
+import { useEffect } from 'react'
 import ArticleListTemplate from '../components/templates/ArticleListTemplate'
+import fetcher from '../lib/fetcher'
 import { Article } from '../types/article'
 
 interface ServerProps {
     articles: Article[]
+    error?: string
 }
 
 const Home: NextPage<ServerProps> = (props) => {
-    const { articles } = props
+    const { articles, error } = props
+
+    useEffect(() => {
+        if (error) {
+            console.error(error)
+        }
+    }, [error])
 
     return <ArticleListTemplate articles={articles} />
 }
 
 export const getStaticProps: GetStaticProps<ServerProps> = async (ctx) => {
-    const articleMeta = (await import('../../public/article-meta.json')) as {
-        articles: {
-            [key: string]: Article
+    const { list, error } = await fetcher.articleList({ page: 1 })
+    if (error) {
+        return {
+            props: {
+                error,
+                articles: [],
+            },
         }
-        categories: string[]
     }
+
     return {
         props: {
-            articles: Object.entries(articleMeta.articles).map(
-                ([key, content]) => content
-            ),
+            articles: list,
         },
     }
 }
