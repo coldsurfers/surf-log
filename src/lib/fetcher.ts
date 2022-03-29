@@ -48,6 +48,22 @@ const fetcher = {
             headers: LOCAL_API_HEADERS,
         })
     },
+    articleList: function ({
+        page,
+        category,
+    }: {
+        page: number
+        category?: string
+    }) {
+        let url = `${LOCAL_API_HOST}/article/list?page=${page}`
+        if (category) {
+            url += `&category=${category}`
+        }
+        return this.fetch(url, {
+            method: 'GET',
+            headers: LOCAL_API_HEADERS,
+        })
+    },
 }
 
 export default fetcher
