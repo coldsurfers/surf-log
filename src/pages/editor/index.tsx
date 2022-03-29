@@ -10,6 +10,7 @@ import { EditorSaveModalValues } from '../../types/modal'
 import EditorSaveModal from '../../components/modal/EditorSaveModal'
 import EditorRenderer from '../../components/templates/EditorRenderer'
 import fetcher from '../../lib/fetcher'
+import useTempSave from '../../lib/hooks/useTempSave'
 
 const Container = styled.div`
     display: flex;
@@ -37,6 +38,7 @@ const EditorPage: NextPage = () => {
     const router = useRouter()
     const { excerpt } = router.query
     const [editorText, setEditorText] = useState<string>('')
+    useTempSave({ editorText, excerpt: excerpt as string })
     const [defaultEditorValue, setDefaultEditorValue] = useState<
         string | undefined
     >(undefined)
@@ -44,7 +46,6 @@ const EditorPage: NextPage = () => {
     const [defaultModalValues, setDefaultModalValues] = useState<
         EditorSaveModalValues | undefined
     >(undefined)
-    const intervalTimerRef: { current: NodeJS.Timer | null } = useRef(null)
 
     const onClickSaveButton = useCallback(() => {
         setModalOpen(true)
@@ -73,9 +74,6 @@ const EditorPage: NextPage = () => {
 
     const onClickSave = useCallback(
         async (modalValues: EditorSaveModalValues) => {
-            if (intervalTimerRef.current) {
-                clearInterval(intervalTimerRef.current)
-            }
             const res = await fetcher.saveArticle({
                 excerpt: excerpt as string,
                 modalValues,
@@ -89,10 +87,6 @@ const EditorPage: NextPage = () => {
         },
         [excerpt, router, editorText]
     )
-
-    const temporarilySave = useCallback(async () => {
-        return await fetcher.temporarySaveArticle({ editorText })
-    }, [editorText])
 
     useEffect(() => {
         const check = async () => {
@@ -124,25 +118,6 @@ const EditorPage: NextPage = () => {
             check()
         }
     }, [checkIsTempFileExists, excerpt, getExistingData])
-
-    useEffect(() => {
-        if (!excerpt) {
-            if (intervalTimerRef.current) {
-                clearInterval(intervalTimerRef.current)
-            }
-            intervalTimerRef.current = setInterval(() => {
-                temporarilySave()
-            }, 3500)
-        }
-
-        return () => {
-            if (!excerpt) {
-                if (intervalTimerRef.current) {
-                    clearInterval(intervalTimerRef.current)
-                }
-            }
-        }
-    }, [temporarilySave, excerpt])
 
     if (process.env.NODE_ENV !== 'development') {
         return null
