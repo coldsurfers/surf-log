@@ -1,3 +1,4 @@
+import { Article } from '../types/article'
 import { EditorSaveModalValues } from '../types/modal'
 import { LOCAL_API_HEADERS, LOCAL_API_HOST } from './constants'
 
@@ -47,6 +48,27 @@ const fetcher = {
             }),
             headers: LOCAL_API_HEADERS,
         })
+    },
+    articleList: async function ({
+        page,
+        category,
+    }: {
+        page: number
+        category?: string
+    }): Promise<{
+        list: Article[]
+        error?: string
+    }> {
+        let url = `${LOCAL_API_HOST}/article/list?page=${page}`
+        if (category) {
+            url += `&category=${category}`
+        }
+        const res = await this.fetch(url, {
+            method: 'GET',
+            headers: LOCAL_API_HEADERS,
+        })
+
+        return await res.json()
     },
 }
 
