@@ -237,9 +237,7 @@ const ArticleListTemplate: FC<Props> = ({ articles }) => {
                     </Link>
                 )
             })}
-            {!isLastPage && (
-                <div ref={loadingIndicatorElementRef}>Loading....</div>
-            )}
+            {!isLastPage && <div ref={loadingIndicatorElementRef} />}
         </ArticleListContainer>
     )
 }
