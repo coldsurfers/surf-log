@@ -5,3 +5,4 @@ export const LOCAL_API_HEADERS = new Headers({
     'Content-Type': 'application/json',
     Accept: 'application/json',
 })
+export const DEFAULT_PAGINATION_COUNT = 15

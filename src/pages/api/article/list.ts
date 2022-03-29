@@ -1,8 +1,7 @@
 import { NextApiHandler } from 'next'
 import meta from '../../../../public/article-meta.json'
 import queryString from 'query-string'
-
-const DEFAULT_PAGINATION_COUNT = 15
+import { DEFAULT_PAGINATION_COUNT } from '../../../lib/constants'
 
 const ArticleListAPI: NextApiHandler = (req, res) => {
     const { articles, categories } = meta
@@ -24,15 +23,17 @@ const ArticleListAPI: NextApiHandler = (req, res) => {
                     error: 'page query string is not existing',
                 })
             }
-            let list = Object.entries(articles)
-                .slice(
-                    (page - 1) * DEFAULT_PAGINATION_COUNT,
-                    page * DEFAULT_PAGINATION_COUNT
-                )
-                .map(([key, data]) => data)
+            let list = Object.entries(articles).map(([key, data]) => data)
+
             if (category) {
-                list = list.filter((data) => data.data.category === category)
+                list = list.filter((data) => {
+                    return data.data.category === category
+                })
             }
+            list = list.slice(
+                (page - 1) * DEFAULT_PAGINATION_COUNT,
+                page * DEFAULT_PAGINATION_COUNT
+            )
             return res.status(200).json({
                 list,
             })
