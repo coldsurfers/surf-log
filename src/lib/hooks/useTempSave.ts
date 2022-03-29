@@ -1,13 +1,10 @@
+import { useRouter } from 'next/router'
 import { useCallback, useEffect, useRef } from 'react'
 import fetcher from '../fetcher'
 
-function useTempSave({
-    editorText,
-    excerpt,
-}: {
-    editorText: string
-    excerpt: string
-}) {
+function useTempSave({ editorText }: { editorText: string }) {
+    const router = useRouter()
+    const { excerpt } = router.query
     const intervalTimerRef: { current: NodeJS.Timer | null } = useRef(null)
     const fetchTempSave = useCallback(async () => {
         return await fetcher.temporarySaveArticle({ editorText })

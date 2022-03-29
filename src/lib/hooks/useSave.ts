@@ -3,14 +3,9 @@ import { useCallback } from 'react'
 import { EditorSaveModalValues } from '../../types/modal'
 import fetcher from '../fetcher'
 
-function useSave({
-    editorText,
-    excerpt,
-}: {
-    editorText: string
-    excerpt: string
-}) {
+function useSave({ editorText }: { editorText: string }) {
     const router = useRouter()
+    const { excerpt } = router.query
     const save = useCallback(
         async (modalValues: EditorSaveModalValues) => {
             const res = await fetcher.saveArticle({
