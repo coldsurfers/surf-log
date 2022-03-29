@@ -1,13 +1,21 @@
 import { GetServerSideProps, NextPage } from 'next'
+import { useEffect } from 'react'
 import ArticleListTemplate from '../../components/templates/ArticleListTemplate'
+import fetcher from '../../lib/fetcher'
 import { Article } from '../../types/article'
 
 interface ServerProps {
     articles: Article[]
+    error?: string
 }
 
 const Category: NextPage<ServerProps> = (props) => {
-    const { articles } = props
+    const { articles, error } = props
+    useEffect(() => {
+        if (error) {
+            console.error(error)
+        }
+    }, [error])
     return <ArticleListTemplate articles={articles} />
 }
 
@@ -25,19 +33,19 @@ export const getServerSideProps: GetServerSideProps<
         }
     }
     const { category } = ctx.params
-    const articleMeta = (await import('../../../public/article-meta.json')) as {
-        articles: {
-            [key: string]: Article
+    const { list, error } = await fetcher.articleList({ page: 1, category })
+    if (error) {
+        return {
+            props: {
+                articles: [],
+                error,
+            },
         }
     }
-    const articles = Object.entries(articleMeta.articles)
-        .map(([key, content]) => {
-            return content
-        })
-        .filter((article) => article.data.category === category)
+
     return {
         props: {
-            articles,
+            articles: list,
         },
     }
 }

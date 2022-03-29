@@ -1,12 +1,15 @@
 import styled from '@emotion/styled'
 import Image from 'next/image'
 import Link from 'next/link'
-import { FC } from 'react'
+import { FC, useCallback, useEffect, useRef, useState } from 'react'
 import { format } from 'date-fns'
 import { ko } from 'date-fns/locale'
 import mediaQuery from '../../lib/mediaQuery'
 import { Article } from '../../types/article'
 import { themedPalette } from '../../lib/theme'
+import fetcher from '../../lib/fetcher'
+import { DEFAULT_PAGINATION_COUNT } from '../../lib/constants'
+import { useRouter } from 'next/router'
 
 const ArticleListContainer = styled.div`
     display: flex;
@@ -113,10 +116,85 @@ const ArticleDate = styled.div`
     padding-right: 1rem;
 `
 
-const ArticleListTemplate: FC<{ articles: Article[] }> = ({ articles }) => {
+interface Props {
+    articles: Article[]
+}
+
+const ArticleListTemplate: FC<Props> = ({ articles }) => {
+    const router = useRouter()
+    const { category } = router.query
+    const loadingIndicatorElementRef = useRef<HTMLDivElement | null>(null)
+    const isLoadingRef = useRef<boolean>(false)
+    const [page, setPage] = useState<number>(2)
+    const [moreLoadedArticles, setMoreLoadedArticles] = useState<Article[]>([])
+    const [isLastPage, setIsLastPage] = useState<boolean>(false)
+
+    const loadMore = useCallback(async () => {
+        if (isLoadingRef.current || isLastPage) {
+            return
+        }
+        isLoadingRef.current = true
+
+        const { list, error } = await fetcher.articleList({
+            page,
+            category: category as string,
+        })
+        if (error) {
+            console.error(error)
+            return
+        }
+
+        setMoreLoadedArticles(moreLoadedArticles.concat(list))
+        setPage(page + 1)
+        setIsLastPage(list.length < DEFAULT_PAGINATION_COUNT)
+
+        isLoadingRef.current = false
+    }, [category, isLastPage, moreLoadedArticles, page])
+
+    useEffect(() => {
+        let observer: IntersectionObserver
+        observer = new IntersectionObserver(
+            (
+                entries: IntersectionObserverEntry[],
+                observer: IntersectionObserver
+            ) => {
+                const [entry] = entries
+                if (!entry.isIntersecting) {
+                    return
+                }
+                loadMore()
+                observer.unobserve(
+                    loadingIndicatorElementRef.current as Element
+                )
+            },
+            {
+                threshold: 0.5,
+            }
+        )
+
+        if (loadingIndicatorElementRef.current) {
+            observer.observe(loadingIndicatorElementRef.current as Element)
+        }
+
+        return () => {
+            if (observer) {
+                observer.disconnect()
+            }
+        }
+    }, [loadMore])
+
+    useEffect(() => {
+        const initialize = () => {
+            setMoreLoadedArticles([])
+            setIsLastPage(false)
+            setPage(2)
+        }
+        initialize()
+    }, [category])
+
     return (
         <ArticleListContainer>
-            {articles.map((article) => {
+            {[...articles, ...moreLoadedArticles].map((article) => {
                 return (
                     <Link
                         key={article.excerpt}
@@ -159,6 +237,7 @@ const ArticleListTemplate: FC<{ articles: Article[] }> = ({ articles }) => {
                     </Link>
                 )
             })}
+            {!isLastPage && <div ref={loadingIndicatorElementRef} />}
         </ArticleListContainer>
     )
 }
