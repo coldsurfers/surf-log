@@ -1,28 +1,14 @@
-import 'codemirror/lib/codemirror.css'
-import 'codemirror/theme/oceanic-next.css'
 import styled from '@emotion/styled'
 import { NextPage } from 'next'
 import { useCallback, useEffect, useRef, useState } from 'react'
 import MarkdownRenderer from '../../components/templates/MarkdownRenderer'
-import type { Editor, EditorConfiguration, Position } from 'codemirror'
 import { css } from '@emotion/css'
 import { useRouter } from 'next/router'
 import FloatingButton from '../../components/buttons/FloatingButton'
 import { Article } from '../../types/article'
 import { EditorSaveModalValues } from '../../types/modal'
 import EditorSaveModal from '../../components/modal/EditorSaveModal'
-
-let CodeMirror: any = null
-
-if (typeof window !== 'undefined') {
-    CodeMirror = require('codemirror')
-    require('codemirror/mode/markdown/markdown')
-    require('codemirror/mode/javascript/javascript')
-    require('codemirror/mode/jsx/jsx')
-    require('codemirror/mode/css/css')
-    require('codemirror/mode/shell/shell')
-    require('codemirror/mode/clike/clike')
-}
+import EditorRenderer from '../../components/templates/EditorRenderer'
 
 const Container = styled.div`
     display: flex;
@@ -37,12 +23,6 @@ const EditorPanel = styled.section`
     overflow: auto;
 `
 
-const EditorContent = styled.div`
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-`
-
 const PreviewPanel = styled.section`
     flex: 1;
     background-color: #ffffff;
@@ -52,14 +32,13 @@ const PreviewPanel = styled.section`
     padding-bottom: 120px;
 `
 
-let codeMirror: Editor | null = null
-let codeMirrorCursor: Position | null = null
-
 const EditorPage: NextPage = () => {
     const router = useRouter()
     const { excerpt } = router.query
-    const [text, setText] = useState<string>('')
-    const editorRef = useRef<HTMLDivElement>(null)
+    const [editorText, setEditorText] = useState<string>('')
+    const [defaultEditorValue, setDefaultEditorValue] = useState<
+        string | undefined
+    >(undefined)
     const [modalOpen, setModalOpen] = useState<boolean>(false)
     const [defaultModalValues, setDefaultModalValues] = useState<
         EditorSaveModalValues | undefined
@@ -115,7 +94,7 @@ const EditorPage: NextPage = () => {
                 method: excerpt ? 'PATCH' : 'POST',
                 body: JSON.stringify({
                     ...modalValues,
-                    text,
+                    text: editorText,
                 }),
                 headers: new Headers({
                     'Content-Type': 'application/json',
@@ -128,68 +107,27 @@ const EditorPage: NextPage = () => {
                 router.push('/')
             }
         },
-        [excerpt, router, text]
+        [excerpt, router, editorText]
     )
 
     const temporarilySave = useCallback(async () => {
         return await fetch('http://localhost:3000/api/save/temp', {
             method: 'POST',
             body: JSON.stringify({
-                text,
+                text: editorText,
             }),
             headers: new Headers({
                 'Content-Type': 'application/json',
                 Accept: 'application/json',
             }),
         })
-    }, [text])
-
-    useEffect(() => {
-        if (!codeMirror) {
-            codeMirror = CodeMirror(editorRef.current, {
-                mode: {
-                    name: 'markdown',
-                },
-                theme: 'oceanic-next',
-                lineNumbers: true,
-                lineWrapping: true,
-            } as EditorConfiguration)
-        }
-
-        if (!codeMirror) return
-        codeMirror.on('change', (editor, changeObj) => {
-            const value = editor.getValue()
-            const cursor = editor.getCursor()
-            codeMirrorCursor = cursor
-            setText(value)
-        })
-
-        return () => {
-            if (codeMirror) {
-                codeMirror = null
-            }
-            if (codeMirrorCursor) {
-                codeMirrorCursor = null
-            }
-        }
-    }, [])
+    }, [editorText])
 
     useEffect(() => {
         const check = async () => {
             const { error, tempArticleText } = await checkIsTempFileExists()
             if (!error && tempArticleText) {
-                setText(tempArticleText)
-                if (!codeMirror) {
-                    codeMirror = CodeMirror(editorRef.current, {
-                        mode: {
-                            name: 'markdown',
-                        },
-                        theme: 'oceanic-next',
-                        lineNumbers: true,
-                        lineWrapping: true,
-                    } as EditorConfiguration)
-                }
-                codeMirror?.setValue(tempArticleText)
+                setDefaultEditorValue(tempArticleText)
             }
         }
         const getExisting = async () => {
@@ -199,7 +137,7 @@ const EditorPage: NextPage = () => {
                     content,
                     data: { title, category, excerpt, thumbnail, createdAt },
                 } = data
-                setText(content)
+                setDefaultEditorValue(content)
                 setDefaultModalValues({
                     title: title ?? '',
                     category: category ?? '',
@@ -207,17 +145,6 @@ const EditorPage: NextPage = () => {
                     thumbnail: thumbnail ?? '',
                     createdAt: createdAt ?? '',
                 })
-                if (!codeMirror) {
-                    codeMirror = CodeMirror(editorRef.current, {
-                        mode: {
-                            name: 'markdown',
-                        },
-                        theme: 'oceanic-next',
-                        lineNumbers: true,
-                        lineWrapping: true,
-                    } as EditorConfiguration)
-                }
-                codeMirror?.setValue(content)
             }
         }
         if (excerpt) {
@@ -246,12 +173,6 @@ const EditorPage: NextPage = () => {
         }
     }, [temporarilySave, excerpt])
 
-    useEffect(() => {
-        if (codeMirrorCursor && codeMirror) {
-            codeMirror.setCursor(codeMirrorCursor)
-        }
-    }, [text])
-
     if (process.env.NODE_ENV !== 'development') {
         return null
     }
@@ -262,15 +183,20 @@ const EditorPage: NextPage = () => {
                 className={css`
                     .CodeMirror {
                         flex: 1;
-                        font-family: 'Fira Sans', sans-serif;
                         padding: 1rem;
                     }
                 `}
             >
-                <EditorContent ref={editorRef}></EditorContent>
+                <EditorRenderer
+                    defaultValue={defaultEditorValue}
+                    onCodeMirrorChange={(editor, changeObj) => {
+                        const value = editor.getValue()
+                        setEditorText(value)
+                    }}
+                />
             </EditorPanel>
             <PreviewPanel>
-                <MarkdownRenderer text={text} />
+                <MarkdownRenderer text={editorText} />
             </PreviewPanel>
             <FloatingButton onClick={onClickSaveButton}>Save</FloatingButton>
             <EditorSaveModal
