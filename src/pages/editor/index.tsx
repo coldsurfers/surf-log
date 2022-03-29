@@ -2,20 +2,15 @@ import 'codemirror/lib/codemirror.css'
 import 'codemirror/theme/oceanic-next.css'
 import styled from '@emotion/styled'
 import { NextPage } from 'next'
-import {
-    ChangeEventHandler,
-    useCallback,
-    useEffect,
-    useRef,
-    useState,
-} from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
 import MarkdownRenderer from '../../components/templates/MarkdownRenderer'
 import type { Editor, EditorConfiguration, Position } from 'codemirror'
 import { css } from '@emotion/css'
-import Modal from '../../components/modal/Modal'
 import { useRouter } from 'next/router'
 import FloatingButton from '../../components/buttons/FloatingButton'
 import { Article } from '../../types/article'
+import { EditorSaveModalValues } from '../../types/modal'
+import EditorSaveModal from '../../components/modal/EditorSaveModal'
 
 let CodeMirror: any = null
 
@@ -57,17 +52,6 @@ const PreviewPanel = styled.section`
     padding-bottom: 120px;
 `
 
-const SaveModal = styled.div`
-    width: 500px;
-    height: auto;
-    background-color: #ffffff;
-    border-radius: 8px;
-    box-shadow: 10px 20px 20px 20px rgb(92 95 112 / 8%);
-    padding: 1rem;
-    display: flex;
-    flex-direction: column;
-`
-
 let codeMirror: Editor | null = null
 let codeMirrorCursor: Position | null = null
 
@@ -77,34 +61,14 @@ const EditorPage: NextPage = () => {
     const [text, setText] = useState<string>('')
     const editorRef = useRef<HTMLDivElement>(null)
     const [modalOpen, setModalOpen] = useState<boolean>(false)
-    const [modalValues, setModalValues] = useState<{
-        title: string
-        excerpt: string
-        thumbnail: string
-        category: string
-        createdAt?: string
-    }>({
-        title: '',
-        excerpt: '',
-        thumbnail: '',
-        category: '',
-    })
+    const [defaultModalValues, setDefaultModalValues] = useState<
+        EditorSaveModalValues | undefined
+    >(undefined)
     const intervalTimerRef: { current: NodeJS.Timer | null } = useRef(null)
 
     const onClickSaveButton = useCallback(() => {
         setModalOpen(true)
     }, [])
-
-    const handleChange: ChangeEventHandler<HTMLInputElement> = useCallback(
-        (e) => {
-            const { name, value } = e.target
-            setModalValues((prevState) => ({
-                ...prevState,
-                [name]: value,
-            }))
-        },
-        []
-    )
 
     const checkIsTempFileExists = useCallback(async () => {
         const res = await fetch('http://localhost:3000/api/save/temp', {
@@ -142,27 +106,30 @@ const EditorPage: NextPage = () => {
         return json.data
     }, [excerpt])
 
-    const handleClickSaveModalSave = useCallback(async () => {
-        if (intervalTimerRef.current) {
-            clearInterval(intervalTimerRef.current)
-        }
-        const res = await fetch('http://localhost:3000/api/save', {
-            method: excerpt ? 'PATCH' : 'POST',
-            body: JSON.stringify({
-                ...modalValues,
-                text,
-            }),
-            headers: new Headers({
-                'Content-Type': 'application/json',
-                Accept: 'application/json',
-            }),
-        })
-        const json = await res.json()
-        if (json.error === null) {
-            setModalOpen(false)
-            router.push('/')
-        }
-    }, [excerpt, modalValues, router, text])
+    const onClickSave = useCallback(
+        async (modalValues: EditorSaveModalValues) => {
+            if (intervalTimerRef.current) {
+                clearInterval(intervalTimerRef.current)
+            }
+            const res = await fetch('http://localhost:3000/api/save', {
+                method: excerpt ? 'PATCH' : 'POST',
+                body: JSON.stringify({
+                    ...modalValues,
+                    text,
+                }),
+                headers: new Headers({
+                    'Content-Type': 'application/json',
+                    Accept: 'application/json',
+                }),
+            })
+            const json = await res.json()
+            if (json.error === null) {
+                setModalOpen(false)
+                router.push('/')
+            }
+        },
+        [excerpt, router, text]
+    )
 
     const temporarilySave = useCallback(async () => {
         return await fetch('http://localhost:3000/api/save/temp', {
@@ -233,7 +200,7 @@ const EditorPage: NextPage = () => {
                     data: { title, category, excerpt, thumbnail, createdAt },
                 } = data
                 setText(content)
-                setModalValues({
+                setDefaultModalValues({
                     title: title ?? '',
                     category: category ?? '',
                     excerpt: excerpt ?? '',
@@ -285,20 +252,10 @@ const EditorPage: NextPage = () => {
         }
     }, [text])
 
-    useEffect(() => {
-        if (!modalOpen) {
-            setModalValues({
-                title: '',
-                excerpt: '',
-                thumbnail: '',
-                category: '',
-            })
-        }
-    }, [modalOpen])
-
     if (process.env.NODE_ENV !== 'development') {
         return null
     }
+
     return (
         <Container>
             <EditorPanel
@@ -316,68 +273,12 @@ const EditorPage: NextPage = () => {
                 <MarkdownRenderer text={text} />
             </PreviewPanel>
             <FloatingButton onClick={onClickSaveButton}>Save</FloatingButton>
-            <Modal
+            <EditorSaveModal
                 open={modalOpen}
                 onClickBackground={() => setModalOpen(false)}
-            >
-                <SaveModal
-                    className={css`
-                        label {
-                            font-weight: bold;
-                        }
-                        input {
-                            height: 1.5rem;
-                            margin-top: 0.5rem;
-                        }
-
-                        input + label {
-                            margin-top: 0.8rem;
-                        }
-
-                        button {
-                            margin-top: 1rem;
-                            font-weight: bold;
-                            background-color: #000000;
-                            border: 1px solid #000000;
-                            border-radius: 3px;
-                            color: #ffffff;
-                            cursor: pointer;
-                            height: 1.95rem;
-
-                            &:active {
-                                background-color: #ffffff;
-                                color: #000000;
-                            }
-                        }
-                    `}
-                >
-                    <label>Title</label>
-                    <input
-                        name="title"
-                        value={modalValues.title}
-                        onChange={handleChange}
-                    />
-                    <label>Excerpt</label>
-                    <input
-                        name="excerpt"
-                        value={modalValues.excerpt}
-                        onChange={handleChange}
-                    />
-                    <label>Category</label>
-                    <input
-                        name="category"
-                        value={modalValues.category}
-                        onChange={handleChange}
-                    />
-                    <label>Thumbnail</label>
-                    <input
-                        name="thumbnail"
-                        value={modalValues.thumbnail}
-                        onChange={handleChange}
-                    />
-                    <button onClick={handleClickSaveModalSave}>save</button>
-                </SaveModal>
-            </Modal>
+                defaultModalValues={defaultModalValues}
+                onClickSave={onClickSave}
+            />
         </Container>
     )
 }
