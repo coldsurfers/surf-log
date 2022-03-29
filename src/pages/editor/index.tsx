@@ -9,6 +9,7 @@ import { Article } from '../../types/article'
 import { EditorSaveModalValues } from '../../types/modal'
 import EditorSaveModal from '../../components/modal/EditorSaveModal'
 import EditorRenderer from '../../components/templates/EditorRenderer'
+import fetcher from '../../lib/fetcher'
 
 const Container = styled.div`
     display: flex;
@@ -56,7 +57,7 @@ const EditorPage: NextPage = () => {
     }, [])
 
     const checkIsTempFileExists = useCallback(async () => {
-        const res = await fetch(`${LOCAL_API_HOST}/save/temp`, {
+        const res = await fetcher.fetch(`${LOCAL_API_HOST}/save/temp`, {
             method: 'GET',
             headers: LOCAL_API_HEADERS,
         })
@@ -72,10 +73,13 @@ const EditorPage: NextPage = () => {
             return null
         }
         const encodedExcerpt = encodeURIComponent(excerpt as string)
-        const res = await fetch(`${LOCAL_API_HOST}/article/${encodedExcerpt}`, {
-            method: 'GET',
-            headers: LOCAL_API_HEADERS,
-        })
+        const res = await fetcher.fetch(
+            `${LOCAL_API_HOST}/article/${encodedExcerpt}`,
+            {
+                method: 'GET',
+                headers: LOCAL_API_HEADERS,
+            }
+        )
         const json = (await res.json()) as {
             data: Article | null
         }
@@ -87,7 +91,7 @@ const EditorPage: NextPage = () => {
             if (intervalTimerRef.current) {
                 clearInterval(intervalTimerRef.current)
             }
-            const res = await fetch(`${LOCAL_API_HOST}/save`, {
+            const res = await fetcher.fetch(`${LOCAL_API_HOST}/save`, {
                 method: excerpt ? 'PATCH' : 'POST',
                 body: JSON.stringify({
                     ...modalValues,
@@ -105,7 +109,7 @@ const EditorPage: NextPage = () => {
     )
 
     const temporarilySave = useCallback(async () => {
-        return await fetch(`${LOCAL_API_HOST}/save/temp`, {
+        return await fetcher.fetch(`${LOCAL_API_HOST}/save/temp`, {
             method: 'POST',
             body: JSON.stringify({
                 text: editorText,
