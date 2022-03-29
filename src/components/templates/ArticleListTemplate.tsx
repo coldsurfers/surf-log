@@ -10,6 +10,8 @@ import { themedPalette } from '../../lib/theme'
 import fetcher from '../../lib/fetcher'
 import { DEFAULT_PAGINATION_COUNT } from '../../lib/constants'
 import { useRouter } from 'next/router'
+import { RotatingLines } from 'react-loader-spinner'
+import { css } from '@emotion/css'
 
 const ArticleListContainer = styled.div`
     display: flex;
@@ -237,7 +239,21 @@ const ArticleListTemplate: FC<Props> = ({ articles }) => {
                     </Link>
                 )
             })}
-            {!isLastPage && <div ref={loadingIndicatorElementRef} />}
+            {!isLastPage && (
+                <div
+                    className={css`
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                        width: 100%;
+                        margin-top: 10px;
+                        margin-bottom: 10px;
+                    `}
+                    ref={loadingIndicatorElementRef}
+                >
+                    <RotatingLines width="100" />
+                </div>
+            )}
         </ArticleListContainer>
     )
 }
