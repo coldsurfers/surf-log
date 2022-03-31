@@ -126,16 +126,16 @@ const ArticleListTemplate: FC<Props> = ({ articles }) => {
     const router = useRouter()
     const { category } = router.query
     const loadingIndicatorElementRef = useRef<HTMLDivElement | null>(null)
-    const isLoadingRef = useRef<boolean>(false)
+    const [isLoading, setIsLoading] = useState<boolean>(false)
     const [page, setPage] = useState<number>(2)
     const [moreLoadedArticles, setMoreLoadedArticles] = useState<Article[]>([])
     const [isLastPage, setIsLastPage] = useState<boolean>(false)
 
     const loadMore = useCallback(async () => {
-        if (isLoadingRef.current || isLastPage) {
+        if (isLoading || isLastPage) {
             return
         }
-        isLoadingRef.current = true
+        setIsLoading(true)
 
         const { list, error } = await fetcher.articleList({
             page,
@@ -150,8 +150,8 @@ const ArticleListTemplate: FC<Props> = ({ articles }) => {
         setPage(page + 1)
         setIsLastPage(list.length < DEFAULT_PAGINATION_COUNT)
 
-        isLoadingRef.current = false
-    }, [category, isLastPage, moreLoadedArticles, page])
+        setIsLoading(false)
+    }, [category, isLastPage, isLoading, moreLoadedArticles, page])
 
     useEffect(() => {
         let observer: IntersectionObserver
@@ -161,7 +161,10 @@ const ArticleListTemplate: FC<Props> = ({ articles }) => {
                 observer: IntersectionObserver
             ) => {
                 const [entry] = entries
-                if (!entry.isIntersecting) {
+                if (
+                    !entry.isIntersecting ||
+                    articles.length < DEFAULT_PAGINATION_COUNT
+                ) {
                     return
                 }
                 loadMore()
@@ -183,7 +186,7 @@ const ArticleListTemplate: FC<Props> = ({ articles }) => {
                 observer.disconnect()
             }
         }
-    }, [loadMore])
+    }, [articles.length, loadMore])
 
     useEffect(() => {
         const initialize = () => {
@@ -239,21 +242,19 @@ const ArticleListTemplate: FC<Props> = ({ articles }) => {
                     </Link>
                 )
             })}
-            {!isLastPage && (
-                <div
-                    className={css`
-                        display: flex;
-                        align-items: center;
-                        justify-content: center;
-                        width: 100%;
-                        margin-top: 10px;
-                        margin-bottom: 10px;
-                    `}
-                    ref={loadingIndicatorElementRef}
-                >
-                    <RotatingLines width="100" />
-                </div>
-            )}
+            <div
+                className={css`
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    width: 100%;
+                    margin-top: 10px;
+                    margin-bottom: 10px;
+                `}
+                ref={loadingIndicatorElementRef}
+            >
+                {isLoading && <RotatingLines width="100" />}
+            </div>
         </ArticleListContainer>
     )
 }
