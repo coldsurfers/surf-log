@@ -16,8 +16,8 @@ const Container = styled.main`
 const ChildrenWithSideBar = styled.div`
     display: flex;
     flex-direction: row;
-    margin-left: 8rem;
-    margin-right: 8rem;
+    margin-left: auto;
+    margin-right: auto;
     width: ${breakpoints.large}px;
 
     ${mediaQuery.large} {

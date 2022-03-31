@@ -11,14 +11,14 @@ import { themedPalette } from '../../lib/theme'
 
 const Container = styled.header`
     height: var(--header-height);
-    width: 100%;
+    width: 100vw;
     background-color: ${themedPalette['header-background']};
     display: flex;
 `
 
 const ContainerInner = styled.div`
-    padding-left: 8rem;
-    padding-right: 8rem;
+    margin-left: auto;
+    margin-right: auto;
     display: inline-flex;
     align-items: center;
     height: 100%;
@@ -27,6 +27,8 @@ const ContainerInner = styled.div`
 
     ${mediaQuery.large} {
         width: 100%;
+        padding-left: 8rem;
+        padding-right: 8rem;
     }
 
     ${mediaQuery.medium} {
