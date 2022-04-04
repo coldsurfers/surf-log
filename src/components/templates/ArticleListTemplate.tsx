@@ -137,14 +137,10 @@ const ArticleListTemplate: FC<Props> = ({ articles }) => {
         }
         setIsLoading(true)
 
-        const { list, error } = await fetcher.articleList({
+        const { list } = await fetcher.articleList({
             page,
             category: category as string,
         })
-        if (error) {
-            console.error(error)
-            return
-        }
 
         setMoreLoadedArticles(moreLoadedArticles.concat(list))
         setPage(page + 1)

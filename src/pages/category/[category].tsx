@@ -33,15 +33,7 @@ export const getServerSideProps: GetServerSideProps<
         }
     }
     const { category } = ctx.params
-    const { list, error } = await fetcher.articleList({ page: 1, category })
-    if (error) {
-        return {
-            props: {
-                articles: [],
-                error,
-            },
-        }
-    }
+    const { list } = await fetcher.articleList({ page: 1, category })
 
     return {
         props: {

@@ -1,5 +1,6 @@
 import { Article } from '../types/article'
 import { EditorSaveModalValues } from '../types/modal'
+import { DEFAULT_PAGINATION_COUNT } from './constants'
 
 const headers = new Headers({
     'Content-Type': 'application/json',
@@ -63,18 +64,21 @@ const fetcher = {
         category?: string
     }): Promise<{
         list: Article[]
-        error?: string
     }> {
-        let url = `${preURL}/article/list?page=${page}`
+        const { articles } = await import('../../public/article-meta.json')
+        let list = Object.entries(articles).map(([key, data]) => data)
         if (category) {
-            url += `&category=${category}`
+            list = list.filter((data) => {
+                return data.data.category === category
+            })
         }
-        const res = await this.fetch(url, {
-            method: 'GET',
-            headers,
-        })
-
-        return await res.json()
+        list = list.slice(
+            (page - 1) * DEFAULT_PAGINATION_COUNT,
+            page * DEFAULT_PAGINATION_COUNT
+        )
+        return {
+            list,
+        }
     },
 }
 
