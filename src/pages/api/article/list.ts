@@ -1,10 +1,16 @@
 import { NextApiHandler } from 'next'
-import meta from '../../../../public/article-meta.json'
 import queryString from 'query-string'
 import { DEFAULT_PAGINATION_COUNT } from '../../../lib/constants'
 
-const ArticleListAPI: NextApiHandler = (req, res) => {
-    const { articles, categories } = meta
+const { HOST_URL: hostURL } = process.env
+
+const ArticleListAPI: NextApiHandler = async (req, res) => {
+    const metaRes = await fetch(`${hostURL}/article-meta.json`)
+    const metaJson = (await metaRes.json()) as {
+        articles: Record<string, any>
+        categories: string[]
+    }
+    const { articles, categories } = metaJson
     if (!req.url) {
         return res.status(400).json({
             error: 'req.url is not existing',
