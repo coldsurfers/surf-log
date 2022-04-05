@@ -1,4 +1,4 @@
-import { FC } from 'react'
+import { FC, useEffect, useRef, useState } from 'react'
 import styled from '@emotion/styled'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
@@ -9,7 +9,6 @@ const Container = styled.nav`
     width: 230px;
     height: 100vh;
     background-color: transparent;
-    margin-top: 90px;
 
     ${mediaQuery.medium} {
         width: 100%;
@@ -17,14 +16,17 @@ const Container = styled.nav`
     }
 `
 
-const NavItemList = styled.ul`
+const NavItemList = styled.ul<{ isFixed: boolean }>`
+    position: ${(p) => (p.isFixed ? 'fixed' : 'relative')};
+    top: ${(p) => (p.isFixed ? '1rem' : '0px')};
+    width: ${(p) => (p.isFixed ? '230px' : '100%')};
+
     list-style: none;
     margin-block-start: 0px;
     margin-block-end: 0px;
     margin-inline-start: 0px;
     margin-inline-end: 0px;
     padding-inline-start: 0px;
-    width: 100%;
 
     overflow: auto;
 
@@ -32,6 +34,7 @@ const NavItemList = styled.ul`
         display: flex;
         flex-direction: row;
         width: 100%;
+        position: relative;
     }
 `
 const NavItem = styled.li`
@@ -118,12 +121,49 @@ interface Props {
 const SideBar: FC<Props> = (props) => {
     const { categories, currentArticleCategory } = props
     const router = useRouter()
+    const sideBarTopSpaceRef = useRef<HTMLDivElement | null>(null)
+    const [isFixed, setIsFixed] = useState<boolean>(false)
+
+    useEffect(() => {
+        let observer: IntersectionObserver
+        observer = new IntersectionObserver(
+            (entries, observer) => {
+                const [entry] = entries
+
+                if (entry.isIntersecting) {
+                    setIsFixed(false)
+                } else {
+                    setIsFixed(true)
+                }
+            },
+            {
+                threshold: 0.1,
+            }
+        )
+
+        if (sideBarTopSpaceRef.current) {
+            observer.observe(sideBarTopSpaceRef.current as Element)
+        }
+
+        return () => {
+            if (observer) {
+                observer.disconnect()
+            }
+        }
+    }, [])
+
     if (router.pathname === '/editor') {
         return null
     }
     return (
-        <Container>
-            <NavItemList>
+        <Container style={{ position: 'relative' }}>
+            <div
+                ref={sideBarTopSpaceRef}
+                style={{
+                    height: '90px',
+                }}
+            />
+            <NavItemList isFixed={isFixed}>
                 <NavItem>
                     <Link href={`/`} passHref>
                         <NavLink matched={router.pathname === '/'}>
