@@ -16,5 +16,6 @@
     * 트렌드에 대한 관심도 (ex. IntersectionObserver)
 * [x] Macro Task와 Micro Task의 차이에 대한 글.
 * [x] article pagination local api 만들기 + infinite scroll 구현
-* [ ] 페이지 리로드 했을때 테마 유지
+* [x] 페이지 리로드 했을때 테마 유지
 * [x] 에디터 페이지에서 ctrl + s 할시 저장기능구현
+* [ ] 페이지 리로드 했을때 테마 깜빡임 현상 제거
