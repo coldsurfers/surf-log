@@ -85,6 +85,10 @@ const HtmlHead: FC = () => {
                 content="/favicons/ms-icon-144x144.png"
             />
             <meta name="theme-color" content="#ffffff" />
+            <meta
+                property="og:image"
+                content="https://blog.coldsurf.io/favicons/apple-icon.png"
+            />
         </Head>
     )
 }
