@@ -1,4 +1,4 @@
-import type { GetStaticProps, NextPage } from 'next'
+import type { GetServerSideProps, NextPage } from 'next'
 import ArticleListTemplate from '../components/templates/ArticleListTemplate'
 import fetcher from '../lib/fetcher'
 import { Article } from '../types/article'
@@ -25,7 +25,9 @@ const Home: NextPage<ServerProps> = (props) => {
     )
 }
 
-export const getStaticProps: GetStaticProps<ServerProps> = async (ctx) => {
+export const getServerSideProps: GetServerSideProps<ServerProps> = async (
+    ctx
+) => {
     const { list } = await fetcher.articleList({ page: 1 })
 
     return {
