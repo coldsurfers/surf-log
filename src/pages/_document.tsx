@@ -9,6 +9,8 @@ import Document, {
 import createEmotionServer from '@emotion/server/create-instance'
 import { cache } from '@emotion/css'
 import { Fragment } from 'react'
+import extractFromCookie from '../lib/extractFromCookie'
+import { THEME_UNIQUE_KEY } from '../lib/constants'
 
 const renderStatic = async (html: string) => {
     if (html === undefined) {
@@ -20,10 +22,12 @@ const renderStatic = async (html: string) => {
     return { html, ids, css }
 }
 
-export default class AppDocument extends Document {
-    static async getInitialProps(
-        ctx: DocumentContext
-    ): Promise<DocumentInitialProps> {
+export default class AppDocument extends Document<{ theme: string | null }> {
+    static async getInitialProps(ctx: DocumentContext): Promise<
+        DocumentInitialProps & {
+            theme: string | null
+        }
+    > {
         const page = await ctx.renderPage()
         const { css, ids } = await renderStatic(page.html)
         const initialProps = await Document.getInitialProps(ctx)
@@ -38,14 +42,16 @@ export default class AppDocument extends Document {
                     />
                 </Fragment>
             ),
+            theme: extractFromCookie(ctx.req?.headers.cookie, THEME_UNIQUE_KEY),
         }
     }
 
     render() {
+        const { theme } = this.props
         return (
             <Html>
                 <Head />
-                <body>
+                <body data-theme={theme}>
                     <Main />
                     <NextScript />
                 </body>

@@ -8,6 +8,7 @@ import { css } from '@emotion/css'
 import SunIcon from '../icons/SunIcon'
 import DoNotDisturbIcon from '../icons/DoNotDisturbIcon'
 import { themedPalette } from '../../lib/theme'
+import { THEME_UNIQUE_KEY } from '../../lib/constants'
 
 const Container = styled.header`
     height: var(--header-height);
@@ -80,22 +81,37 @@ const MeButton = styled.p`
 const Header: FC = () => {
     const [theme, setTheme] = useState<'light' | 'dark' | 'default'>('default')
     const onChangeToggle = useCallback((e: ChangeEvent<HTMLInputElement>) => {
-        setTheme((prev) => (prev === 'light' ? 'dark' : 'light'))
+        setTheme((prev) => {
+            const theme = prev === 'light' ? 'dark' : 'light'
+            localStorage.setItem(THEME_UNIQUE_KEY, theme)
+            document.cookie = `${THEME_UNIQUE_KEY}=${theme}; path=/;`
+            return theme
+        })
     }, [])
+
     useEffect(() => {
-        const systemPrefersDark = window.matchMedia(
-            '(prefers-color-scheme: dark)'
-        ).matches
-        if (systemPrefersDark) {
+        const storedTheme = localStorage.getItem(THEME_UNIQUE_KEY)
+        if (storedTheme === 'dark') {
             setTheme('dark')
-        } else {
+        } else if (storedTheme === 'light') {
             setTheme('light')
+        } else {
+            const systemPrefersDark = window.matchMedia(
+                '(prefers-color-scheme: dark)'
+            ).matches
+            if (systemPrefersDark) {
+                setTheme('dark')
+            } else {
+                setTheme('light')
+            }
         }
     }, [])
 
     useEffect(() => {
         const onPrefersColorSchemeChanged = (e: MediaQueryListEvent) => {
-            setTheme(e.matches ? 'dark' : 'light')
+            if (localStorage.getItem(THEME_UNIQUE_KEY) === null) {
+                setTheme(e.matches ? 'dark' : 'light')
+            }
         }
         window
             .matchMedia('(prefers-color-scheme: dark)')
