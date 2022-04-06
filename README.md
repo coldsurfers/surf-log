@@ -14,7 +14,7 @@
     * 자신의 기술에 대한 기본적인 지식과 이해도 (ex. React 개발자라면 React가 어떻게 동작하는지에 대한 기본적인 이해)
     * 라이브코딩에 대응할 수 있을 만한 기본적인 알고리즘 문제 풀이 능력
     * 트렌드에 대한 관심도 (ex. IntersectionObserver)
-* [ ] Macro Task와 Micro Task의 차이에 대한 글.
+* [x] Macro Task와 Micro Task의 차이에 대한 글.
 * [x] article pagination local api 만들기 + infinite scroll 구현
 * [ ] 페이지 리로드 했을때 테마 유지
 * [ ] 에디터 페이지에서 ctrl + s 할시 저장기능구현
