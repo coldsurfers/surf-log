@@ -1,4 +1,4 @@
-import { ChangeEvent, FC, useCallback, useEffect, useState } from 'react'
+import { FC } from 'react'
 import styled from '@emotion/styled'
 import Link from 'next/link'
 import breakpoints from '../../lib/breakpoints'
@@ -8,7 +8,6 @@ import { css } from '@emotion/css'
 import SunIcon from '../icons/SunIcon'
 import DoNotDisturbIcon from '../icons/DoNotDisturbIcon'
 import { themedPalette } from '../../lib/theme'
-import { THEME_UNIQUE_KEY } from '../../lib/constants'
 
 const Container = styled.header`
     height: var(--header-height);
@@ -78,56 +77,12 @@ const MeButton = styled.p`
     }
 `
 
-const Header: FC = () => {
-    const [theme, setTheme] = useState<'light' | 'dark' | 'default'>('default')
-    const onChangeToggle = useCallback((e: ChangeEvent<HTMLInputElement>) => {
-        setTheme((prev) => {
-            const theme = prev === 'light' ? 'dark' : 'light'
-            localStorage.setItem(THEME_UNIQUE_KEY, theme)
-            document.cookie = `${THEME_UNIQUE_KEY}=${theme}; path=/;`
-            return theme
-        })
-    }, [])
+interface Props {
+    onToggleTheme: () => void
+    theme: 'light' | 'dark'
+}
 
-    useEffect(() => {
-        const storedTheme = localStorage.getItem(THEME_UNIQUE_KEY)
-        if (storedTheme === 'dark') {
-            setTheme('dark')
-        } else if (storedTheme === 'light') {
-            setTheme('light')
-        } else {
-            const systemPrefersDark = window.matchMedia(
-                '(prefers-color-scheme: dark)'
-            ).matches
-            if (systemPrefersDark) {
-                setTheme('dark')
-            } else {
-                setTheme('light')
-            }
-        }
-    }, [])
-
-    useEffect(() => {
-        const onPrefersColorSchemeChanged = (e: MediaQueryListEvent) => {
-            if (localStorage.getItem(THEME_UNIQUE_KEY) === null) {
-                setTheme(e.matches ? 'dark' : 'light')
-            }
-        }
-        window
-            .matchMedia('(prefers-color-scheme: dark)')
-            .addListener(onPrefersColorSchemeChanged)
-
-        return () => {
-            window
-                .matchMedia('(prefers-color-scheme: dark)')
-                .addListener(onPrefersColorSchemeChanged)
-        }
-    }, [])
-
-    useEffect(() => {
-        document.body.dataset.theme = theme
-    }, [theme])
-
+const Header: FC<Props> = ({ onToggleTheme, theme }) => {
     return (
         <Container>
             <ContainerInner
@@ -285,26 +240,24 @@ const Header: FC = () => {
                     </Logo>
                 </Link>
                 <div style={{ flex: 1 }} />
-                {theme !== 'default' && (
-                    <Toggle
-                        checked={theme === 'dark'}
-                        icons={{
-                            unchecked: <DoNotDisturbIcon />,
-                            checked: (
-                                <SunIcon
-                                    viewBox="0 0 30 30"
-                                    width={15}
-                                    height={15}
-                                    style={{
-                                        marginTop: '-2.5px',
-                                    }}
-                                    fill="#ffffff"
-                                />
-                            ),
-                        }}
-                        onChange={onChangeToggle}
-                    />
-                )}
+                <Toggle
+                    checked={theme === 'dark'}
+                    icons={{
+                        unchecked: <DoNotDisturbIcon />,
+                        checked: (
+                            <SunIcon
+                                viewBox="0 0 30 30"
+                                width={15}
+                                height={15}
+                                style={{
+                                    marginTop: '-2.5px',
+                                }}
+                                fill="#ffffff"
+                            />
+                        ),
+                    }}
+                    onChange={onToggleTheme}
+                />
                 <Link href="/me" passHref>
                     <a>
                         <MeButton>🧘🏻‍♂️</MeButton>

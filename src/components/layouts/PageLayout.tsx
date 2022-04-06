@@ -52,15 +52,23 @@ const ChildrenWrapper = styled.div`
 interface Props {
     categories: string[]
     currentArticle?: Article
+    theme: 'light' | 'dark'
+    onToggleTheme: () => void
 }
 
 const sideBarBlackListRoutes = ['/editor', '/me']
 
-const PageLayout: FC<Props> = ({ children, categories, currentArticle }) => {
+const PageLayout: FC<Props> = ({
+    children,
+    categories,
+    currentArticle,
+    theme,
+    onToggleTheme,
+}) => {
     const router = useRouter()
     return (
         <Container>
-            <Header />
+            <Header theme={theme} onToggleTheme={onToggleTheme} />
             {sideBarBlackListRoutes.some((v) => v === router.pathname) ? (
                 children
             ) : (
