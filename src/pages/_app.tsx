@@ -97,10 +97,6 @@ function MyApp({ Component, pageProps }: AppProps) {
         }
     }, [theme])
 
-    if (theme === 'default') {
-        return null
-    }
-
     if (statusCode === 404) {
         return <Error statusCode={statusCode} />
     }

@@ -79,7 +79,7 @@ const MeButton = styled.p`
 
 interface Props {
     onToggleTheme: () => void
-    theme: 'light' | 'dark'
+    theme: 'light' | 'dark' | 'default'
 }
 
 const Header: FC<Props> = ({ onToggleTheme, theme }) => {

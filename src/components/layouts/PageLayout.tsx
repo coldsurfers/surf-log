@@ -52,7 +52,7 @@ const ChildrenWrapper = styled.div`
 interface Props {
     categories: string[]
     currentArticle?: Article
-    theme: 'light' | 'dark'
+    theme: 'light' | 'dark' | 'default'
     onToggleTheme: () => void
 }
 
