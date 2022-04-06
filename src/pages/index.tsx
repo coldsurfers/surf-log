@@ -2,6 +2,7 @@ import type { GetStaticProps, NextPage } from 'next'
 import ArticleListTemplate from '../components/templates/ArticleListTemplate'
 import fetcher from '../lib/fetcher'
 import { Article } from '../types/article'
+import Head from 'next/head'
 
 interface ServerProps {
     articles: Article[]
@@ -10,7 +11,18 @@ interface ServerProps {
 const Home: NextPage<ServerProps> = (props) => {
     const { articles } = props
 
-    return <ArticleListTemplate articles={articles} />
+    return (
+        <>
+            <Head>
+                <meta property="og:title" content="Surf.Log" />
+                <meta
+                    property="og:description"
+                    content="Welcome to ColdSurf blog"
+                />
+            </Head>
+            <ArticleListTemplate articles={articles} />
+        </>
+    )
 }
 
 export const getStaticProps: GetStaticProps<ServerProps> = async (ctx) => {

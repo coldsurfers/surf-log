@@ -6,6 +6,7 @@ import MarkdownRenderer from '../../components/templates/MarkdownRenderer'
 import FloatingButton from '../../components/buttons/FloatingButton'
 import { useRouter } from 'next/router'
 import { useCallback } from 'react'
+import Head from 'next/head'
 
 const ContentContainer = styled.div`
     background: #ffffff;
@@ -31,12 +32,22 @@ const Excerpt: NextPage<{ article?: Article | null }> = (props) => {
         return null
     }
     return (
-        <ContentContainer>
-            <MarkdownRenderer text={article.content} />
-            {process.env.NODE_ENV === 'development' && (
-                <FloatingButton onClick={onClickEdit}>Edit</FloatingButton>
-            )}
-        </ContentContainer>
+        <>
+            <Head>
+                <meta name="description" content={article.data.excerpt} />
+                <meta property="og:title" content={article.data.title} />
+                <meta
+                    property="og:description"
+                    content={article.data.excerpt}
+                />
+            </Head>
+            <ContentContainer>
+                <MarkdownRenderer text={article.content} />
+                {process.env.NODE_ENV === 'development' && (
+                    <FloatingButton onClick={onClickEdit}>Edit</FloatingButton>
+                )}
+            </ContentContainer>
+        </>
     )
 }
 
