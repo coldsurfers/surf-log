@@ -33,14 +33,13 @@ injectGlobal`
         --common-font-family: 'Fira Sans', sans-serif;
     }
     body {
-        ${lightTheme}
         background: ${themedPalette['body-background']};
         font-family: var(--common-font-family);
         margin: 0px;
     }
     @media (prefers-color-scheme: dark) {
         body {
-            ${darkTheme}
+
         }
     }
     body[data-theme='light'] {
