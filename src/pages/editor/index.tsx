@@ -38,6 +38,9 @@ const EditorPage: NextPage = () => {
     const { save } = useSave({ editorText })
     const { defaultEditorValue, defaultModalValues } = useDefaultEditorValues()
     const [modalOpen, setModalOpen] = useState<boolean>(false)
+    const keydownMemoRef = useRef<{
+        [key: string]: boolean
+    }>({})
 
     const onClickSaveButton = useCallback(() => {
         setModalOpen(true)
@@ -61,6 +64,31 @@ const EditorPage: NextPage = () => {
             if (modalOpen) {
                 setModalOpen(false)
             }
+        }
+    }, [modalOpen])
+
+    useEffect(() => {
+        const onKeydown = (e: KeyboardEvent) => {
+            keydownMemoRef.current[e.key] = true
+            if (keydownMemoRef.current['Meta'] && keydownMemoRef.current['s']) {
+                e.preventDefault()
+                setModalOpen(true)
+            }
+            if (e.key === 'Escape') {
+                if (modalOpen) {
+                    setModalOpen(false)
+                }
+            }
+        }
+        const onKeyup = (e: KeyboardEvent) => {
+            keydownMemoRef.current = {}
+        }
+        document.addEventListener('keydown', onKeydown)
+        document.addEventListener('keyup', onKeyup)
+
+        return () => {
+            document.removeEventListener('keydown', onKeydown)
+            document.removeEventListener('keyup', onKeyup)
         }
     }, [modalOpen])
 
