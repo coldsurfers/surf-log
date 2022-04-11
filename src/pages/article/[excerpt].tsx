@@ -34,6 +34,7 @@ const Excerpt: NextPage<{ article?: Article | null }> = (props) => {
     return (
         <>
             <Head>
+                <title>{article.data.excerpt} | Surf.Log</title>
                 <meta name="description" content={article.data.excerpt} />
                 <meta property="og:title" content={article.data.title} />
                 <meta

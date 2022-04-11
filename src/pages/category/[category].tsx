@@ -21,6 +21,7 @@ const Category: NextPage<ServerProps> = (props) => {
     return (
         <>
             <Head>
+                <title>{category} | Surf.Log</title>
                 <meta property="og:title" content={`Surf.Log - ${category}`} />
                 <meta
                     property="og:description"
