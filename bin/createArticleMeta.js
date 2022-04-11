@@ -26,6 +26,25 @@ function main() {
                 excerpt: function (file, options) {
                     file.excerpt = encodeURIComponent(file.data.excerpt)
                     if (file.data.thumbnail) {
+                        const ext = path
+                            .extname(file.data.thumbnail)
+                            .split('.')
+                            .pop()
+                        let base64Pre = ''
+                        switch (ext) {
+                            case 'svg':
+                                base64Pre = `data:image/svg+xml;base64, `
+                                break
+                            case 'png':
+                                base64Pre = `data:image/png;base64, `
+                                break
+                            case 'jpeg':
+                            case 'jpg':
+                                base64Pre = `data:image/jpeg;base64, `
+                                break
+                            default:
+                                throw Error('unexpected file extension')
+                        }
                         const thumbnailFileBase64Encoded = fs.readFileSync(
                             path.resolve(
                                 __dirname,
@@ -33,7 +52,7 @@ function main() {
                             ),
                             'base64'
                         )
-                        file.thumbnailBase64 = thumbnailFileBase64Encoded
+                        file.thumbnailBase64 = `${base64Pre}${thumbnailFileBase64Encoded}`
                     }
                 },
             })

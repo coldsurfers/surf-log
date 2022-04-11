@@ -206,7 +206,7 @@ const ArticleListTemplate: FC<Props> = ({ articles }) => {
                             <ThumbnailWrapper>
                                 {article.thumbnailBase64 ? (
                                     <Image
-                                        src={`data:image/png;base64, ${article.thumbnailBase64}`}
+                                        src={`${article.thumbnailBase64}`}
                                         alt="thumbnail"
                                         layout="fill"
                                         objectFit="fill"
