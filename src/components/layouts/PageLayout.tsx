@@ -56,7 +56,7 @@ interface Props {
     onToggleTheme: () => void
 }
 
-const sideBarBlackListRoutes = ['/editor', '/me']
+const sideBarBlackListRoutes = ['/editor', '/about']
 
 const PageLayout: FC<Props> = ({
     children,

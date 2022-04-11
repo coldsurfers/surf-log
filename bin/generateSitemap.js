@@ -25,7 +25,7 @@ function generateSitemap() {
             pathname: '/',
         },
         {
-            pathname: '/me',
+            pathname: '/about',
         },
     ]
 
