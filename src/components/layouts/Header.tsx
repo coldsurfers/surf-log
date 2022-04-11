@@ -258,11 +258,11 @@ const Header: FC<Props> = ({ onToggleTheme, theme }) => {
                     }}
                     onChange={onToggleTheme}
                 />
-                <Link href="/about" passHref>
+                {/* <Link href="/about" passHref>
                     <a>
                         <MeButton>🧘🏻‍♂️</MeButton>
                     </a>
-                </Link>
+                </Link> */}
             </ContainerInner>
         </Container>
     )
