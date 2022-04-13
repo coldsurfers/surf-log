@@ -8,6 +8,7 @@ import { useCallback, useMemo, useState } from 'react'
 import Head from 'next/head'
 import MenuFloatingButton from '../../components/buttons/MenuFloatIngButton'
 import ArticleRemoveModal from '../../components/modal/ArticleRemoveModal'
+import fetcher from '../../lib/fetcher'
 
 const ContentContainer = styled.div`
     background: #ffffff;
@@ -35,9 +36,15 @@ const Excerpt: NextPage<{ article?: Article | null }> = (props) => {
     const onClickRemoveModalBackground = useCallback(() => {
         setRemoveModalOpen(false)
     }, [])
-    const onClickRemoveModalRemove = useCallback(() => {
-        //
-    }, [])
+    const onClickRemoveModalRemove = useCallback(async () => {
+        if (!article) return
+        const { excerpt } = article.data
+        if (!excerpt) return
+        await fetcher.removeArticle({
+            excerpt,
+        })
+        router.push('/')
+    }, [article, router])
     const menu = useMemo(
         () => [
             {

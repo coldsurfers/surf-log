@@ -47,6 +47,11 @@ const fetcher = {
             headers,
         })
     },
+    removeArticle: function ({ excerpt }: { excerpt: string }) {
+        return this.fetch(`${preURL}/article/${excerpt}`, {
+            method: 'DELETE',
+        })
+    },
     temporarySaveArticle: function ({ editorText }: { editorText: string }) {
         return this.fetch(`${preURL}/save/temp`, {
             method: 'POST',
