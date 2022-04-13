@@ -5,3 +5,8 @@ export type EditorSaveModalValues = {
     category: string
     createdAt?: string
 }
+
+export interface BaseModalProps {
+    open: boolean
+    onClickBackground?: () => void
+}

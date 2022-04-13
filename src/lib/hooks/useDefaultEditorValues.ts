@@ -30,8 +30,9 @@ function useDefaultEditorValues() {
         if (!excerpt) {
             return null
         }
-        const encodedExcerpt = encodeURIComponent(excerpt as string)
-        const res = await fetcher.getArticleByExcerpt({ encodedExcerpt })
+        const res = await fetcher.getArticleByExcerpt({
+            excerpt: excerpt as string,
+        })
         const json = (await res.json()) as {
             data: Article | null
         }

@@ -19,12 +19,8 @@ const fetcher = {
             headers,
         })
     },
-    getArticleByExcerpt: function ({
-        encodedExcerpt,
-    }: {
-        encodedExcerpt: string
-    }) {
-        return this.fetch(`${preURL}/article/${encodedExcerpt}`, {
+    getArticleByExcerpt: function ({ excerpt }: { excerpt: string }) {
+        return this.fetch(`${preURL}/article/${encodeURIComponent(excerpt)}`, {
             method: 'GET',
             headers,
         })
@@ -45,6 +41,11 @@ const fetcher = {
                 text: editorText,
             }),
             headers,
+        })
+    },
+    removeArticle: function ({ excerpt }: { excerpt: string }) {
+        return this.fetch(`${preURL}/article/${excerpt}`, {
+            method: 'DELETE',
         })
     },
     temporarySaveArticle: function ({ editorText }: { editorText: string }) {
