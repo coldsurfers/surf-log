@@ -19,6 +19,7 @@ import { useCallback, useEffect, useRef, useState } from 'react'
 import { useRouter } from 'next/router'
 import { pageView } from '../lib/ga/utils'
 import { QueryClient, QueryClientProvider } from 'react-query'
+import { ReactQueryDevtools } from 'react-query/devtools'
 
 const queryClient = new QueryClient()
 
@@ -121,6 +122,7 @@ function MyApp({ Component, pageProps }: AppProps) {
                 <NetworkOfflineTemplate />
             )}
             <ModalRootPortalTag htmlId={MODAL_ROOT_PORTAL_TAG_HTML_ID} />
+            <ReactQueryDevtools initialIsOpen={false} />
         </QueryClientProvider>
     )
 }
