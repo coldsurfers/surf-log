@@ -19,12 +19,8 @@ const fetcher = {
             headers,
         })
     },
-    getArticleByExcerpt: function ({
-        encodedExcerpt,
-    }: {
-        encodedExcerpt: string
-    }) {
-        return this.fetch(`${preURL}/article/${encodedExcerpt}`, {
+    getArticleByExcerpt: function ({ excerpt }: { excerpt: string }) {
+        return this.fetch(`${preURL}/article/${encodeURIComponent(excerpt)}`, {
             method: 'GET',
             headers,
         })
