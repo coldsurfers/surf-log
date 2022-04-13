@@ -22,3 +22,4 @@
 * [ ] 글 삭제 기능
 * [ ] React-Query with ssr
 * [ ] 2차 (타팀과의 협업에 대한) 면접기 작성
+* [ ] article page 404 처리 (excerpt로 검색되는게 없을시)
