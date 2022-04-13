@@ -3,10 +3,10 @@ import { Article } from '../../types/article'
 import styled from '@emotion/styled'
 import mediaQuery from '../../lib/mediaQuery'
 import MarkdownRenderer from '../../components/templates/MarkdownRenderer'
-import FloatingButton from '../../components/buttons/FloatingButton'
 import { useRouter } from 'next/router'
-import { useCallback } from 'react'
+import { useCallback, useMemo } from 'react'
 import Head from 'next/head'
+import MenuFloatingButton from '../../components/buttons/MenuFloatIngButton'
 
 const ContentContainer = styled.div`
     background: #ffffff;
@@ -27,6 +27,20 @@ const Excerpt: NextPage<{ article?: Article | null }> = (props) => {
         if (!article) return
         router.push(`/editor?excerpt=${article.excerpt}`)
     }, [article, router])
+    const onClickRemove = useCallback(() => {}, [])
+    const menu = useMemo(
+        () => [
+            {
+                title: 'Edit',
+                onClick: onClickEdit,
+            },
+            {
+                title: 'Remove',
+                onClick: onClickRemove,
+            },
+        ],
+        [onClickEdit, onClickRemove]
+    )
 
     if (!article) {
         return null
@@ -45,7 +59,7 @@ const Excerpt: NextPage<{ article?: Article | null }> = (props) => {
             <ContentContainer>
                 <MarkdownRenderer text={article.content} />
                 {process.env.NODE_ENV === 'development' && (
-                    <FloatingButton onClick={onClickEdit}>Edit</FloatingButton>
+                    <MenuFloatingButton menu={menu}>Menu</MenuFloatingButton>
                 )}
             </ContentContainer>
         </>
