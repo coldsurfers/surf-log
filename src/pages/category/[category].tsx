@@ -4,6 +4,7 @@ import { useRouter } from 'next/router'
 import { useCallback, useEffect, useState } from 'react'
 import { useQuery } from 'react-query'
 import ArticleListTemplate from '../../components/templates/ArticleListTemplate'
+import { DEFAULT_PAGINATION_COUNT } from '../../lib/constants'
 import fetcher from '../../lib/fetcher'
 import { Article } from '../../types/article'
 
@@ -17,12 +18,13 @@ const Category: NextPage<ServerProps> = ({ initialArticles }) => {
     const [articles, setArticles] = useState<Article[]>(initialArticles)
     const [page, setPage] = useState<number>(1)
     const [mounted, setMounted] = useState<boolean>(false)
+    const [isLastPage, setIsLastPage] = useState<boolean>(false)
 
     useEffect(() => {
         setMounted(true)
     }, [])
 
-    const { data, isFetching } = useQuery(
+    const { data, isFetching, isPreviousData } = useQuery(
         ['getArticleList', page, category],
         async (params) => {
             const [key, page, category] = params.queryKey as [
@@ -38,25 +40,37 @@ const Category: NextPage<ServerProps> = ({ initialArticles }) => {
         },
         {
             initialData: !mounted ? initialArticles : [],
+            keepPreviousData: true,
         }
     )
 
     const onLoadMore = useCallback(() => {
-        if (isFetching) return
+        if (isFetching || isLastPage) return
         setPage((prev) => prev + 1)
-    }, [isFetching])
+    }, [isFetching, isLastPage])
 
     useEffect(() => {
         if (!data) return
-        setArticles((prev) => {
-            if (page === 1 && !mounted) return prev
-            return prev.concat(data)
-        })
-    }, [data, mounted, page])
+        if (!isPreviousData && data.length < DEFAULT_PAGINATION_COUNT) {
+            setIsLastPage(true)
+        }
+        if (!isPreviousData) {
+            setArticles((prev) => {
+                if (page === 1) {
+                    if (!mounted) {
+                        return prev
+                    } else {
+                        return data
+                    }
+                }
+                return prev.concat(data)
+            })
+        }
+    }, [data, isPreviousData, mounted, page])
 
     useEffect(() => {
         setPage(1)
-        setArticles([])
+        setIsLastPage(false)
     }, [category])
 
     return (
