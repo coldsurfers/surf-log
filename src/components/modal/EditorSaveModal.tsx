@@ -3,14 +3,14 @@ import { css } from '@emotion/css'
 import { ChangeEventHandler, FC, useCallback, useEffect, useState } from 'react'
 import Modal from './Modal'
 import { BaseModalProps, EditorSaveModalValues } from '../../types/modal'
+import ModalContent from './ModalContent'
 
-const SaveModal = styled.div`
+const SaveModal = styled(ModalContent)`
     width: 500px;
     height: auto;
     background-color: #ffffff;
     border-radius: 8px;
     box-shadow: 10px 20px 20px 20px rgb(92 95 112 / 8%);
-    padding: 1rem;
     display: flex;
     flex-direction: column;
 `

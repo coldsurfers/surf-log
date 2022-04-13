@@ -2,10 +2,7 @@ import styled from '@emotion/styled'
 import { FC } from 'react'
 import { BaseModalProps } from '../../types/modal'
 import Modal from './Modal'
-
-const Content = styled.div`
-    padding: 1rem;
-`
+import ModalContent from './ModalContent'
 
 const RemoveButton = styled.button`
     width: 100%;
@@ -25,7 +22,7 @@ const ArticleRemoveModal: FC<Props> = ({
 }) => {
     return (
         <Modal open={open} onClickBackground={onClickBackground}>
-            <Content>이 글을 삭제하시겠습니까?</Content>
+            <ModalContent>이 글을 삭제하시겠습니까?</ModalContent>
             <RemoveButton onClick={onClickRemove}>예</RemoveButton>
         </Modal>
     )
