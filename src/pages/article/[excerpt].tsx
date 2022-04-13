@@ -4,9 +4,10 @@ import styled from '@emotion/styled'
 import mediaQuery from '../../lib/mediaQuery'
 import MarkdownRenderer from '../../components/templates/MarkdownRenderer'
 import { useRouter } from 'next/router'
-import { useCallback, useMemo } from 'react'
+import { useCallback, useMemo, useState } from 'react'
 import Head from 'next/head'
 import MenuFloatingButton from '../../components/buttons/MenuFloatIngButton'
+import ArticleRemoveModal from '../../components/modal/ArticleRemoveModal'
 
 const ContentContainer = styled.div`
     background: #ffffff;
@@ -22,12 +23,21 @@ const ContentContainer = styled.div`
 
 const Excerpt: NextPage<{ article?: Article | null }> = (props) => {
     const { article } = props
+    const [removeModalOpen, setRemoveModalOpen] = useState<boolean>(false)
     const router = useRouter()
     const onClickEdit = useCallback(() => {
         if (!article) return
         router.push(`/editor?excerpt=${article.excerpt}`)
     }, [article, router])
-    const onClickRemove = useCallback(() => {}, [])
+    const onClickRemove = useCallback(() => {
+        setRemoveModalOpen(true)
+    }, [])
+    const onClickRemoveModalBackground = useCallback(() => {
+        setRemoveModalOpen(false)
+    }, [])
+    const onClickRemoveModalRemove = useCallback(() => {
+        //
+    }, [])
     const menu = useMemo(
         () => [
             {
@@ -62,6 +72,11 @@ const Excerpt: NextPage<{ article?: Article | null }> = (props) => {
                     <MenuFloatingButton menu={menu}>Menu</MenuFloatingButton>
                 )}
             </ContentContainer>
+            <ArticleRemoveModal
+                open={removeModalOpen}
+                onClickBackground={onClickRemoveModalBackground}
+                onClickRemove={onClickRemoveModalRemove}
+            />
         </>
     )
 }
