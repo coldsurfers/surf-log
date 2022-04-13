@@ -24,7 +24,7 @@ const Home: NextPage<ServerProps> = (props) => {
             return res.list
         },
         {
-            initialData: articles.length === 0 ? initialArticles : [],
+            initialData: page === 1 ? initialArticles : [],
         }
     )
 
@@ -36,7 +36,7 @@ const Home: NextPage<ServerProps> = (props) => {
     useEffect(() => {
         if (!data) return
         setArticles((prev) => {
-            if (page === 1 && prev.length > 0) return prev
+            if (page === 1) return prev
             return prev.concat(data)
         })
     }, [data, page])
