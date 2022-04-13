@@ -1,5 +1,6 @@
 import styled from '@emotion/styled'
 import { FC, MouseEventHandler, useCallback, useRef } from 'react'
+import { BaseModalProps } from '../../types/modal'
 import ModalPortal from './ModalPortal'
 
 const ModalBackground = styled.div<{ open: boolean }>`
@@ -20,12 +21,7 @@ const Dialog = styled.dialog`
     border: unset;
 `
 
-interface Props {
-    open: boolean
-    onClickBackground?: () => void
-}
-
-const Modal: FC<Props> = ({ open, children, onClickBackground }) => {
+const Modal: FC<BaseModalProps> = ({ open, children, onClickBackground }) => {
     const dialogRef = useRef<HTMLDivElement | null>(null)
     const handleClickBackground: MouseEventHandler<HTMLDivElement> =
         useCallback(

@@ -1,5 +1,6 @@
 import styled from '@emotion/styled'
 import { FC } from 'react'
+import { BaseModalProps } from '../../types/modal'
 import Modal from './Modal'
 
 const Content = styled.div`
@@ -13,9 +14,7 @@ const RemoveButton = styled.button`
     color: #ffffff;
 `
 
-interface Props {
-    open: boolean
-    onClickBackground?: () => void
+interface Props extends BaseModalProps {
     onClickRemove?: () => void
 }
 

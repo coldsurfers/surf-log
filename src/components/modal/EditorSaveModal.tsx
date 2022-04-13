@@ -2,7 +2,7 @@ import styled from '@emotion/styled'
 import { css } from '@emotion/css'
 import { ChangeEventHandler, FC, useCallback, useEffect, useState } from 'react'
 import Modal from './Modal'
-import { EditorSaveModalValues } from '../../types/modal'
+import { BaseModalProps, EditorSaveModalValues } from '../../types/modal'
 
 const SaveModal = styled.div`
     width: 500px;
@@ -15,9 +15,7 @@ const SaveModal = styled.div`
     flex-direction: column;
 `
 
-interface Props {
-    open: boolean
-    onClickBackground?: () => void
+interface Props extends BaseModalProps {
     onClickSave: (values: EditorSaveModalValues) => void
     defaultModalValues?: EditorSaveModalValues
 }
