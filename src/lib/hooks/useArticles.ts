@@ -1,16 +1,11 @@
 import { useCallback, useEffect, useState } from 'react'
 import { useQuery } from 'react-query'
 import { Article } from '../../types/article'
+import { UseArticles } from '../../types/hooks/useArticles'
 import { DEFAULT_PAGINATION_COUNT } from '../constants'
 import fetcher from '../fetcher'
 
-function useArticles({
-    category,
-    initialData,
-}: {
-    category?: string
-    initialData?: Article[]
-}) {
+const useArticles: UseArticles = ({ category, initialData }) => {
     const [articles, setArticles] = useState<Article[]>(initialData ?? [])
     const [page, setPage] = useState<number>(1)
     const [isLastPage, setIsLastPage] = useState<boolean>(false)
