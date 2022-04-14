@@ -6,12 +6,13 @@ import Head from 'next/head'
 import useArticles from '../lib/hooks/useArticles'
 
 interface ServerProps {
-    initialArticles: Article[]
+    initialData: Article[]
 }
 
-const Home: NextPage<ServerProps> = (props) => {
-    const { initialArticles } = props
-    const { articles, loadMore, isFetching } = useArticles({ initialArticles })
+const Home: NextPage<ServerProps> = ({ initialData }) => {
+    const { articles, loadMore, isFetching } = useArticles({
+        initialData,
+    })
 
     return (
         <>
@@ -38,7 +39,7 @@ export const getServerSideProps: GetServerSideProps<ServerProps> = async (
 
     return {
         props: {
-            initialArticles: list,
+            initialData: list,
         },
     }
 }

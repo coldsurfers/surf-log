@@ -6,12 +6,12 @@ import fetcher from '../fetcher'
 
 function useArticles({
     category,
-    initialArticles,
+    initialData,
 }: {
     category?: string
-    initialArticles?: Article[]
+    initialData?: Article[]
 }) {
-    const [articles, setArticles] = useState<Article[]>(initialArticles ?? [])
+    const [articles, setArticles] = useState<Article[]>(initialData ?? [])
     const [page, setPage] = useState<number>(1)
     const [isLastPage, setIsLastPage] = useState<boolean>(false)
 
@@ -30,7 +30,7 @@ function useArticles({
             return res.list
         },
         {
-            initialData: page === 1 && initialArticles,
+            initialData: page === 1 && initialData,
             keepPreviousData: true,
         }
     )

@@ -7,15 +7,15 @@ import useArticles from '../../lib/hooks/useArticles'
 import { Article } from '../../types/article'
 
 interface ServerProps {
-    initialArticles: Article[]
+    initialData: Article[]
 }
 
-const Category: NextPage<ServerProps> = ({ initialArticles }) => {
+const Category: NextPage<ServerProps> = ({ initialData }) => {
     const router = useRouter()
     const { category } = router.query
     const { articles, isFetching, loadMore } = useArticles({
         category: category as string | undefined,
-        initialArticles,
+        initialData,
     })
 
     return (
@@ -46,7 +46,7 @@ export const getServerSideProps: GetServerSideProps<
     if (!ctx.params?.category) {
         return {
             props: {
-                initialArticles: [],
+                initialData: [],
             },
         }
     }
@@ -55,7 +55,7 @@ export const getServerSideProps: GetServerSideProps<
 
     return {
         props: {
-            initialArticles: list,
+            initialData: list,
         },
     }
 }
