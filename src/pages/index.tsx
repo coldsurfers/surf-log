@@ -26,7 +26,7 @@ const Home: NextPage<ServerProps> = (props) => {
             return res.list
         },
         {
-            initialData: page === 1 ? initialArticles : [],
+            initialData: page === 1 && initialArticles,
             keepPreviousData: true,
         }
     )

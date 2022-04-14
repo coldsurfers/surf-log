@@ -39,7 +39,7 @@ const Category: NextPage<ServerProps> = ({ initialArticles }) => {
             return res.list
         },
         {
-            initialData: !mounted ? initialArticles : [],
+            initialData: !mounted && initialArticles,
             keepPreviousData: true,
         }
     )
