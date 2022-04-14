@@ -5,11 +5,11 @@ import { Article } from '../types/article'
 import Head from 'next/head'
 import useArticles from '../lib/hooks/useArticles'
 
-interface ServerProps {
+interface InitialProps {
     initialData: Article[]
 }
 
-const Home: NextPage<ServerProps> = ({ initialData }) => {
+const Home: NextPage<InitialProps> = ({ initialData }) => {
     const { articles, loadMore, isFetching } = useArticles({
         initialData,
     })
@@ -32,7 +32,7 @@ const Home: NextPage<ServerProps> = ({ initialData }) => {
     )
 }
 
-export const getServerSideProps: GetServerSideProps<ServerProps> = async (
+export const getServerSideProps: GetServerSideProps<InitialProps> = async (
     ctx
 ) => {
     const { list } = await fetcher.articleList({ page: 1 })

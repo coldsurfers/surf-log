@@ -6,11 +6,11 @@ import fetcher from '../../lib/fetcher'
 import useArticles from '../../lib/hooks/useArticles'
 import { Article } from '../../types/article'
 
-interface ServerProps {
+interface InitialProps {
     initialData: Article[]
 }
 
-const Category: NextPage<ServerProps> = ({ initialData }) => {
+const Category: NextPage<InitialProps> = ({ initialData }) => {
     const router = useRouter()
     const { category } = router.query
     const { articles, isFetching, loadMore } = useArticles({
@@ -38,7 +38,7 @@ const Category: NextPage<ServerProps> = ({ initialData }) => {
 }
 
 export const getServerSideProps: GetServerSideProps<
-    ServerProps,
+    InitialProps,
     {
         category: string
     }
