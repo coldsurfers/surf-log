@@ -1,23 +1,23 @@
 import { GetServerSideProps, NextPage } from 'next'
 import Head from 'next/head'
-import { useEffect } from 'react'
+import { useRouter } from 'next/router'
 import ArticleListTemplate from '../../components/templates/ArticleListTemplate'
 import fetcher from '../../lib/fetcher'
+import useArticles from '../../lib/hooks/useArticles'
 import { Article } from '../../types/article'
 
-interface ServerProps {
-    articles: Article[]
-    error?: string
-    category: string
+interface InitialProps {
+    initialData: Article[]
 }
 
-const Category: NextPage<ServerProps> = (props) => {
-    const { articles, error, category } = props
-    useEffect(() => {
-        if (error) {
-            console.error(error)
-        }
-    }, [error])
+const Category: NextPage<InitialProps> = ({ initialData }) => {
+    const router = useRouter()
+    const { category } = router.query
+    const { articles, isFetching, loadMore } = useArticles({
+        category: category as string | undefined,
+        initialData,
+    })
+
     return (
         <>
             <Head>
@@ -28,22 +28,25 @@ const Category: NextPage<ServerProps> = (props) => {
                     content={`${category} category of ColdSurf blog`}
                 />
             </Head>
-            <ArticleListTemplate articles={articles} />
+            <ArticleListTemplate
+                articles={articles}
+                onLoadMore={loadMore}
+                isLoading={isFetching}
+            />
         </>
     )
 }
 
 export const getServerSideProps: GetServerSideProps<
-    ServerProps,
+    InitialProps,
     {
         category: string
     }
 > = async (ctx) => {
-    if (!ctx.params) {
+    if (!ctx.params?.category) {
         return {
             props: {
-                articles: [],
-                category: '',
+                initialData: [],
             },
         }
     }
@@ -52,8 +55,7 @@ export const getServerSideProps: GetServerSideProps<
 
     return {
         props: {
-            articles: list,
-            category,
+            initialData: list,
         },
     }
 }
