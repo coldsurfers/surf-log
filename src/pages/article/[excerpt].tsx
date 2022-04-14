@@ -10,6 +10,7 @@ import MenuFloatingButton from '../../components/buttons/MenuFloatIngButton'
 import ArticleRemoveModal from '../../components/modal/ArticleRemoveModal'
 import fetcher from '../../lib/fetcher'
 import useArticle from '../../lib/hooks/useArticle'
+import Error from 'next/error'
 
 const ContentContainer = styled.div`
     background: #ffffff;
@@ -70,7 +71,7 @@ const Excerpt: NextPage<InitialProps> = ({ initialData }) => {
     )
 
     if (typeof article === 'undefined') {
-        return null
+        return <Error statusCode={404} />
     }
 
     return (
