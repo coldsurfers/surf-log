@@ -9,6 +9,7 @@ import Head from 'next/head'
 import MenuFloatingButton from '../../components/buttons/MenuFloatIngButton'
 import ArticleRemoveModal from '../../components/modal/ArticleRemoveModal'
 import fetcher from '../../lib/fetcher'
+import useArticle from '../../lib/hooks/useArticle'
 
 const ContentContainer = styled.div`
     background: #ffffff;
@@ -22,20 +23,28 @@ const ContentContainer = styled.div`
     }
 `
 
-const Excerpt: NextPage<{ article?: Article | null }> = (props) => {
-    const { article } = props
-    const [removeModalOpen, setRemoveModalOpen] = useState<boolean>(false)
+interface InitialProps {
+    initialData?: Article
+}
+
+const Excerpt: NextPage<InitialProps> = ({ initialData }) => {
     const router = useRouter()
+    const { article } = useArticle({ initialData })
+    const [removeModalOpen, setRemoveModalOpen] = useState<boolean>(false)
+
     const onClickEdit = useCallback(() => {
         if (!article) return
         router.push(`/editor?excerpt=${article.excerpt}`)
     }, [article, router])
+
     const onClickRemove = useCallback(() => {
         setRemoveModalOpen(true)
     }, [])
+
     const onClickRemoveModalBackground = useCallback(() => {
         setRemoveModalOpen(false)
     }, [])
+
     const onClickRemoveModalRemove = useCallback(async () => {
         if (!article) return
         const { excerpt } = article.data
@@ -45,6 +54,7 @@ const Excerpt: NextPage<{ article?: Article | null }> = (props) => {
         })
         router.push('/')
     }, [article, router])
+
     const menu = useMemo(
         () => [
             {
@@ -59,9 +69,10 @@ const Excerpt: NextPage<{ article?: Article | null }> = (props) => {
         [onClickEdit, onClickRemove]
     )
 
-    if (!article) {
+    if (typeof article === 'undefined') {
         return null
     }
+
     return (
         <>
             <Head>
@@ -89,9 +100,7 @@ const Excerpt: NextPage<{ article?: Article | null }> = (props) => {
 }
 
 export const getServerSideProps: GetServerSideProps<
-    {
-        article: Article | null
-    },
+    InitialProps,
     {
         excerpt: string
     }
@@ -99,7 +108,7 @@ export const getServerSideProps: GetServerSideProps<
     if (!ctx.params) {
         return {
             props: {
-                article: null,
+                initialData: undefined,
             },
         }
     }
@@ -112,7 +121,7 @@ export const getServerSideProps: GetServerSideProps<
     const article = articleMeta.articles[encodeURIComponent(excerpt)]
     return {
         props: {
-            article,
+            initialData: article,
         },
     }
 }

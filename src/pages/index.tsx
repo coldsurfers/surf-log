@@ -3,13 +3,16 @@ import ArticleListTemplate from '../components/templates/ArticleListTemplate'
 import fetcher from '../lib/fetcher'
 import { Article } from '../types/article'
 import Head from 'next/head'
+import useArticles from '../lib/hooks/useArticles'
 
-interface ServerProps {
-    articles: Article[]
+interface InitialProps {
+    initialData: Article[]
 }
 
-const Home: NextPage<ServerProps> = (props) => {
-    const { articles } = props
+const Home: NextPage<InitialProps> = ({ initialData }) => {
+    const { articles, loadMore, isFetching } = useArticles({
+        initialData,
+    })
 
     return (
         <>
@@ -20,19 +23,23 @@ const Home: NextPage<ServerProps> = (props) => {
                     content="Welcome to ColdSurf blog"
                 />
             </Head>
-            <ArticleListTemplate articles={articles} />
+            <ArticleListTemplate
+                articles={articles}
+                onLoadMore={loadMore}
+                isLoading={isFetching}
+            />
         </>
     )
 }
 
-export const getServerSideProps: GetServerSideProps<ServerProps> = async (
+export const getServerSideProps: GetServerSideProps<InitialProps> = async (
     ctx
 ) => {
     const { list } = await fetcher.articleList({ page: 1 })
 
     return {
         props: {
-            articles: list,
+            initialData: list,
         },
     }
 }

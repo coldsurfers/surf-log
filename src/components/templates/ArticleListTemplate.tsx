@@ -1,15 +1,13 @@
 import styled from '@emotion/styled'
 import Image from 'next/image'
 import Link from 'next/link'
-import { FC, useCallback, useEffect, useRef, useState } from 'react'
+import { FC, useEffect, useRef } from 'react'
 import { format } from 'date-fns'
 import { ko } from 'date-fns/locale'
 import mediaQuery from '../../lib/mediaQuery'
 import { Article } from '../../types/article'
 import { themedPalette } from '../../lib/theme'
-import fetcher from '../../lib/fetcher'
 import { DEFAULT_PAGINATION_COUNT } from '../../lib/constants'
-import { useRouter } from 'next/router'
 import { RotatingLines } from 'react-loader-spinner'
 import { css } from '@emotion/css'
 
@@ -120,34 +118,16 @@ const ArticleDate = styled.div`
 
 interface Props {
     articles: Article[]
+    onLoadMore?: () => void
+    isLoading?: boolean
 }
 
-const ArticleListTemplate: FC<Props> = ({ articles }) => {
-    const router = useRouter()
-    const { category } = router.query
+const ArticleListTemplate: FC<Props> = ({
+    articles,
+    onLoadMore,
+    isLoading,
+}) => {
     const loadingIndicatorElementRef = useRef<HTMLDivElement | null>(null)
-    const [isLoading, setIsLoading] = useState<boolean>(false)
-    const [page, setPage] = useState<number>(2)
-    const [moreLoadedArticles, setMoreLoadedArticles] = useState<Article[]>([])
-    const [isLastPage, setIsLastPage] = useState<boolean>(false)
-
-    const loadMore = useCallback(async () => {
-        if (isLoading || isLastPage) {
-            return
-        }
-        setIsLoading(true)
-
-        const { list } = await fetcher.articleList({
-            page,
-            category: category as string,
-        })
-
-        setMoreLoadedArticles(moreLoadedArticles.concat(list))
-        setPage(page + 1)
-        setIsLastPage(list.length < DEFAULT_PAGINATION_COUNT)
-
-        setIsLoading(false)
-    }, [category, isLastPage, isLoading, moreLoadedArticles, page])
 
     useEffect(() => {
         let observer: IntersectionObserver
@@ -163,7 +143,7 @@ const ArticleListTemplate: FC<Props> = ({ articles }) => {
                 ) {
                     return
                 }
-                loadMore()
+                onLoadMore && onLoadMore()
                 observer.unobserve(
                     loadingIndicatorElementRef.current as Element
                 )
@@ -182,20 +162,11 @@ const ArticleListTemplate: FC<Props> = ({ articles }) => {
                 observer.disconnect()
             }
         }
-    }, [articles.length, loadMore])
-
-    useEffect(() => {
-        const initialize = () => {
-            setMoreLoadedArticles([])
-            setIsLastPage(false)
-            setPage(2)
-        }
-        initialize()
-    }, [category])
+    }, [articles.length, onLoadMore])
 
     return (
         <ArticleListContainer>
-            {[...articles, ...moreLoadedArticles].map((article) => {
+            {articles.map((article) => {
                 return (
                     <Link
                         key={article.excerpt}
