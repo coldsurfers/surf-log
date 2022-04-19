@@ -13,7 +13,9 @@ if (isBrowser) {
     require('prismjs/components/prism-jsx.min.js')
     require('prismjs/components/prism-css.min.js')
     require('prismjs/components/prism-c.min.js')
-    require('prismjs/components/prism-typescript.min.js')
+    require('prismjs/components/prism-rust.min.js')
+    require('prismjs/components/prism-json.min.js')
+    require('prismjs/components/prism-toml.min.js')
 }
 
 interface Props {

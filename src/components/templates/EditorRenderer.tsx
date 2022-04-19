@@ -15,6 +15,8 @@ if (typeof window !== 'undefined') {
     require('codemirror/mode/css/css')
     require('codemirror/mode/shell/shell')
     require('codemirror/mode/clike/clike')
+    require('codemirror/mode/rust/rust')
+    require('codemirror/mode/toml/toml')
 }
 
 const EditorContent = styled.div`
