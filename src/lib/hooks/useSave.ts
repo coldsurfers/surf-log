@@ -8,16 +8,16 @@ function useSave({ editorText }: { editorText: string }) {
     const { excerpt } = router.query
     const save = useCallback(
         async (modalValues: EditorSaveModalValues) => {
-            const res = await fetcher.saveArticle({
+            const data = await fetcher.saveArticle({
                 excerpt: excerpt as string,
                 modalValues,
                 editorText,
             })
-            const json = await res.json()
-            if (json.error === null) {
+            const { error } = data
+            if (error === null) {
                 router.push('/')
             } else {
-                console.error(json.error)
+                console.error(error)
             }
         },
         [excerpt, editorText, router]

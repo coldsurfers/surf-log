@@ -19,6 +19,10 @@ interface GetArticleByExcerptData {
     data: Article | null
 }
 
+interface SaveArticleData {
+    error: string | null
+}
+
 const fetcher = {
     fetch: (input: RequestInfo, init?: RequestInit | undefined) => {
         return fetch(input, init)
@@ -42,7 +46,7 @@ const fetcher = {
         const data = (await res.json()) as GetArticleByExcerptData
         return data
     },
-    saveArticle: function ({
+    saveArticle: async function ({
         excerpt,
         modalValues,
         editorText,
@@ -51,7 +55,7 @@ const fetcher = {
         modalValues: EditorSaveModalValues
         editorText: string
     }) {
-        return this.fetch(`${preURL}/save`, {
+        const res = await this.fetch(`${preURL}/save`, {
             method: excerpt ? 'PATCH' : 'POST',
             body: JSON.stringify({
                 ...modalValues,
@@ -59,6 +63,8 @@ const fetcher = {
             }),
             headers,
         })
+        const data = (await res.json()) as SaveArticleData
+        return data
     },
     removeArticle: function ({ excerpt }: { excerpt: string }) {
         return this.fetch(`${preURL}/article/${excerpt}`, {
