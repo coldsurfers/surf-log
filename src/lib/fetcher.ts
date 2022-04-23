@@ -1,4 +1,5 @@
 import { Article } from '../types/article'
+import { ArticleMeta } from '../types/articleMeta'
 import { EditorSaveModalValues } from '../types/modal'
 import { DEFAULT_PAGINATION_COUNT } from './constants'
 
@@ -66,7 +67,8 @@ const fetcher = {
     }): Promise<{
         list: Article[]
     }> {
-        const { articles } = await import('../../public/article-meta.json')
+        const { articles } =
+            require('../../public/article-meta.json') as ArticleMeta
         let list = Object.entries(articles).map(([key, data]) => data)
         if (category) {
             list = list.filter((data) => {
