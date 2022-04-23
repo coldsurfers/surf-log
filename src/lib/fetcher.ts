@@ -10,15 +10,22 @@ const headers = new Headers({
 
 const { PAGE_API_PRE_URL: preURL } = process.env
 
+interface GetTempSavedData {
+    error: string | null
+    tempArticleText: string
+}
+
 const fetcher = {
     fetch: (input: RequestInfo, init?: RequestInit | undefined) => {
         return fetch(input, init)
     },
-    getTempSaved: function () {
-        return this.fetch(`${preURL}/save/temp`, {
+    getTempSaved: async function () {
+        const res = await this.fetch(`${preURL}/save/temp`, {
             method: 'GET',
             headers,
         })
+        const data = (await res.json()) as GetTempSavedData
+        return data
     },
     getArticleByExcerpt: function ({ excerpt }: { excerpt: string }) {
         return this.fetch(`${preURL}/article/${encodeURIComponent(excerpt)}`, {

@@ -15,12 +15,8 @@ function useDefaultEditorValues() {
     >(undefined)
 
     const getTempFileText = useCallback(async () => {
-        const res = await fetcher.getTempSaved()
-        const json = (await res.json()) as {
-            error: string | null
-            tempArticleText: string | null
-        }
-        const { error, tempArticleText } = json
+        const data = await fetcher.getTempSaved()
+        const { error, tempArticleText } = data
         if (!error && tempArticleText) {
             setDefaultEditorValue(tempArticleText)
         }
