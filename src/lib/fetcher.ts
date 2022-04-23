@@ -23,6 +23,8 @@ interface SaveArticleData {
     error: string | null
 }
 
+interface RemoveArticleData {}
+
 const fetcher = {
     fetch: (input: RequestInfo, init?: RequestInit | undefined) => {
         return fetch(input, init)
@@ -66,10 +68,12 @@ const fetcher = {
         const data = (await res.json()) as SaveArticleData
         return data
     },
-    removeArticle: function ({ excerpt }: { excerpt: string }) {
-        return this.fetch(`${preURL}/article/${excerpt}`, {
+    removeArticle: async function ({ excerpt }: { excerpt: string }) {
+        const res = await this.fetch(`${preURL}/article/${excerpt}`, {
             method: 'DELETE',
         })
+        const data = (await res.json()) as RemoveArticleData
+        return data
     },
     temporarySaveArticle: function ({ editorText }: { editorText: string }) {
         return this.fetch(`${preURL}/save/temp`, {
