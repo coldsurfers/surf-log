@@ -25,6 +25,10 @@ interface SaveArticleData {
 
 interface RemoveArticleData {}
 
+interface TemporarySaveArticleData {
+    error: string | null
+}
+
 const fetcher = {
     fetch: (input: RequestInfo, init?: RequestInit | undefined) => {
         return fetch(input, init)
@@ -75,14 +79,20 @@ const fetcher = {
         const data = (await res.json()) as RemoveArticleData
         return data
     },
-    temporarySaveArticle: function ({ editorText }: { editorText: string }) {
-        return this.fetch(`${preURL}/save/temp`, {
+    temporarySaveArticle: async function ({
+        editorText,
+    }: {
+        editorText: string
+    }) {
+        const res = await this.fetch(`${preURL}/save/temp`, {
             method: 'POST',
             body: JSON.stringify({
                 text: editorText,
             }),
             headers,
         })
+        const data = (await res.json()) as TemporarySaveArticleData
+        return data
     },
     articleList: async function ({
         page,
