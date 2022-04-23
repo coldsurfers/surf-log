@@ -15,6 +15,10 @@ interface GetTempSavedData {
     tempArticleText: string
 }
 
+interface GetArticleByExcerptData {
+    data: Article | null
+}
+
 const fetcher = {
     fetch: (input: RequestInfo, init?: RequestInit | undefined) => {
         return fetch(input, init)
@@ -27,11 +31,16 @@ const fetcher = {
         const data = (await res.json()) as GetTempSavedData
         return data
     },
-    getArticleByExcerpt: function ({ excerpt }: { excerpt: string }) {
-        return this.fetch(`${preURL}/article/${encodeURIComponent(excerpt)}`, {
-            method: 'GET',
-            headers,
-        })
+    getArticleByExcerpt: async function ({ excerpt }: { excerpt: string }) {
+        const res = await this.fetch(
+            `${preURL}/article/${encodeURIComponent(excerpt)}`,
+            {
+                method: 'GET',
+                headers,
+            }
+        )
+        const data = (await res.json()) as GetArticleByExcerptData
+        return data
     },
     saveArticle: function ({
         excerpt,

@@ -26,13 +26,9 @@ function useDefaultEditorValues() {
         if (!excerpt) {
             return null
         }
-        const res = await fetcher.getArticleByExcerpt({
+        const { data } = await fetcher.getArticleByExcerpt({
             excerpt: excerpt as string,
         })
-        const json = (await res.json()) as {
-            data: Article | null
-        }
-        const { data } = json
         if (data) {
             const {
                 content,

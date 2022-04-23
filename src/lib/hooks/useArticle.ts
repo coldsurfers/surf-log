@@ -10,11 +10,8 @@ const useArticle: UseArticle = ({ initialData, excerpt }) => {
         'getArticle',
         async () => {
             if (!excerpt) return undefined
-            const res = await fetcher.getArticleByExcerpt({ excerpt })
-            const json = (await res.json()) as {
-                data: Article | null
-            }
-            return json.data ?? undefined
+            const { data } = await fetcher.getArticleByExcerpt({ excerpt })
+            return data ?? undefined
         },
         {
             initialData,

@@ -3,11 +3,12 @@ import meta from '../../../../public/article-meta.json'
 import fs from 'fs'
 import path from 'path'
 import { execSync } from 'child_process'
+import { ArticleMeta } from '../../../types/articleMeta'
 
 const ArticleAPI: NextApiHandler = (req, res) => {
     if (req.method === 'GET') {
         const { excerpt } = req.query
-        const { articles } = meta
+        const { articles } = meta as ArticleMeta
 
         const [, articleData] = Object.entries(articles).find(
             ([key]) => key === encodeURIComponent(`${excerpt}`)
@@ -25,7 +26,7 @@ const ArticleAPI: NextApiHandler = (req, res) => {
             })
         }
         const { excerpt } = req.query
-        const { articles } = meta
+        const { articles } = meta as ArticleMeta
         const encodedExcerpt = encodeURIComponent(excerpt as string)
         const article = articles[encodedExcerpt as keyof typeof articles]
         const { title } = article.data
