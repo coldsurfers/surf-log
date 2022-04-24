@@ -22,6 +22,10 @@
         <loc>https://blog.coldsurf.io/category/velog</loc>
     </url>
     <url>
+        <loc>https://blog.coldsurf.io/article/%EC%A0%95%EB%B3%B4%ED%86%B5%EC%8B%A0%EB%A7%9D%20-%206%EA%B0%95.%20%EB%8D%B0%EC%9D%B4%ED%84%B0%20%ED%86%B5%EC%8B%A0%EC%9D%98%20%EA%B8%B0%EB%8A%A5(II)</loc>
+        <lastmod>2022-04-24</lastmod>
+    </url>
+    <url>
         <loc>https://blog.coldsurf.io/article/Rust%EB%A1%9C%20%EC%9E%91%EC%84%B1%EB%90%9C%20%EC%96%B8%EC%96%B4%EB%A5%BC%20wasm-pack%EC%9C%BC%EB%A1%9C%20js%EB%A1%9C%20%EB%B9%8C%EB%93%9C%ED%95%98%EA%B8%B0</loc>
         <lastmod>2022-04-19</lastmod>
     </url>
