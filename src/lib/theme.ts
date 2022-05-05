@@ -13,4 +13,5 @@ export const themedPalette = {
     'header-background': cssVar('header-background'),
     'header-logo-background': cssVar('header-logo-background'),
     'header-logo-text-color': cssVar('header-logo-text-color'),
+    'tag-page-title-text-color': cssVar('tag-page-title-text-color'),
 }

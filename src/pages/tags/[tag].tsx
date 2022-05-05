@@ -4,12 +4,14 @@ import { useRouter } from 'next/router'
 import ArticleListTemplate from '../../components/templates/ArticleListTemplate'
 import fetcher from '../../lib/fetcher'
 import useArticles from '../../lib/hooks/useArticles'
+import { themedPalette } from '../../lib/theme'
 import { Article } from '../../types/article'
 
 const TagTitle = styled.h1`
     margin: 0px;
     margin-bottom: 10px;
     margin-left: 14px;
+    color: ${themedPalette['tag-page-title-text-color']};
 `
 
 interface InitialProps {

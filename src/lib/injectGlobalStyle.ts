@@ -12,6 +12,7 @@ const lightTheme = `
     --header-background: #ffffff;
     --header-logo-background: var(--oc-gray-3);
     --header-logo-text-color: #000000;
+    --tag-page-title-text-color: #000000;
 `
 const darkTheme = `
     --body-background: var(--oc-gray-9);
@@ -24,6 +25,7 @@ const darkTheme = `
     --header-background: #000000;
     --header-logo-background: var(--oc-gray-8);
     --header-logo-text-color: #ffffff;
+    --tag-page-title-text-color: #ffffff;
 `
 
 injectGlobal`
