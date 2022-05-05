@@ -1,6 +1,13 @@
 import styled from '@emotion/styled'
 import { NextPage } from 'next'
-import { useCallback, useEffect, useRef, useState } from 'react'
+import {
+    ChangeEvent,
+    KeyboardEventHandler,
+    useCallback,
+    useEffect,
+    useRef,
+    useState,
+} from 'react'
 import MarkdownRenderer from '../../components/templates/MarkdownRenderer'
 import { css } from '@emotion/css'
 import FloatingButton from '../../components/buttons/FloatingButton'
@@ -32,6 +39,38 @@ const PreviewPanel = styled.section`
     padding-bottom: 120px;
 `
 
+const TagsWrapper = styled.div`
+    display: flex;
+    align-items: center;
+    padding-top: 1rem;
+    padding-left: 1rem;
+    flex-wrap: wrap;
+`
+
+const TagInput = styled.input`
+    max-width: 150px;
+    background-color: transparent;
+    outline: none;
+    border: none;
+    color: #ffffff;
+    margin-bottom: 1rem;
+`
+
+const TagBadge = styled.div`
+    background-color: #495057;
+    width: auto;
+    height: 1.9rem;
+    line-height: 1.9rem;
+    color: #ffffff;
+    padding-left: 0.7rem;
+    padding-right: 0.7rem;
+    border-radius: 8px;
+    cursor: pointer;
+
+    margin-right: 1rem;
+    margin-bottom: 1rem;
+`
+
 const EditorPage: NextPage = () => {
     const [editorText, setEditorText] = useState<string>('')
     useTempSave({ editorText })
@@ -41,6 +80,8 @@ const EditorPage: NextPage = () => {
     const keydownMemoRef = useRef<{
         [key: string]: boolean
     }>({})
+    const [tagValue, setTagValue] = useState<string>('')
+    const [tags, setTags] = useState<string[]>([])
 
     const onClickSaveButton = useCallback(() => {
         setModalOpen(true)
@@ -58,6 +99,29 @@ const EditorPage: NextPage = () => {
         },
         []
     )
+
+    const onChangeTagInput = useCallback((e: ChangeEvent<HTMLInputElement>) => {
+        const { value } = e.target
+        setTagValue(value)
+    }, [])
+
+    const onClickTagBadge = useCallback(() => {}, [])
+
+    const onChangeTagInputKeyDown: KeyboardEventHandler<HTMLInputElement> =
+        useCallback(
+            (e) => {
+                if (e.key === 'Enter') {
+                    setTags((prevState) => [
+                        ...new Set(prevState.concat(tagValue)),
+                    ])
+                    setTagValue('')
+                }
+                if (e.key === 'Backspace' && tagValue === '') {
+                    setTags((prevState) => prevState.slice(0, -1))
+                }
+            },
+            [tagValue]
+        )
 
     useEffect(() => {
         return () => {
@@ -106,6 +170,26 @@ const EditorPage: NextPage = () => {
                     }
                 `}
             >
+                <TagsWrapper>
+                    {tags.map((tag, index) => {
+                        const onClick = () => {
+                            setTags(
+                                tags.filter((_, tagIndex) => tagIndex !== index)
+                            )
+                        }
+                        return (
+                            <TagBadge key={index} onClick={onClick}>
+                                {tag}
+                            </TagBadge>
+                        )
+                    })}
+                    <TagInput
+                        placeholder="태그 입력란"
+                        onChange={onChangeTagInput}
+                        value={tagValue}
+                        onKeyDown={onChangeTagInputKeyDown}
+                    />
+                </TagsWrapper>
                 <EditorRenderer
                     defaultValue={defaultEditorValue}
                     onCodeMirrorChange={onCodeMirrorChange}
