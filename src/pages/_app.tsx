@@ -20,6 +20,7 @@ import { useRouter } from 'next/router'
 import { pageView } from '../lib/ga/utils'
 import { QueryClient, QueryClientProvider } from 'react-query'
 import { ReactQueryDevtools } from 'react-query/devtools'
+import fetcher from '../lib/fetcher'
 
 const queryClient = new QueryClient()
 
@@ -129,12 +130,7 @@ function MyApp({ Component, pageProps }: AppProps) {
 
 MyApp.getInitialProps = async (appContext: AppContext) => {
     const appProps = await App.getInitialProps(appContext)
-    const articleMeta = (await import('../../public/article-meta.json')) as {
-        articles: {
-            [key: string]: Article
-        }
-        categories: string[]
-    }
+    const { articleMeta } = fetcher.getArticleMeta()
 
     const { res } = appContext.ctx
 

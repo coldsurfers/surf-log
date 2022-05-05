@@ -114,11 +114,7 @@ export const getServerSideProps: GetServerSideProps<
         }
     }
     const { excerpt } = ctx.params
-    const articleMeta = (await import('../../../public/article-meta.json')) as {
-        articles: {
-            [key: string]: Article
-        }
-    }
+    const { articleMeta } = fetcher.getArticleMeta()
     const article = articleMeta.articles[encodeURIComponent(excerpt)]
     return {
         props: {

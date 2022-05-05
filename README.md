@@ -24,5 +24,7 @@
 * [x] 2차 (타팀과의 협업에 대한) 면접기 작성
 * [x] article page 404 처리 (excerpt로 검색되는게 없을시)
 * [x] fetcher type 지정하기
-* [ ] import meta file vs page api 중복된 것 제거
+* [x] import meta file vs page api 중복된 것 제거
 * [ ] React Profiler에 대한 글 써보기
+* [ ] 글 상세에 Category + CreatedAt 표시하기
+* [ ] 태그 (#) 기능 추가해보기
