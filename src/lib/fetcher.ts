@@ -100,9 +100,11 @@ const fetcher = {
     articleList: async function ({
         page,
         category,
+        tag,
     }: {
         page: number
         category?: string
+        tag?: string
     }): Promise<{
         list: Article[]
     }> {
@@ -112,6 +114,11 @@ const fetcher = {
         if (category) {
             list = list.filter((data) => {
                 return data.data.category === category
+            })
+        }
+        if (tag) {
+            list = list.filter((data) => {
+                return data.data.tags?.includes(tag)
             })
         }
         list = list.slice(
