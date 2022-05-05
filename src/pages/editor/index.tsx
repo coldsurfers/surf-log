@@ -105,8 +105,6 @@ const EditorPage: NextPage = () => {
         setTagValue(value)
     }, [])
 
-    const onClickTagBadge = useCallback(() => {}, [])
-
     const onChangeTagInputKeyDown: KeyboardEventHandler<HTMLInputElement> =
         useCallback(
             (e) => {
