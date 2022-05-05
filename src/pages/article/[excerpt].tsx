@@ -11,6 +11,8 @@ import ArticleRemoveModal from '../../components/modal/ArticleRemoveModal'
 import fetcher from '../../lib/fetcher'
 import useArticle from '../../lib/hooks/useArticle'
 import Error from 'next/error'
+import { format } from 'date-fns'
+import { ko } from 'date-fns/locale'
 
 const ContentContainer = styled.div`
     background: #ffffff;
@@ -22,6 +24,21 @@ const ContentContainer = styled.div`
     ${mediaQuery.small} {
         padding: 1.25rem;
     }
+`
+
+const ArticleMetaInfoWrapper = styled.div`
+    text-align: right;
+`
+
+const TagText = styled.p`
+    font-weight: bold;
+    font-size: 20px;
+    margin: 0px;
+`
+
+const CreatedDateText = styled.p`
+    margin: 0px;
+    margin-top: 4px;
 `
 
 interface InitialProps {
@@ -86,6 +103,22 @@ const Excerpt: NextPage<InitialProps> = ({ initialData }) => {
                 />
             </Head>
             <ContentContainer>
+                <ArticleMetaInfoWrapper>
+                    {article.data.category && (
+                        <TagText>{article.data.category.toUpperCase()}</TagText>
+                    )}
+                    {article.data.createdAt && (
+                        <CreatedDateText>
+                            {format(
+                                new Date(article.data.createdAt),
+                                'yyyy-MM-dd HH:mm',
+                                {
+                                    locale: ko,
+                                }
+                            )}
+                        </CreatedDateText>
+                    )}
+                </ArticleMetaInfoWrapper>
                 <MarkdownRenderer text={article.content} />
                 {process.env.NODE_ENV === 'development' && (
                     <MenuFloatingButton menu={menu}>Menu</MenuFloatingButton>
