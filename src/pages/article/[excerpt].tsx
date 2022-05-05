@@ -14,6 +14,7 @@ import Error from 'next/error'
 import { format } from 'date-fns'
 import { ko } from 'date-fns/locale'
 import TagBadge from '../../components/badges/TagBadge'
+import Link from 'next/link'
 
 const ContentContainer = styled.div`
     background: #ffffff;
@@ -131,9 +132,13 @@ const Excerpt: NextPage<InitialProps> = ({ initialData }) => {
                         <TagsWrapper>
                             {article.data.tags.map((tag, index) => {
                                 return (
-                                    <TagBadge key={`${tag}-${index}`}>
-                                        {tag}
-                                    </TagBadge>
+                                    <Link
+                                        key={`${tag}-${index}`}
+                                        href={`/tags/${tag}`}
+                                        passHref
+                                    >
+                                        <TagBadge>{tag}</TagBadge>
+                                    </Link>
                                 )
                             })}
                         </TagsWrapper>
