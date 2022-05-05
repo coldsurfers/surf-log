@@ -28,3 +28,4 @@
 * [ ] React Profiler에 대한 글 써보기
 * [x] 글 상세에 Category + CreatedAt 표시하기
 * [ ] 태그 (#) 기능 추가해보기
+* [ ] react-query mutation 적용
