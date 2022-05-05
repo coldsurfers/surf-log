@@ -56,16 +56,19 @@ const fetcher = {
         excerpt,
         modalValues,
         editorText,
+        tags,
     }: {
         excerpt?: string
         modalValues: EditorSaveModalValues
         editorText: string
+        tags: string[]
     }) {
         const res = await this.fetch(`${preURL}/save`, {
             method: excerpt ? 'PATCH' : 'POST',
             body: JSON.stringify({
                 ...modalValues,
                 text: editorText,
+                tags,
             }),
             headers,
         })

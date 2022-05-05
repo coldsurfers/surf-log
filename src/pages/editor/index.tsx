@@ -16,6 +16,7 @@ import EditorRenderer from '../../components/templates/EditorRenderer'
 import useTempSave from '../../lib/hooks/useTempSave'
 import useSave from '../../lib/hooks/useSave'
 import useDefaultEditorValues from '../../lib/hooks/useDefaultEditorValues'
+import { EditorSaveModalValues } from '../../types/modal'
 
 const Container = styled.div`
     display: flex;
@@ -121,6 +122,13 @@ const EditorPage: NextPage = () => {
             [tagValue]
         )
 
+    const onClickSave = useCallback(
+        (modalValues: EditorSaveModalValues) => {
+            save({ modalValues, tags })
+        },
+        [save, tags]
+    )
+
     useEffect(() => {
         return () => {
             if (modalOpen) {
@@ -201,7 +209,7 @@ const EditorPage: NextPage = () => {
                 open={modalOpen}
                 onClickBackground={onClickModalBackground}
                 defaultModalValues={defaultModalValues}
-                onClickSave={save}
+                onClickSave={onClickSave}
             />
         </Container>
     )

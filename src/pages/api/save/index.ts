@@ -35,7 +35,7 @@ const SaveAPI: NextApiHandler = (req, res) => {
                 )
             })
         }
-        const { title, excerpt, category, thumbnail, text } = req.body
+        const { title, excerpt, category, thumbnail, text, tags } = req.body
         let articlePath = path.resolve(
             __dirname,
             `${articlesPathString}/${title}.md`
@@ -52,6 +52,7 @@ excerpt: ${excerpt}
 category: ${category}
 thumbnail: ${thumbnail}
 createdAt: ${new Date().toISOString()}
+tags: ${JSON.stringify(tags)}
 ---
 ${text}`
         fs.writeFileSync(articlePath, content)

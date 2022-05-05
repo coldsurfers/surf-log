@@ -12,4 +12,5 @@ export interface ArticleData {
     createdAt?: string
     excerpt?: string
     thumbnail?: string | null
+    tags?: string[]
 }
