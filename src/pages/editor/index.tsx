@@ -17,6 +17,7 @@ import useTempSave from '../../lib/hooks/useTempSave'
 import useSave from '../../lib/hooks/useSave'
 import useDefaultEditorValues from '../../lib/hooks/useDefaultEditorValues'
 import { EditorSaveModalValues } from '../../types/modal'
+import TagBadge from '../../components/badges/TagBadge'
 
 const Container = styled.div`
     display: flex;
@@ -54,21 +55,6 @@ const TagInput = styled.input`
     outline: none;
     border: none;
     color: #ffffff;
-    margin-bottom: 1rem;
-`
-
-const TagBadge = styled.div`
-    background-color: #495057;
-    width: auto;
-    height: 1.9rem;
-    line-height: 1.9rem;
-    color: #ffffff;
-    padding-left: 0.7rem;
-    padding-right: 0.7rem;
-    border-radius: 8px;
-    cursor: pointer;
-
-    margin-right: 1rem;
     margin-bottom: 1rem;
 `
 
