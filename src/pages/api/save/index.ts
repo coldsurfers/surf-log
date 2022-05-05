@@ -61,7 +61,7 @@ ${text}`
         })
     }
     if (req.method === 'PATCH') {
-        const { title, excerpt, category, thumbnail, text, createdAt } =
+        const { title, excerpt, category, thumbnail, text, createdAt, tags } =
             req.body
         let content = `---
 title: ${title}
@@ -70,6 +70,7 @@ category: ${category}
 thumbnail: ${thumbnail}
 createdAt: ${createdAt}
 updatedAt: ${new Date().toISOString()}
+tags: ${JSON.stringify(tags)}
 ---
 ${text}`
         let articlePath = path.resolve(
