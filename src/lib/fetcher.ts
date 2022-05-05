@@ -119,7 +119,7 @@ const fetcher = {
             list,
         }
     },
-    getArticleMeta: function () {
+    getArticleMeta: function (): { articleMeta: ArticleMeta } {
         const articleMeta =
             require('../../public/article-meta.json') as ArticleMeta
         return {
