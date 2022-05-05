@@ -4,6 +4,7 @@ import { WithInitialDataHooksProps } from './withInitialDataHooksProps'
 export interface UseArticlesProps
     extends WithInitialDataHooksProps<Article[] | undefined> {
     category?: string
+    tag?: string
 }
 
 export interface UseArticlesReturnType {

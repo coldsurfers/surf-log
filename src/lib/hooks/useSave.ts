@@ -7,11 +7,18 @@ function useSave({ editorText }: { editorText: string }) {
     const router = useRouter()
     const { excerpt } = router.query
     const save = useCallback(
-        async (modalValues: EditorSaveModalValues) => {
+        async ({
+            modalValues,
+            tags,
+        }: {
+            modalValues: EditorSaveModalValues
+            tags: string[]
+        }) => {
             const data = await fetcher.saveArticle({
                 excerpt: excerpt as string,
                 modalValues,
                 editorText,
+                tags,
             })
             const { error } = data
             if (error === null) {
