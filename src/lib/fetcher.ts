@@ -119,6 +119,13 @@ const fetcher = {
             list,
         }
     },
+    getArticleMeta: function () {
+        const articleMeta =
+            require('../../public/article-meta.json') as ArticleMeta
+        return {
+            articleMeta,
+        }
+    },
 }
 
 export default fetcher
