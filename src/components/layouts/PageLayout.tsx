@@ -68,7 +68,9 @@ const PageLayout: FC<Props> = ({
     const router = useRouter()
     return (
         <Container>
-            <Header theme={theme} onToggleTheme={onToggleTheme} />
+            {router.pathname !== '/editor' && (
+                <Header theme={theme} onToggleTheme={onToggleTheme} />
+            )}
             {sideBarBlackListRoutes.some((v) => v === router.pathname) ? (
                 children
             ) : (
