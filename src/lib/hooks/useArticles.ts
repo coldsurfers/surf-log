@@ -5,22 +5,24 @@ import { UseArticles } from '../../types/hooks/useArticles'
 import { DEFAULT_PAGINATION_COUNT } from '../constants'
 import fetcher from '../fetcher'
 
-const useArticles: UseArticles = ({ category, initialData }) => {
+const useArticles: UseArticles = ({ category, tag, initialData }) => {
     const [articles, setArticles] = useState<Article[]>(initialData ?? [])
     const [page, setPage] = useState<number>(1)
     const [isLastPage, setIsLastPage] = useState<boolean>(false)
 
     const { data, isFetching, isPreviousData } = useQuery(
-        ['getArticleList', page, category],
+        ['getArticleList', page, category, tag],
         async (params) => {
-            const [key, page, category] = params.queryKey as [
+            const [key, page, category, tag] = params.queryKey as [
                 string,
                 number,
-                string
+                string | undefined,
+                string | undefined
             ]
             const res = await fetcher.articleList({
                 page,
                 category,
+                tag,
             })
             return res.list
         },
