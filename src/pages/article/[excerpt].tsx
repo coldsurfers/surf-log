@@ -13,6 +13,8 @@ import useArticle from '../../lib/hooks/useArticle'
 import Error from 'next/error'
 import { format } from 'date-fns'
 import { ko } from 'date-fns/locale'
+import TagBadge from '../../components/badges/TagBadge'
+import Link from 'next/link'
 
 const ContentContainer = styled.div`
     background: #ffffff;
@@ -30,7 +32,7 @@ const ArticleMetaInfoWrapper = styled.div`
     text-align: right;
 `
 
-const TagText = styled.p`
+const CategoryText = styled.p`
     font-weight: bold;
     font-size: 20px;
     margin: 0px;
@@ -39,6 +41,12 @@ const TagText = styled.p`
 const CreatedDateText = styled.p`
     margin: 0px;
     margin-top: 4px;
+`
+
+const TagsWrapper = styled.div`
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
 `
 
 interface InitialProps {
@@ -105,7 +113,9 @@ const Excerpt: NextPage<InitialProps> = ({ initialData }) => {
             <ContentContainer>
                 <ArticleMetaInfoWrapper>
                     {article.data.category && (
-                        <TagText>{article.data.category.toUpperCase()}</TagText>
+                        <CategoryText>
+                            {article.data.category.toUpperCase()}
+                        </CategoryText>
                     )}
                     {article.data.createdAt && (
                         <CreatedDateText>
@@ -117,6 +127,21 @@ const Excerpt: NextPage<InitialProps> = ({ initialData }) => {
                                 }
                             )}
                         </CreatedDateText>
+                    )}
+                    {article.data.tags && (
+                        <TagsWrapper>
+                            {article.data.tags.map((tag, index) => {
+                                return (
+                                    <Link
+                                        key={`${tag}-${index}`}
+                                        href={`/tags/${tag}`}
+                                        passHref
+                                    >
+                                        <TagBadge>{tag}</TagBadge>
+                                    </Link>
+                                )
+                            })}
+                        </TagsWrapper>
                     )}
                 </ArticleMetaInfoWrapper>
                 <MarkdownRenderer text={article.content} />

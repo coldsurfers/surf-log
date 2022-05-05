@@ -22,6 +22,15 @@
         <loc>https://blog.coldsurf.io/category/velog</loc>
     </url>
     <url>
+        <loc>https://blog.coldsurf.io/tags/rust</loc>
+    </url>
+    <url>
+        <loc>https://blog.coldsurf.io/tags/wasm</loc>
+    </url>
+    <url>
+        <loc>https://blog.coldsurf.io/tags/web%20assembly</loc>
+    </url>
+    <url>
         <loc>https://blog.coldsurf.io/article/%EC%83%9D%ED%99%9C%EA%B3%BC%EA%B1%B4%EA%B0%95%20-%206%EA%B0%95.%20%EC%8B%A0%EC%B2%B4%EA%B1%B4%EA%B0%95%20%EB%AC%B8%EC%A0%9C%EC%99%80%20%EA%B4%80%EB%A6%AC(5)</loc>
         <lastmod>2022-04-24</lastmod>
     </url>

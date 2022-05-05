@@ -35,6 +35,11 @@ function generateSitemap() {
             Object.entries(articles).map(([key, data]) => data.data.category)
         ),
     ].sort()
+    const tags = [
+        ...new Set(
+            Object.entries(articles).flatMap(([key, data]) => data.data.tags)
+        ),
+    ].filter((tag) => tag !== undefined)
 
     // category route
     categories.forEach((category) => {
@@ -44,6 +49,12 @@ function generateSitemap() {
     })
     const articlesArray = Object.entries(articles).map(([key, data]) => {
         return data
+    })
+    // tag route
+    tags.forEach((tag) => {
+        routes.push({
+            pathname: `/tags/${encodeURIComponent(tag)}`,
+        })
     })
     // article route
     articlesArray.forEach((article) => {

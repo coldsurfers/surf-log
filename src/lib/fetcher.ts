@@ -56,16 +56,19 @@ const fetcher = {
         excerpt,
         modalValues,
         editorText,
+        tags,
     }: {
         excerpt?: string
         modalValues: EditorSaveModalValues
         editorText: string
+        tags: string[]
     }) {
         const res = await this.fetch(`${preURL}/save`, {
             method: excerpt ? 'PATCH' : 'POST',
             body: JSON.stringify({
                 ...modalValues,
                 text: editorText,
+                tags,
             }),
             headers,
         })
@@ -97,9 +100,11 @@ const fetcher = {
     articleList: async function ({
         page,
         category,
+        tag,
     }: {
         page: number
         category?: string
+        tag?: string
     }): Promise<{
         list: Article[]
     }> {
@@ -109,6 +114,11 @@ const fetcher = {
         if (category) {
             list = list.filter((data) => {
                 return data.data.category === category
+            })
+        }
+        if (tag) {
+            list = list.filter((data) => {
+                return data.data.tags?.includes(tag)
             })
         }
         list = list.slice(

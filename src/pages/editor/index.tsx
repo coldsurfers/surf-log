@@ -1,6 +1,13 @@
 import styled from '@emotion/styled'
 import { NextPage } from 'next'
-import { useCallback, useEffect, useRef, useState } from 'react'
+import {
+    ChangeEvent,
+    KeyboardEventHandler,
+    useCallback,
+    useEffect,
+    useRef,
+    useState,
+} from 'react'
 import MarkdownRenderer from '../../components/templates/MarkdownRenderer'
 import { css } from '@emotion/css'
 import FloatingButton from '../../components/buttons/FloatingButton'
@@ -9,6 +16,8 @@ import EditorRenderer from '../../components/templates/EditorRenderer'
 import useTempSave from '../../lib/hooks/useTempSave'
 import useSave from '../../lib/hooks/useSave'
 import useDefaultEditorValues from '../../lib/hooks/useDefaultEditorValues'
+import { EditorSaveModalValues } from '../../types/modal'
+import TagBadge from '../../components/badges/TagBadge'
 
 const Container = styled.div`
     display: flex;
@@ -32,6 +41,23 @@ const PreviewPanel = styled.section`
     padding-bottom: 120px;
 `
 
+const TagsWrapper = styled.div`
+    display: flex;
+    align-items: center;
+    padding-top: 1rem;
+    padding-left: 1rem;
+    flex-wrap: wrap;
+`
+
+const TagInput = styled.input`
+    max-width: 150px;
+    background-color: transparent;
+    outline: none;
+    border: none;
+    color: #ffffff;
+    margin-bottom: 1rem;
+`
+
 const EditorPage: NextPage = () => {
     const [editorText, setEditorText] = useState<string>('')
     useTempSave({ editorText })
@@ -41,6 +67,8 @@ const EditorPage: NextPage = () => {
     const keydownMemoRef = useRef<{
         [key: string]: boolean
     }>({})
+    const [tagValue, setTagValue] = useState<string>('')
+    const [tags, setTags] = useState<string[]>([])
 
     const onClickSaveButton = useCallback(() => {
         setModalOpen(true)
@@ -57,6 +85,34 @@ const EditorPage: NextPage = () => {
             setEditorText(value)
         },
         []
+    )
+
+    const onChangeTagInput = useCallback((e: ChangeEvent<HTMLInputElement>) => {
+        const { value } = e.target
+        setTagValue(value)
+    }, [])
+
+    const onChangeTagInputKeyDown: KeyboardEventHandler<HTMLInputElement> =
+        useCallback(
+            (e) => {
+                if (e.key === 'Enter') {
+                    setTags((prevState) => [
+                        ...new Set(prevState.concat(tagValue)),
+                    ])
+                    setTagValue('')
+                }
+                if (e.key === 'Backspace' && tagValue === '') {
+                    setTags((prevState) => prevState.slice(0, -1))
+                }
+            },
+            [tagValue]
+        )
+
+    const onClickSave = useCallback(
+        (modalValues: EditorSaveModalValues) => {
+            save({ modalValues, tags })
+        },
+        [save, tags]
     )
 
     useEffect(() => {
@@ -106,6 +162,26 @@ const EditorPage: NextPage = () => {
                     }
                 `}
             >
+                <TagsWrapper>
+                    {tags.map((tag, index) => {
+                        const onClick = () => {
+                            setTags(
+                                tags.filter((_, tagIndex) => tagIndex !== index)
+                            )
+                        }
+                        return (
+                            <TagBadge key={index} onClick={onClick}>
+                                {tag}
+                            </TagBadge>
+                        )
+                    })}
+                    <TagInput
+                        placeholder="태그 입력란"
+                        onChange={onChangeTagInput}
+                        value={tagValue}
+                        onKeyDown={onChangeTagInputKeyDown}
+                    />
+                </TagsWrapper>
                 <EditorRenderer
                     defaultValue={defaultEditorValue}
                     onCodeMirrorChange={onCodeMirrorChange}
@@ -119,7 +195,7 @@ const EditorPage: NextPage = () => {
                 open={modalOpen}
                 onClickBackground={onClickModalBackground}
                 defaultModalValues={defaultModalValues}
-                onClickSave={save}
+                onClickSave={onClickSave}
             />
         </Container>
     )
