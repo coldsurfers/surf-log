@@ -1,7 +1,7 @@
 import styled from '@emotion/styled'
 import Link from 'next/link'
 import Image from 'next/image'
-import { FC } from 'react'
+import { FC, memo, Profiler } from 'react'
 import mediaQuery from '../../lib/mediaQuery'
 import { themedPalette } from '../../lib/theme'
 import { Article } from '../../types/article'
@@ -105,38 +105,47 @@ interface Props {
 
 const ArticleItem: FC<Props> = ({ article }) => {
     return (
-        <Link href={`/article/${article.excerpt}`} passHref>
-            <ArticleContainer>
-                <ThumbnailWrapper>
-                    {article.thumbnailBase64 ? (
-                        <Image
-                            src={`${article.thumbnailBase64}`}
-                            alt="thumbnail"
-                            layout="fill"
-                            objectFit="fill"
-                        />
-                    ) : (
-                        <div />
-                    )}
-                </ThumbnailWrapper>
-                <ArticleDescWarpper>
-                    <ArticleTitle>{article.data.title}</ArticleTitle>
-                    <ArticleSubTitle>{article.data.excerpt}</ArticleSubTitle>
-                </ArticleDescWarpper>
-                {article.data.createdAt && (
-                    <ArticleDate>
-                        {format(
-                            new Date(article.data.createdAt),
-                            'yyyy-MM-dd HH:mm',
-                            {
-                                locale: ko,
-                            }
+        <Profiler
+            id="ArticleItem"
+            onRender={(...props) => {
+                console.log(...props)
+            }}
+        >
+            <Link href={`/article/${article.excerpt}`} passHref>
+                <ArticleContainer>
+                    <ThumbnailWrapper>
+                        {article.thumbnailBase64 ? (
+                            <Image
+                                src={`${article.thumbnailBase64}`}
+                                alt="thumbnail"
+                                layout="fill"
+                                objectFit="fill"
+                            />
+                        ) : (
+                            <div />
                         )}
-                    </ArticleDate>
-                )}
-            </ArticleContainer>
-        </Link>
+                    </ThumbnailWrapper>
+                    <ArticleDescWarpper>
+                        <ArticleTitle>{article.data.title}</ArticleTitle>
+                        <ArticleSubTitle>
+                            {article.data.excerpt}
+                        </ArticleSubTitle>
+                    </ArticleDescWarpper>
+                    {article.data.createdAt && (
+                        <ArticleDate>
+                            {format(
+                                new Date(article.data.createdAt),
+                                'yyyy-MM-dd HH:mm',
+                                {
+                                    locale: ko,
+                                }
+                            )}
+                        </ArticleDate>
+                    )}
+                </ArticleContainer>
+            </Link>
+        </Profiler>
     )
 }
 
-export default ArticleItem
+export default memo(ArticleItem)
