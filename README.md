@@ -29,4 +29,4 @@
 * [x] 글 상세에 Category + CreatedAt 표시하기
 * [x] 태그 (#) 기능 추가해보기
 * [x] tags/:tag 페이지 만들고 TagBadge 클릭 시 해당 tag로 이동
-* [ ] react-query mutation 적용
+* [x] react-query mutation 적용
