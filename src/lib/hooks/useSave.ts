@@ -1,12 +1,18 @@
 import { useRouter } from 'next/router'
-import { useCallback } from 'react'
+import { useEffect } from 'react'
 import { EditorSaveModalValues } from '../../types/modal'
 import fetcher from '../fetcher'
+import { useMutation } from 'react-query'
 
 function useSave({ editorText }: { editorText: string }) {
     const router = useRouter()
     const { excerpt } = router.query
-    const save = useCallback(
+    const {
+        mutate: save,
+        data,
+        error,
+    } = useMutation(
+        ['saveArticle', excerpt, editorText],
         async ({
             modalValues,
             tags,
@@ -14,21 +20,32 @@ function useSave({ editorText }: { editorText: string }) {
             modalValues: EditorSaveModalValues
             tags: string[]
         }) => {
-            const data = await fetcher.saveArticle({
+            return await fetcher.saveArticle({
                 excerpt: excerpt as string,
                 modalValues,
                 editorText,
                 tags,
             })
-            const { error } = data
-            if (error === null) {
-                router.push('/')
-            } else {
-                console.error(error)
-            }
-        },
-        [excerpt, editorText, router]
+        }
     )
+
+    useEffect(() => {
+        if (!data) {
+            return
+        }
+        const { error } = data
+        if (error === null) {
+            router.push('/')
+        } else {
+            console.error(error)
+        }
+    }, [data, router])
+
+    useEffect(() => {
+        if (error) {
+            console.error(error)
+        }
+    }, [error])
 
     return {
         save,
