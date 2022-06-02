@@ -2,6 +2,7 @@ import styled from '@emotion/styled'
 import { NextPage } from 'next'
 import {
     ChangeEvent,
+    DragEventHandler,
     KeyboardEventHandler,
     useCallback,
     useEffect,
@@ -115,6 +116,22 @@ const EditorPage: NextPage = () => {
         [save, tags]
     )
 
+    const onDragOverEnd: DragEventHandler<HTMLElement> = useCallback((e) => {
+        e.preventDefault()
+    }, [])
+
+    const onDrop: DragEventHandler<HTMLElement> = useCallback((e) => {
+        e.preventDefault()
+        const { items } = e.dataTransfer
+        if (items.length === 0) return
+        const targetItem = items[0]
+        const file = targetItem.getAsFile()
+        if (file !== null) {
+            const formData = new FormData()
+            formData.append('editorFile', file, file.name)
+        }
+    }, [])
+
     useEffect(() => {
         return () => {
             if (modalOpen) {
@@ -161,6 +178,9 @@ const EditorPage: NextPage = () => {
                         padding: 1rem;
                     }
                 `}
+                onDragOver={onDragOverEnd}
+                onDragEnd={onDragOverEnd}
+                onDrop={onDrop}
             >
                 <TagsWrapper>
                     {tags.map((tag, index) => {
