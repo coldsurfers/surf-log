@@ -129,6 +129,12 @@ const EditorPage: NextPage = () => {
         if (file !== null) {
             const formData = new FormData()
             formData.append('editorFile', file, file.name)
+            fetch('/api/save/file', {
+                method: 'POST',
+                body: formData,
+            }).then(async (res) => {
+                console.log(await res.json())
+            })
         }
     }, [])
 
