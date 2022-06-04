@@ -2,7 +2,6 @@ import styled from '@emotion/styled'
 import { NextPage } from 'next'
 import {
     ChangeEvent,
-    DragEventHandler,
     KeyboardEventHandler,
     useCallback,
     useEffect,
@@ -70,6 +69,7 @@ const EditorPage: NextPage = () => {
     }>({})
     const [tagValue, setTagValue] = useState<string>('')
     const [tags, setTags] = useState<string[]>([])
+    const [fileDestinations, setFileDestinations] = useState<string[]>([])
 
     const onClickSaveButton = useCallback(() => {
         setModalOpen(true)
@@ -116,27 +116,10 @@ const EditorPage: NextPage = () => {
         [save, tags]
     )
 
-    const onDragOverEnd: DragEventHandler<HTMLElement> = useCallback((e) => {
-        e.preventDefault()
-    }, [])
-
-    const onDrop: DragEventHandler<HTMLElement> = useCallback((e) => {
-        e.preventDefault()
-        const { items } = e.dataTransfer
-        if (items.length === 0) return
-        const targetItem = items[0]
-        const file = targetItem.getAsFile()
-        if (file !== null) {
-            const formData = new FormData()
-            formData.append('editorFile', file, file.name)
-            fetch('/api/save/file', {
-                method: 'POST',
-                body: formData,
-            }).then(async (res) => {
-                console.log(await res.json())
-            })
-        }
-    }, [])
+    const onFileUploaded = useCallback(
+        (path: string) => setFileDestinations((prev) => prev.concat(path)),
+        []
+    )
 
     useEffect(() => {
         return () => {
@@ -184,9 +167,6 @@ const EditorPage: NextPage = () => {
                         padding: 1rem;
                     }
                 `}
-                onDragOver={onDragOverEnd}
-                onDragEnd={onDragOverEnd}
-                onDrop={onDrop}
             >
                 <TagsWrapper>
                     {tags.map((tag, index) => {
@@ -211,6 +191,7 @@ const EditorPage: NextPage = () => {
                 <EditorRenderer
                     defaultValue={defaultEditorValue}
                     onCodeMirrorChange={onCodeMirrorChange}
+                    onFileUploaded={onFileUploaded}
                 />
             </EditorPanel>
             <PreviewPanel>

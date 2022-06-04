@@ -2,7 +2,7 @@ import 'codemirror/lib/codemirror.css'
 import 'codemirror/theme/oceanic-next.css'
 import styled from '@emotion/styled'
 import { Editor, EditorChange, EditorConfiguration, Position } from 'codemirror'
-import { FC, useEffect, useRef } from 'react'
+import { DragEventHandler, FC, useCallback, useEffect, useRef } from 'react'
 import { css } from '@emotion/css'
 
 let CodeMirror: any = null
@@ -28,12 +28,67 @@ const EditorContent = styled.div`
 interface Props {
     defaultValue?: string
     onCodeMirrorChange: (editor: Editor, changeObj: EditorChange) => void
+    onFileUploaded?: (path: string) => void
 }
 
-const EditorRenderer: FC<Props> = ({ defaultValue, onCodeMirrorChange }) => {
+const EditorRenderer: FC<Props> = ({
+    defaultValue,
+    onCodeMirrorChange,
+    onFileUploaded,
+}) => {
     const editorRef = useRef<HTMLDivElement>(null)
     const codeMirrorRef = useRef<Editor | null>(null)
     const codeMirrorCursorRef = useRef<Position | null>(null)
+
+    const onDragOverEnd: DragEventHandler<HTMLElement> = useCallback((e) => {
+        e.preventDefault()
+    }, [])
+
+    const onDrop: DragEventHandler<HTMLElement> = useCallback(
+        (e) => {
+            e.preventDefault()
+            const { items } = e.dataTransfer
+            if (items.length === 0) return
+            const targetItem = items[0]
+            const file = targetItem.getAsFile()
+            if (file !== null) {
+                const formData = new FormData()
+                formData.append('editorFile', file, file.name)
+                fetch('/api/save/file', {
+                    method: 'POST',
+                    body: formData,
+                }).then(async (res) => {
+                    const data = (await res.json()) as {
+                        destination: string
+                        encoding: string
+                        fieldname: string
+                        filename: string
+                        mimetype: string
+                        originalname: string
+                        path: string
+                        size: number
+                    }
+                    if (onFileUploaded) {
+                        onFileUploaded(data.path)
+                    }
+                    const urlPath = `${data.path.split('public').join('')}`
+                    const { current: ref } = codeMirrorRef
+                    if (!ref) return
+                    const existingCodeMirrorValue = ref.getValue()
+                    if (existingCodeMirrorValue) {
+                        codeMirrorRef.current?.setValue(
+                            `${existingCodeMirrorValue}\n![${data.originalname}](${urlPath})`
+                        )
+                    } else {
+                        codeMirrorRef.current?.setValue(
+                            `${existingCodeMirrorValue}![${data.originalname}](${urlPath})`
+                        )
+                    }
+                })
+            }
+        },
+        [onFileUploaded]
+    )
 
     useEffect(() => {
         if (codeMirrorCursorRef.current && codeMirrorRef.current) {
@@ -90,13 +145,16 @@ const EditorRenderer: FC<Props> = ({ defaultValue, onCodeMirrorChange }) => {
 
     return (
         <EditorContent
+            onDragOver={onDragOverEnd}
+            onDragEnd={onDragOverEnd}
+            onDrop={onDrop}
             className={css`
                 .CodeMirror {
                     font-family: 'Fira Sans', sans-serif;
                 }
             `}
             ref={editorRef}
-        ></EditorContent>
+        />
     )
 }
 
