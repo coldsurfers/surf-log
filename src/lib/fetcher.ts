@@ -29,6 +29,17 @@ interface TemporarySaveArticleData {
     error: string | null
 }
 
+export interface FetchSaveFileResponseData {
+    destination: string
+    encoding: string
+    fieldname: string
+    filename: string
+    mimetype: string
+    originalname: string
+    path: string
+    size: number
+}
+
 const fetcher = {
     fetch: (input: RequestInfo, init?: RequestInit | undefined) => {
         return fetch(input, init)
@@ -135,6 +146,17 @@ const fetcher = {
         return {
             articleMeta,
         }
+    },
+    saveFile: async function ({ file }: { file: File }) {
+        const formData = new FormData()
+        formData.append('editorFile', file, file.name)
+        const res = await fetch('/api/save/file', {
+            method: 'POST',
+            body: formData,
+        })
+        const data = (await res.json()) as FetchSaveFileResponseData
+
+        return data
     },
 }
 
