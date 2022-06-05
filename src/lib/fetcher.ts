@@ -136,6 +136,26 @@ const fetcher = {
             articleMeta,
         }
     },
+    saveFile: async function ({ file }: { file: File }) {
+        const formData = new FormData()
+        formData.append('editorFile', file, file.name)
+        const res = await fetch('/api/save/file', {
+            method: 'POST',
+            body: formData,
+        })
+        const data = (await res.json()) as {
+            destination: string
+            encoding: string
+            fieldname: string
+            filename: string
+            mimetype: string
+            originalname: string
+            path: string
+            size: number
+        }
+
+        return data
+    },
 }
 
 export default fetcher

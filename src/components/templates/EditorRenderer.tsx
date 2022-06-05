@@ -4,6 +4,7 @@ import styled from '@emotion/styled'
 import { Editor, EditorChange, EditorConfiguration, Position } from 'codemirror'
 import { DragEventHandler, FC, useCallback, useEffect, useRef } from 'react'
 import { css } from '@emotion/css'
+import fetcher from '../../lib/fetcher'
 
 let CodeMirror: any = null
 
@@ -45,46 +46,30 @@ const EditorRenderer: FC<Props> = ({
     }, [])
 
     const onDrop: DragEventHandler<HTMLElement> = useCallback(
-        (e) => {
+        async (e) => {
             e.preventDefault()
             const { items } = e.dataTransfer
             if (items.length === 0) return
             const targetItem = items[0]
             const file = targetItem.getAsFile()
             if (file !== null) {
-                const formData = new FormData()
-                formData.append('editorFile', file, file.name)
-                fetch('/api/save/file', {
-                    method: 'POST',
-                    body: formData,
-                }).then(async (res) => {
-                    const data = (await res.json()) as {
-                        destination: string
-                        encoding: string
-                        fieldname: string
-                        filename: string
-                        mimetype: string
-                        originalname: string
-                        path: string
-                        size: number
-                    }
-                    if (onFileUploaded) {
-                        onFileUploaded(data.path)
-                    }
-                    const urlPath = `${data.path.split('public').join('')}`
-                    const { current: ref } = codeMirrorRef
-                    if (!ref) return
-                    const existingCodeMirrorValue = ref.getValue()
-                    if (existingCodeMirrorValue) {
-                        codeMirrorRef.current?.setValue(
-                            `${existingCodeMirrorValue}\n![${data.originalname}](${urlPath})`
-                        )
-                    } else {
-                        codeMirrorRef.current?.setValue(
-                            `${existingCodeMirrorValue}![${data.originalname}](${urlPath})`
-                        )
-                    }
-                })
+                const data = await fetcher.saveFile({ file })
+                if (onFileUploaded) {
+                    onFileUploaded(data.path)
+                }
+                const urlPath = `${data.path.split('public').join('')}`
+                const { current: ref } = codeMirrorRef
+                if (!ref) return
+                const existingCodeMirrorValue = ref.getValue()
+                if (existingCodeMirrorValue) {
+                    codeMirrorRef.current?.setValue(
+                        `${existingCodeMirrorValue}\n![${data.originalname}](${urlPath})`
+                    )
+                } else {
+                    codeMirrorRef.current?.setValue(
+                        `${existingCodeMirrorValue}![${data.originalname}](${urlPath})`
+                    )
+                }
             }
         },
         [onFileUploaded]
