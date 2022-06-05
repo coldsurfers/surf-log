@@ -4,7 +4,7 @@ import styled from '@emotion/styled'
 import { Editor, EditorChange, EditorConfiguration, Position } from 'codemirror'
 import { DragEventHandler, FC, useCallback, useEffect, useRef } from 'react'
 import { css } from '@emotion/css'
-import fetcher from '../../lib/fetcher'
+import useSaveFile from '../../lib/hooks/useSaveFile'
 
 let CodeMirror: any = null
 
@@ -40,6 +40,7 @@ const EditorRenderer: FC<Props> = ({
     const editorRef = useRef<HTMLDivElement>(null)
     const codeMirrorRef = useRef<Editor | null>(null)
     const codeMirrorCursorRef = useRef<Position | null>(null)
+    const { mutate: mutateSaveFile, data: saveFileData } = useSaveFile()
 
     const onDragOverEnd: DragEventHandler<HTMLElement> = useCallback((e) => {
         e.preventDefault()
@@ -53,26 +54,10 @@ const EditorRenderer: FC<Props> = ({
             const targetItem = items[0]
             const file = targetItem.getAsFile()
             if (file !== null) {
-                const data = await fetcher.saveFile({ file })
-                if (onFileUploaded) {
-                    onFileUploaded(data.path)
-                }
-                const urlPath = `${data.path.split('public').join('')}`
-                const { current: ref } = codeMirrorRef
-                if (!ref) return
-                const existingCodeMirrorValue = ref.getValue()
-                if (existingCodeMirrorValue) {
-                    codeMirrorRef.current?.setValue(
-                        `${existingCodeMirrorValue}\n![${data.originalname}](${urlPath})`
-                    )
-                } else {
-                    codeMirrorRef.current?.setValue(
-                        `${existingCodeMirrorValue}![${data.originalname}](${urlPath})`
-                    )
-                }
+                mutateSaveFile({ file })
             }
         },
-        [onFileUploaded]
+        [mutateSaveFile]
     )
 
     useEffect(() => {
@@ -127,6 +112,28 @@ const EditorRenderer: FC<Props> = ({
             }
         }
     }, [])
+
+    useEffect(() => {
+        if (saveFileData) {
+            const { path, originalname } = saveFileData
+            if (onFileUploaded) {
+                onFileUploaded(path)
+            }
+            const urlPath = `${path.split('public').join('')}`
+            const { current: ref } = codeMirrorRef
+            if (!ref) return
+            const existingCodeMirrorValue = ref.getValue()
+            if (existingCodeMirrorValue) {
+                codeMirrorRef.current?.setValue(
+                    `${existingCodeMirrorValue}\n![${originalname}](${urlPath})`
+                )
+            } else {
+                codeMirrorRef.current?.setValue(
+                    `${existingCodeMirrorValue}![${originalname}](${urlPath})`
+                )
+            }
+        }
+    }, [onFileUploaded, saveFileData])
 
     return (
         <EditorContent
