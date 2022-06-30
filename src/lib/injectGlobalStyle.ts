@@ -29,10 +29,10 @@ const darkTheme = `
 `
 
 injectGlobal`
-    @import url('//fonts.googleapis.com/css2?family=Fira+Sans:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;1,100;1,200;1,300;1,400;1,500;1,600&display=swap');
+    @import url('//cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css');
     :root {
         --header-height: 56px;
-        --common-font-family: 'Fira Sans', sans-serif;
+        --common-font-family: Pretendard, -apple-system, BlinkMacSystemFont, system-ui, Roboto, 'Helvetica Neue', 'Segoe UI', 'Apple SD Gothic Neo', 'Noto Sans KR', 'Malgun Gothic', 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', sans-serif;
     }
     body {
         ${lightTheme}
@@ -56,6 +56,6 @@ injectGlobal`
         color: inherit;
     }
     button {
-        font-family: 'Fira Sans', sans-serif;
+        font-family: var(--common-font-family);
     }
 `
