@@ -16,6 +16,7 @@ if (isBrowser) {
     require('prismjs/components/prism-rust.min.js')
     require('prismjs/components/prism-json.min.js')
     require('prismjs/components/prism-toml.min.js')
+    require('prismjs/components/prism-ruby.min.js')
 }
 
 interface Props {

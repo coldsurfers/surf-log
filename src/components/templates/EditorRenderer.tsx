@@ -18,6 +18,7 @@ if (typeof window !== 'undefined') {
     require('codemirror/mode/clike/clike')
     require('codemirror/mode/rust/rust')
     require('codemirror/mode/toml/toml')
+    require('codemirror/mode/ruby/ruby')
 }
 
 const EditorContent = styled.div`
