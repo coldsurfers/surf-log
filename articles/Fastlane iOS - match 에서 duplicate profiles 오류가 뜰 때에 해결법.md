@@ -4,6 +4,7 @@ excerpt: match 에서 duplicate profiles 오류가 뜰 때에 해결법
 category: dev
 thumbnail: fastlane.png
 createdAt: 2022-07-31T04:52:15.831Z
+updatedAt: 2022-08-02T01:54:41.156Z
 tags: []
 ---
 # Fastlane iOS - match 에서 duplicate profiles 오류가 뜰 때에 해결법
@@ -11,6 +12,9 @@ tags: []
 회사에서 fastlane 으로 iOS 빌드 자동화를 할 일이 생겨서 전체적으로 쭉 들여다 보는 와중에 해결하기 참 애매한 상황을 맞닥뜨렸다.
 
 `match`를 이용하여 codesign에 필요한 certificate 및 profile들을 관리하는 레포와 연동을 해야 하는데, 다음과 같은 에러가 뜬 것 이다.
+
+
+![에러사진.png](/uploads/1659405247751.png)
 
 
 ```bash
@@ -77,33 +81,4 @@ match(
 ```
 
 이렇게 하면 실제 repo와 연동하여 굳이 match가 정해준 이름이 아니더라도 커스텀한 이름을 사용할 수 있다.
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
