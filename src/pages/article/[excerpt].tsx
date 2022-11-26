@@ -1,4 +1,4 @@
-import { GetServerSideProps, NextPage } from 'next'
+import { GetStaticPaths, GetStaticProps, NextPage } from 'next'
 import { Article } from '../../types/article'
 import styled from '@emotion/styled'
 import mediaQuery from '../../lib/mediaQuery'
@@ -158,12 +158,26 @@ const Excerpt: NextPage<InitialProps> = ({ initialData }) => {
     )
 }
 
-export const getServerSideProps: GetServerSideProps<
+export const getStaticPaths: GetStaticPaths = () => {
+    const meta = fetcher.getArticleMeta()
+    const { articles } = meta.articleMeta
+    const excerpts = Object.keys(articles).map((excerpt) => excerpt)
+    return {
+        paths: excerpts.map((excerpt) => ({
+            params: {
+                excerpt,
+            },
+        })),
+        fallback: false,
+    }
+}
+
+export const getStaticProps: GetStaticProps<
     InitialProps,
     {
         excerpt: string
     }
-> = async (ctx) => {
+> = (ctx) => {
     if (!ctx.params) {
         return {
             props: {
@@ -173,7 +187,7 @@ export const getServerSideProps: GetServerSideProps<
     }
     const { excerpt } = ctx.params
     const { articleMeta } = fetcher.getArticleMeta()
-    const article = articleMeta.articles[encodeURIComponent(excerpt)]
+    const article = articleMeta.articles[excerpt]
     return {
         props: {
             initialData: article,
