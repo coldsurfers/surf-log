@@ -22,6 +22,27 @@
         <loc>https://blog.coldsurf.io/category/velog</loc>
     </url>
     <url>
+        <loc>https://blog.coldsurf.io/tags/patterns.dev</loc>
+    </url>
+    <url>
+        <loc>https://blog.coldsurf.io/tags/ssr</loc>
+    </url>
+    <url>
+        <loc>https://blog.coldsurf.io/tags/server%20side%20rendering</loc>
+    </url>
+    <url>
+        <loc>https://blog.coldsurf.io/tags/static%20rendering</loc>
+    </url>
+    <url>
+        <loc>https://blog.coldsurf.io/tags/client%20side%20rendering</loc>
+    </url>
+    <url>
+        <loc>https://blog.coldsurf.io/tags/rendering%20pattern</loc>
+    </url>
+    <url>
+        <loc>https://blog.coldsurf.io/tags/render%20pattern</loc>
+    </url>
+    <url>
         <loc>https://blog.coldsurf.io/tags/rust</loc>
     </url>
     <url>
@@ -29,6 +50,10 @@
     </url>
     <url>
         <loc>https://blog.coldsurf.io/tags/web%20assembly</loc>
+    </url>
+    <url>
+        <loc>https://blog.coldsurf.io/article/patterns.dev%20%EB%A0%8C%EB%8D%94%EB%A7%81%20%ED%8C%A8%ED%84%B4%20%EC%86%8C%EA%B0%9C%20%EA%B8%80%20%EB%B2%88%EC%97%AD</loc>
+        <lastmod>2022-11-26</lastmod>
     </url>
     <url>
         <loc>https://blog.coldsurf.io/article/match%20%EC%97%90%EC%84%9C%20duplicate%20profiles%20%EC%98%A4%EB%A5%98%EA%B0%80%20%EB%9C%B0%20%EB%95%8C%EC%97%90%20%ED%95%B4%EA%B2%B0%EB%B2%95</loc>
