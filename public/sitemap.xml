@@ -22,7 +22,13 @@
         <loc>https://blog.coldsurf.io/category/velog</loc>
     </url>
     <url>
+        <loc>https://blog.coldsurf.io/tags/tree%20shaking</loc>
+    </url>
+    <url>
         <loc>https://blog.coldsurf.io/tags/patterns.dev</loc>
+    </url>
+    <url>
+        <loc>https://blog.coldsurf.io/tags/%ED%8A%B8%EB%A6%AC%20%EC%89%90%EC%9D%B4%ED%82%B9</loc>
     </url>
     <url>
         <loc>https://blog.coldsurf.io/tags/ssr</loc>
@@ -50,6 +56,10 @@
     </url>
     <url>
         <loc>https://blog.coldsurf.io/tags/web%20assembly</loc>
+    </url>
+    <url>
+        <loc>https://blog.coldsurf.io/article/tree shaking (patterns.dev)</loc>
+        <lastmod>2022-11-27</lastmod>
     </url>
     <url>
         <loc>https://blog.coldsurf.io/article/patterns.dev 렌더링 패턴 소개 글 번역</loc>
