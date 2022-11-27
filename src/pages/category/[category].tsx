@@ -1,4 +1,4 @@
-import { GetServerSideProps, NextPage } from 'next'
+import { GetStaticPaths, GetStaticProps, NextPage } from 'next'
 import Head from 'next/head'
 import { useRouter } from 'next/router'
 import ArticleListTemplate from '../../components/templates/ArticleListTemplate'
@@ -37,7 +37,21 @@ const Category: NextPage<InitialProps> = ({ initialData }) => {
     )
 }
 
-export const getServerSideProps: GetServerSideProps<
+export const getStaticPaths: GetStaticPaths = (context) => {
+    const { articleMeta } = fetcher.getArticleMeta()
+    const { categories } = articleMeta
+
+    return {
+        paths: categories.map((category) => ({
+            params: {
+                category,
+            },
+        })),
+        fallback: false,
+    }
+}
+
+export const getStaticProps: GetStaticProps<
     InitialProps,
     {
         category: string
