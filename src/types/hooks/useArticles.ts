@@ -8,10 +8,8 @@ export interface UseArticlesProps
 }
 
 export interface UseArticlesReturnType {
-    articles: Article[]
-    isFetching: boolean
-    isLastPage: boolean
-    page: number
+    data: Article[]
+    isLoading: boolean
     loadMore: () => void
 }
 

@@ -1,67 +1,56 @@
 import { useCallback, useEffect, useState } from 'react'
-import { useQuery } from 'react-query'
+import { useInfiniteQuery, useQuery } from 'react-query'
 import { Article } from '../../types/article'
 import { UseArticles } from '../../types/hooks/useArticles'
 import { DEFAULT_PAGINATION_COUNT } from '../constants'
 import fetcher from '../fetcher'
 
 const useArticles: UseArticles = ({ category, tag, initialData }) => {
-    const [articles, setArticles] = useState<Article[]>(initialData ?? [])
-    const [page, setPage] = useState<number>(1)
-    const [isLastPage, setIsLastPage] = useState<boolean>(false)
-
-    const { data, isFetching, isPreviousData } = useQuery(
-        ['getArticleList', page, category, tag],
-        async (params) => {
-            const [key, page, category, tag] = params.queryKey as [
+    const {
+        data,
+        isFetching,
+        fetchNextPage,
+        hasNextPage,
+        isFetchingNextPage,
+        isLoading,
+    } = useInfiniteQuery<Article[]>(
+        ['getArticleList', category, tag],
+        async ({ pageParam = 0, queryKey }) => {
+            const [, category, tag] = queryKey as [
                 string,
-                number,
                 string | undefined,
                 string | undefined
             ]
             const res = await fetcher.articleList({
-                page,
+                page: pageParam,
                 category,
                 tag,
             })
             return res.list
         },
         {
-            initialData: page === 1 && initialData,
-            keepPreviousData: true,
+            initialData: initialData
+                ? {
+                      pageParams: [1],
+                      pages: [initialData],
+                  }
+                : undefined,
+            getNextPageParam: (lastPage, allPages) => {
+                if (lastPage.length < DEFAULT_PAGINATION_COUNT) return undefined
+                return allPages.length + 1
+            },
         }
     )
 
     const loadMore = useCallback(() => {
-        if (isFetching || isLastPage) return
-        setPage((prev) => prev + 1)
-    }, [isFetching, isLastPage])
-
-    useEffect(() => {
-        if (!data) return
-        if (!isPreviousData) {
-            setArticles((prev) => {
-                if (page === 1) {
-                    return data
-                }
-                return prev.concat(data)
-            })
-            if (data.length < DEFAULT_PAGINATION_COUNT) {
-                setIsLastPage(true)
-            }
-        }
-    }, [data, isPreviousData, page])
-
-    useEffect(() => {
-        setPage(1)
-        setIsLastPage(false)
-    }, [category])
+        if (isLoading || isFetching || !hasNextPage || isFetchingNextPage)
+            return
+        fetchNextPage()
+    }, [fetchNextPage, hasNextPage, isFetching, isFetchingNextPage, isLoading])
 
     return {
-        articles,
-        isFetching,
-        isLastPage,
-        page,
+        data: data?.pages.flatMap((v) => v) ?? [],
+        isLoading: isFetching || isFetchingNextPage || isLoading,
         loadMore,
     }
 }

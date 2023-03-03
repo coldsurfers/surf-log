@@ -21,7 +21,7 @@ interface InitialProps {
 const TagsTagPage: NextPage<InitialProps> = ({ initialData }) => {
     const router = useRouter()
     const { tag } = router.query
-    const { articles, loadMore, isFetching } = useArticles({
+    const { data, loadMore, isLoading } = useArticles({
         tag: tag as string | undefined,
         initialData,
     })
@@ -29,9 +29,9 @@ const TagsTagPage: NextPage<InitialProps> = ({ initialData }) => {
         <>
             <TagTitle>#{tag}</TagTitle>
             <ArticleListTemplate
-                articles={articles}
+                articles={data}
                 onLoadMore={loadMore}
-                isLoading={isFetching}
+                isLoading={isLoading}
             />
         </>
     )

@@ -13,7 +13,7 @@ interface InitialProps {
 const Category: NextPage<InitialProps> = ({ initialData }) => {
     const router = useRouter()
     const { category } = router.query
-    const { articles, isFetching, loadMore } = useArticles({
+    const { data, isLoading, loadMore } = useArticles({
         category: category as string | undefined,
         initialData,
     })
@@ -29,9 +29,9 @@ const Category: NextPage<InitialProps> = ({ initialData }) => {
                 />
             </Head>
             <ArticleListTemplate
-                articles={articles}
+                articles={data}
                 onLoadMore={loadMore}
-                isLoading={isFetching}
+                isLoading={isLoading}
             />
         </>
     )

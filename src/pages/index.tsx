@@ -11,7 +11,7 @@ interface InitialProps {
 }
 
 const Home: NextPage<InitialProps> = ({ initialData }) => {
-    const { articles, loadMore, isFetching } = useArticles({
+    const { data, loadMore, isLoading } = useArticles({
         initialData,
     })
 
@@ -39,9 +39,9 @@ const Home: NextPage<InitialProps> = ({ initialData }) => {
                 }}
             >
                 <ArticleListTemplate
-                    articles={articles}
+                    articles={data}
                     onLoadMore={loadMore}
-                    isLoading={isFetching}
+                    isLoading={isLoading}
                 />
             </Profiler>
         </>
