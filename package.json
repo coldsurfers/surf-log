@@ -8,7 +8,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "ready": "node ./bin/parseVelogPosts.js && node ./bin/createArticleMeta.js && node ./bin/generateSitemap.js"
+    "ready": "node ./bin/parseVelogPosts.js && yarn ts-node ./bin/createArticleMeta.ts && node ./bin/generateSitemap.js"
   },
   "dependencies": {
     "@emotion/css": "^11.7.1",
@@ -48,8 +48,10 @@
     "eslint-config-next": "12.1.0",
     "eslint-config-prettier": "^8.5.0",
     "eslint-plugin-prettier": "^4.0.0",
+    "patch-package": "^6.5.1",
     "prettier": "2.5.1",
     "prisma": "^4.11.0",
+    "ts-node": "^10.9.1",
     "typescript": "4.6.2"
   }
 }

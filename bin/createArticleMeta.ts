@@ -1,6 +1,8 @@
-const fs = require('fs')
-const path = require('path')
-const matter = require('gray-matter')
+import fs from 'fs'
+import path from 'path'
+import matter from 'gray-matter'
+import { Article, ArticleData } from '../src/types/article'
+import { ArticleMeta } from '../src/types/articleMeta'
 
 const thumbnailDirPathStr = '../thumbnails'
 
@@ -23,8 +25,8 @@ function main() {
             )
             const mdFileContent = fs.readFileSync(mdFilePath, 'utf8')
             const mdFileMeta = matter(mdFileContent, {
-                excerpt: function (file, options) {
-                    file.excerpt = file.data.excerpt
+                excerpt: (file, options) => {
+                    file.excerpt = file.data.excerpt ?? ''
                     if (file.data.thumbnail) {
                         const ext = path
                             .extname(file.data.thumbnail)
@@ -56,29 +58,53 @@ function main() {
                     }
                 },
             })
+            console.log(mdFileMeta)
             return mdFileMeta
         })
         .sort((a, b) => {
-            return new Date(a.data.createdAt) - new Date(b.data.createdAt)
+            const createdAtPrev = (a.data as ArticleData).createdAt
+            const createdAtNext = (b.data as ArticleData).createdAt
+            if (!createdAtPrev || !createdAtNext)
+                throw Error('Invalid createdAt')
+            return (
+                new Date(createdAtPrev).valueOf() -
+                new Date(createdAtNext).valueOf()
+            )
         })
-        .reduce((prev, curr) => {
+        .reduce<matter.GrayMatterFile<string>[]>((prev, curr) => {
             if (prev.find((prevItem) => prevItem.excerpt === curr.excerpt)) {
                 curr.excerpt = `${curr.excerpt}-${generateUniqSerial()}`
             }
             return prev.concat(curr)
         }, [])
         .sort((a, b) => {
-            return new Date(b.data.createdAt) - new Date(a.data.createdAt)
+            const createdAtPrev = (a.data as ArticleData).createdAt
+            const createdAtNext = (b.data as ArticleData).createdAt
+            if (!createdAtPrev || !createdAtNext)
+                throw Error('Invalid createdAt')
+            return (
+                new Date(createdAtNext).valueOf() -
+                new Date(createdAtPrev).valueOf()
+            )
         })
 
     const categories = [
         ...new Set(mdFilesMetaArray.map((meta) => meta.data.category)),
     ].sort()
 
-    const mdFilesMeta = mdFilesMetaArray.reduce((prev, curr) => {
-        prev[curr.excerpt] = curr
-        return prev
-    }, {})
+    const mdFilesMeta = mdFilesMetaArray.reduce<{ [key: string]: Article }>(
+        (prev, curr) => {
+            if (curr.excerpt) {
+                prev[curr.excerpt] = {
+                    ...curr,
+                    isEmpty: false,
+                    excerpt: curr.excerpt,
+                }
+            }
+            return prev
+        },
+        {}
+    )
 
     const metaFilePath = path.resolve(__dirname, '../public/article-meta.json')
 

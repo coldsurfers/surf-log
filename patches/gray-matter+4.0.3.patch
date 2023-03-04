@@ -1,0 +1,19 @@
+diff --git a/node_modules/gray-matter/gray-matter.d.ts b/node_modules/gray-matter/gray-matter.d.ts
+index dec9c09..4a194c0 100644
+--- a/node_modules/gray-matter/gray-matter.d.ts
++++ b/node_modules/gray-matter/gray-matter.d.ts
+@@ -1,3 +1,5 @@
++import { Article } from "../../src/types/article"
++
+ /**
+  * Takes a string or object with `content` property, extracts
+  * and parses front-matter from the string, then returns an object
+@@ -26,7 +28,7 @@ declare namespace matter {
+   > {
+     parser?: () => void
+     eval?: boolean
+-    excerpt?: boolean | ((input: I, options: O) => string)
++    excerpt?: boolean | ((input: Article, options: O) => void)
+     excerpt_separator?: string
+     engines?: {
+       [index: string]:

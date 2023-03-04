@@ -8,4 +8,5 @@
         "javascript-react",
         "typescript-react"
     ],
+    "typescript.tsdk": "node_modules/typescript/lib",
 }
