@@ -30,3 +30,9 @@ model BlogArticleCategory {
   blogArticles BlogArticle[]
   createdAt    DateTime      @default(now())
 }
+
+model BlogArticleTag {
+  id        Int      @id @default(autoincrement())
+  name      String
+  createdAt DateTime @default(now())
+}
