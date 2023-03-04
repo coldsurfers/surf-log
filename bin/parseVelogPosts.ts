@@ -1,12 +1,23 @@
-const https = require('https')
-const fs = require('fs')
-const path = require('path')
+import https from 'https'
+import fs from 'fs'
+import path from 'path'
 const StringDecoder = require('string_decoder').StringDecoder
 
-const postList = []
-const postDetailList = []
+interface VelogPost {
+    id: string
+    url_slug: string
+}
 
-function fetchVelogPostBySlug(slug) {
+type VelogPostDetail = {
+    title: string
+    released_at: string
+    body: string
+}
+
+const postList: VelogPost[] = []
+const postDetailList: VelogPostDetail[] = []
+
+function fetchVelogPostBySlug(slug: string) {
     let jsonString = ''
     const decoder = new StringDecoder()
 
@@ -52,11 +63,11 @@ function fetchVelogPostBySlug(slug) {
     })
 }
 
-function fetchVelogPosts(cursor) {
+function fetchVelogPosts(cursor?: string) {
     let jsonString = ''
     const decoder = new StringDecoder()
 
-    return new Promise((resolve, reject) => {
+    return new Promise<VelogPost[]>((resolve, reject) => {
         const req = https.request(
             {
                 method: 'POST',
@@ -77,12 +88,12 @@ function fetchVelogPosts(cursor) {
                     const {
                         data: { posts },
                     } = JSON.parse(jsonString)
-                    resolve(posts)
+                    resolve(posts as VelogPost[])
                 })
             }
         )
         req.on('error', (error) => {
-            reject(Error(error))
+            reject(error)
         })
 
         req.write(
@@ -104,7 +115,7 @@ async function main() {
     let shouldRepeat = true
     let cursor
     while (shouldRepeat) {
-        const posts = await fetchVelogPosts(cursor)
+        const posts = (await fetchVelogPosts(cursor)) as VelogPost[]
         if (posts.length === 0) {
             shouldRepeat = false
         } else {
@@ -113,11 +124,11 @@ async function main() {
         }
     }
 
-    const postDetails = await Promise.all(
+    const postDetails = (await Promise.all(
         postList.map((post) => {
             return fetchVelogPostBySlug(post.url_slug)
         })
-    )
+    )) as VelogPostDetail[]
 
     postDetails.forEach((postDetail) => {
         postDetailList.push(postDetail)

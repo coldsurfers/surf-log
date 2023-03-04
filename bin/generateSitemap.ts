@@ -1,7 +1,8 @@
-const fs = require('fs')
-const path = require('path')
-const dateFns = require('date-fns')
-const articleMetaJSON = require('../public/article-meta.json')
+import fs from 'fs'
+import path from 'path'
+import * as dateFns from 'date-fns'
+import articleMetaJSON from '../public/article-meta.json'
+import { ArticleMeta } from '../src/types/articleMeta'
 
 const sitemapPath = path.resolve(__dirname, '../public/sitemap.xml')
 
@@ -20,7 +21,10 @@ function generateSitemap() {
     sitemapString += sitemapXmlStringPre
 
     // root route
-    const routes = [
+    const routes: {
+        pathname: string
+        lastmod?: string
+    }[] = [
         {
             pathname: '/',
         },
@@ -29,7 +33,7 @@ function generateSitemap() {
         },
     ]
 
-    const { articles } = articleMetaJSON
+    const { articles } = articleMetaJSON as ArticleMeta
     const categories = [
         ...new Set(
             Object.entries(articles).map(([key, data]) => data.data.category)
@@ -52,18 +56,19 @@ function generateSitemap() {
     })
     // tag route
     tags.forEach((tag) => {
-        routes.push({
-            pathname: `/tags/${encodeURIComponent(tag)}`,
-        })
+        if (tag) {
+            routes.push({
+                pathname: `/tags/${encodeURIComponent(tag)}`,
+            })
+        }
     })
     // article route
-    articlesArray.forEach((article) => {
+    articlesArray.forEach((article, index) => {
         routes.push({
             pathname: `/article/${article.excerpt}`,
-            lastmod: dateFns.format(
-                new Date(article.data.createdAt),
-                'yyyy-MM-dd'
-            ),
+            lastmod: article.data.createdAt
+                ? dateFns.format(new Date(article.data.createdAt), 'yyyy-MM-dd')
+                : undefined,
         })
     })
     routes.forEach(({ pathname, lastmod }) => {

@@ -8,7 +8,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "ready": "node ./bin/parseVelogPosts.js && yarn ts-node ./bin/createArticleMeta.ts && node ./bin/generateSitemap.js"
+    "ready": "yarn ts-node ./bin/parseVelogPosts.ts && yarn ts-node ./bin/createArticleMeta.ts && yarn ts-node ./bin/generateSitemap.ts"
   },
   "dependencies": {
     "@emotion/css": "^11.7.1",

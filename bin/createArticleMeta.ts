@@ -58,7 +58,6 @@ function main() {
                     }
                 },
             })
-            console.log(mdFileMeta)
             return mdFileMeta
         })
         .sort((a, b) => {
