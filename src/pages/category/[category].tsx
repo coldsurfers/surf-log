@@ -3,8 +3,9 @@ import Head from 'next/head'
 import { useRouter } from 'next/router'
 import ArticleListTemplate from '../../components/templates/ArticleListTemplate'
 import fetcher from '../../lib/fetcher'
+import fetchArticleList from '../../lib/fetcher/articleList'
+import { Article } from '../../lib/fetcher/types'
 import useArticles from '../../lib/hooks/useArticles'
-import { Article } from '../../types/article'
 
 interface InitialProps {
     initialData: Article[]
@@ -65,11 +66,11 @@ export const getStaticProps: GetStaticProps<
         }
     }
     const { category } = ctx.params
-    const { list } = await fetcher.articleList({ page: 1, category })
+    const articleList = await fetchArticleList({ page: 1, category })
 
     return {
         props: {
-            initialData: list,
+            initialData: articleList,
         },
     }
 }
