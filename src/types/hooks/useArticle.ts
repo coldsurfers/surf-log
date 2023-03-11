@@ -1,4 +1,4 @@
-import { Article } from '../article'
+import { Article } from '../../lib/fetcher/types'
 import { WithInitialDataHooksProps } from './withInitialDataHooksProps'
 
 export interface UseArticleProps

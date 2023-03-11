@@ -1,5 +1,4 @@
-import { GetStaticPaths, GetStaticProps, NextPage } from 'next'
-import { Article } from '../../types/article'
+import { GetServerSideProps, NextPage } from 'next'
 import styled from '@emotion/styled'
 import mediaQuery from '../../lib/mediaQuery'
 import MarkdownRenderer from '../../components/templates/MarkdownRenderer'
@@ -15,6 +14,8 @@ import { format } from 'date-fns'
 import { ko } from 'date-fns/locale'
 import TagBadge from '../../components/badges/TagBadge'
 import Link from 'next/link'
+import { Article } from '../../lib/fetcher/types'
+import { fetchArticleByExcerpt } from '../../lib/fetcher/articleByExcerpt'
 
 const ContentContainer = styled.div`
     background: #ffffff;
@@ -55,7 +56,10 @@ interface InitialProps {
 
 const Excerpt: NextPage<InitialProps> = ({ initialData }) => {
     const router = useRouter()
-    const { article } = useArticle({ initialData })
+    const { article } = useArticle({
+        initialData,
+        excerpt: router.query.excerpt as string,
+    })
     const [removeModalOpen, setRemoveModalOpen] = useState<boolean>(false)
 
     const onClickEdit = useCallback(() => {
@@ -73,7 +77,7 @@ const Excerpt: NextPage<InitialProps> = ({ initialData }) => {
 
     const onClickRemoveModalRemove = useCallback(async () => {
         if (!article) return
-        const { excerpt } = article.data
+        const { excerpt } = article
         if (!excerpt) return
         await fetcher.removeArticle({
             excerpt,
@@ -102,25 +106,22 @@ const Excerpt: NextPage<InitialProps> = ({ initialData }) => {
     return (
         <>
             <Head>
-                <title>{article.data.excerpt} | Surf.Log</title>
-                <meta name="description" content={article.data.excerpt} />
-                <meta property="og:title" content={article.data.title} />
-                <meta
-                    property="og:description"
-                    content={article.data.excerpt}
-                />
+                <title>{article.excerpt} | Surf.Log</title>
+                <meta name="description" content={article.excerpt} />
+                <meta property="og:title" content={article.title} />
+                <meta property="og:description" content={article.excerpt} />
             </Head>
             <ContentContainer>
                 <ArticleMetaInfoWrapper>
-                    {article.data.category && (
+                    {article.blogArticleCategory.name && (
                         <CategoryText>
-                            {article.data.category.toUpperCase()}
+                            {article.blogArticleCategory.name.toUpperCase()}
                         </CategoryText>
                     )}
-                    {article.data.createdAt && (
+                    {article.createdAt && (
                         <CreatedDateText>
                             {format(
-                                new Date(article.data.createdAt),
+                                new Date(article.createdAt),
                                 'yyyy-MM-dd HH:mm',
                                 {
                                     locale: ko,
@@ -128,19 +129,23 @@ const Excerpt: NextPage<InitialProps> = ({ initialData }) => {
                             )}
                         </CreatedDateText>
                     )}
-                    {article.data.tags && (
+                    {article.blogArticleTags && (
                         <TagsWrapper>
-                            {article.data.tags.map((tag, index) => {
-                                return (
-                                    <Link
-                                        key={`${tag}-${index}`}
-                                        href={`/tags/${tag}`}
-                                        passHref
-                                    >
-                                        <TagBadge>{tag}</TagBadge>
-                                    </Link>
-                                )
-                            })}
+                            {article.blogArticleTags.map(
+                                ({ blogArticleTag }, index) => {
+                                    return (
+                                        <Link
+                                            key={`${blogArticleTag.name}-${index}`}
+                                            href={`/tags/${blogArticleTag.name}`}
+                                            passHref
+                                        >
+                                            <TagBadge>
+                                                {blogArticleTag.name}
+                                            </TagBadge>
+                                        </Link>
+                                    )
+                                }
+                            )}
                         </TagsWrapper>
                     )}
                 </ArticleMetaInfoWrapper>
@@ -158,26 +163,12 @@ const Excerpt: NextPage<InitialProps> = ({ initialData }) => {
     )
 }
 
-export const getStaticPaths: GetStaticPaths = () => {
-    const meta = fetcher.getArticleMeta()
-    const { articles } = meta.articleMeta
-    const excerpts = Object.keys(articles).map((excerpt) => excerpt)
-    return {
-        paths: excerpts.map((excerpt) => ({
-            params: {
-                excerpt,
-            },
-        })),
-        fallback: false,
-    }
-}
-
-export const getStaticProps: GetStaticProps<
+export const getServerSideProps: GetServerSideProps<
     InitialProps,
     {
         excerpt: string
     }
-> = (ctx) => {
+> = async (ctx) => {
     if (!ctx.params) {
         return {
             props: {
@@ -186,11 +177,10 @@ export const getStaticProps: GetStaticProps<
         }
     }
     const { excerpt } = ctx.params
-    const { articleMeta } = fetcher.getArticleMeta()
-    const article = articleMeta.articles[excerpt]
+    const article = await fetchArticleByExcerpt(excerpt)
     return {
         props: {
-            initialData: article,
+            initialData: article ?? undefined,
         },
     }
 }

@@ -1,30 +1,23 @@
-import { useEffect, useState } from 'react'
 import { useQuery } from 'react-query'
-import { Article } from '../../types/article'
 import { UseArticle } from '../../types/hooks/useArticle'
-import fetcher from '../fetcher'
+import { fetchArticleByExcerpt } from '../fetcher/articleByExcerpt'
+import { Article } from '../fetcher/types'
 
 const useArticle: UseArticle = ({ initialData, excerpt }) => {
-    const [article, setArticle] = useState<Article | undefined>(initialData)
     const { data, isFetching } = useQuery<Article | undefined>(
-        'getArticle',
+        ['getArticle', excerpt],
         async () => {
             if (!excerpt) return undefined
-            const { data } = await fetcher.getArticleByExcerpt({ excerpt })
-            return data ?? undefined
+            const article = await fetchArticleByExcerpt(excerpt)
+            return article ?? undefined
         },
         {
             initialData,
         }
     )
 
-    useEffect(() => {
-        if (!data || typeof initialData !== 'undefined') return
-        setArticle(data)
-    }, [data, initialData])
-
     return {
-        article,
+        article: data,
         isFetching,
     }
 }
