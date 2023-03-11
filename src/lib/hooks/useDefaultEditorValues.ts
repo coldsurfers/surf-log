@@ -1,8 +1,8 @@
 import { useRouter } from 'next/router'
 import { useCallback, useEffect, useState } from 'react'
-import { Article } from '../../types/article'
 import { EditorSaveModalValues } from '../../types/modal'
 import fetcher from '../fetcher'
+import { fetchArticleByExcerpt } from '../fetcher/articleByExcerpt'
 
 function useDefaultEditorValues() {
     const router = useRouter()
@@ -26,18 +26,20 @@ function useDefaultEditorValues() {
         if (!excerpt) {
             return null
         }
-        const { data } = await fetcher.getArticleByExcerpt({
-            excerpt: excerpt as string,
-        })
-        if (data) {
+        const article = await fetchArticleByExcerpt(excerpt as string)
+        if (article) {
             const {
                 content,
-                data: { title, category, excerpt, thumbnail, createdAt },
-            } = data
+                title,
+                blogArticleCategory,
+                excerpt,
+                thumbnail,
+                createdAt,
+            } = article
             setDefaultEditorValue(content)
             setDefaultModalValues({
                 title: title ?? '',
-                category: category ?? '',
+                category: blogArticleCategory.name ?? '',
                 excerpt: excerpt ?? '',
                 thumbnail: thumbnail ?? '',
                 createdAt: createdAt ?? '',

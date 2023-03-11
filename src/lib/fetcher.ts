@@ -52,17 +52,6 @@ const fetcher = {
         const data = (await res.json()) as GetTempSavedData
         return data
     },
-    getArticleByExcerpt: async function ({ excerpt }: { excerpt: string }) {
-        const res = await this.fetch(
-            `${preURL}/article/${encodeURIComponent(excerpt)}`,
-            {
-                method: 'GET',
-                headers,
-            }
-        )
-        const data = (await res.json()) as GetArticleByExcerptData
-        return data
-    },
     saveArticle: async function ({
         excerpt,
         modalValues,
