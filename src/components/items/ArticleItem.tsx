@@ -1,12 +1,11 @@
 import styled from '@emotion/styled'
 import Link from 'next/link'
-import Image from 'next/image'
 import { FC, memo, Profiler } from 'react'
 import mediaQuery from '../../lib/mediaQuery'
 import { themedPalette } from '../../lib/theme'
-import { Article } from '../../types/article'
 import { format } from 'date-fns'
 import { ko } from 'date-fns/locale'
+import { Article } from '../../lib/fetcher/types'
 
 const ArticleContainer = styled.a`
     width: calc(100% / 3 - 1rem * 2);
@@ -114,27 +113,28 @@ const ArticleItem: FC<Props> = ({ article }) => {
             <Link href={`/article/${article.excerpt}`} passHref>
                 <ArticleContainer>
                     <ThumbnailWrapper>
-                        {article.thumbnailBase64 ? (
-                            <Image
-                                src={`${article.thumbnailBase64}`}
+                        {article.thumbnail ? (
+                            <img
+                                src={`${process.env.HOST_URL}/thumbnails/${article.thumbnail}`}
                                 alt="thumbnail"
-                                layout="fill"
-                                objectFit="fill"
+                                style={{
+                                    objectFit: 'cover',
+                                    width: '100%',
+                                    height: '100%',
+                                }}
                             />
                         ) : (
                             <div />
                         )}
                     </ThumbnailWrapper>
                     <ArticleDescWarpper>
-                        <ArticleTitle>{article.data.title}</ArticleTitle>
-                        <ArticleSubTitle>
-                            {article.data.excerpt}
-                        </ArticleSubTitle>
+                        <ArticleTitle>{article.title}</ArticleTitle>
+                        <ArticleSubTitle>{article.excerpt}</ArticleSubTitle>
                     </ArticleDescWarpper>
-                    {article.data.createdAt && (
+                    {article.createdAt && (
                         <ArticleDate>
                             {format(
-                                new Date(article.data.createdAt),
+                                new Date(article.createdAt),
                                 'yyyy-MM-dd HH:mm',
                                 {
                                     locale: ko,

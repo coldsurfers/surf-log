@@ -39,7 +39,7 @@ function useDefaultEditorValues() {
             setDefaultEditorValue(content)
             setDefaultModalValues({
                 title: title ?? '',
-                category: blogArticleCategory.name ?? '',
+                category: blogArticleCategory?.name ?? '',
                 excerpt: excerpt ?? '',
                 thumbnail: thumbnail ?? '',
                 createdAt: createdAt ?? '',

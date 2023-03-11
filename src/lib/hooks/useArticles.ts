@@ -1,9 +1,9 @@
-import { useCallback, useEffect, useState } from 'react'
-import { useInfiniteQuery, useQuery } from 'react-query'
-import { Article } from '../../types/article'
+import { useCallback } from 'react'
+import { useInfiniteQuery } from 'react-query'
 import { UseArticles } from '../../types/hooks/useArticles'
 import { DEFAULT_PAGINATION_COUNT } from '../constants'
-import fetcher from '../fetcher'
+import fetchArticleList from '../fetcher/articleList'
+import { Article } from '../fetcher/types'
 
 const useArticles: UseArticles = ({ category, tag, initialData }) => {
     const {
@@ -21,12 +21,12 @@ const useArticles: UseArticles = ({ category, tag, initialData }) => {
                 string | undefined,
                 string | undefined
             ]
-            const res = await fetcher.articleList({
+            const articleList = await fetchArticleList({
                 page: pageParam,
                 category,
                 tag,
             })
-            return res.list
+            return articleList
         },
         {
             initialData: initialData

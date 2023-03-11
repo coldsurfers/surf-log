@@ -5,7 +5,9 @@ export const fetchArticleByExcerpt = async (
     excerpt: string
 ): Promise<Article | null> => {
     try {
-        const { data: article } = await axiosClient.get(`/article/${excerpt}`)
+        const { data: article } = await axiosClient.get<Article>(
+            `/article/${excerpt}`
+        )
         return article
     } catch (e) {
         console.error(e)

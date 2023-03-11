@@ -11,13 +11,14 @@ export interface Article {
     thumbnail: string
     excerpt: string
     blogArticleCategoryId: number
-    blogArticleCategory: {
+    blogArticleCategory?: {
         name: string
     }
-    blogArticleTags: {
+    blogArticleTags?: {
         blogArticleTag: {
             name: string
         }
     }[]
+    isPublic: boolean
     createdAt: string
 }

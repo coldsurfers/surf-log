@@ -2,7 +2,7 @@
 title: mac에 Rust 설치하기
 excerpt: Rust Lang 을 mac에 설치해보기
 category: dev
-thumbnail: rust-logo-blk.svg
+thumbnail: rust-logo-blk.png
 createdAt: 2022-04-11T01:52:22.087Z
 ---
 # Rust 설치하기

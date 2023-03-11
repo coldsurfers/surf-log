@@ -2,7 +2,7 @@
 title: Rust로 작성된 언어를 wasm-pack으로 js로 빌드하기
 excerpt: Rust로 작성된 언어를 wasm-pack으로 js로 빌드하기
 category: dev
-thumbnail: rust-logo-blk.svg
+thumbnail: rust-logo-blk.png
 createdAt: 2022-04-19T03:38:21.084Z
 updatedAt: 2022-05-05T14:17:36.119Z
 tags: ["rust","wasm","web assembly"]

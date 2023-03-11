@@ -1,10 +1,11 @@
 import type { GetStaticProps, NextPage } from 'next'
 import ArticleListTemplate from '../components/templates/ArticleListTemplate'
 import fetcher from '../lib/fetcher'
-import { Article } from '../types/article'
 import Head from 'next/head'
 import useArticles from '../lib/hooks/useArticles'
 import { Profiler } from 'react'
+import { Article } from '../lib/fetcher/types'
+import fetchArticleList from '../lib/fetcher/articleList'
 
 interface InitialProps {
     initialData: Article[]
@@ -49,11 +50,13 @@ const Home: NextPage<InitialProps> = ({ initialData }) => {
 }
 
 export const getStaticProps: GetStaticProps<InitialProps> = async (ctx) => {
-    const { list } = await fetcher.articleList({ page: 1 })
+    const articleList = await fetchArticleList({
+        page: 1,
+    })
 
     return {
         props: {
-            initialData: list,
+            initialData: articleList,
         },
     }
 }

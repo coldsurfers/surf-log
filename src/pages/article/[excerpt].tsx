@@ -113,7 +113,7 @@ const Excerpt: NextPage<InitialProps> = ({ initialData }) => {
             </Head>
             <ContentContainer>
                 <ArticleMetaInfoWrapper>
-                    {article.blogArticleCategory.name && (
+                    {article.blogArticleCategory?.name && (
                         <CategoryText>
                             {article.blogArticleCategory.name.toUpperCase()}
                         </CategoryText>

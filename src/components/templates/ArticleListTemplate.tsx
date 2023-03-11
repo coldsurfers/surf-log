@@ -1,11 +1,11 @@
 import styled from '@emotion/styled'
 import { FC, memo, useEffect, useRef } from 'react'
 import mediaQuery from '../../lib/mediaQuery'
-import { Article } from '../../types/article'
 import { DEFAULT_PAGINATION_COUNT } from '../../lib/constants'
 import { RotatingLines } from 'react-loader-spinner'
 import { css } from '@emotion/css'
 import ArticleItem from '../items/ArticleItem'
+import { Article } from '../../lib/fetcher/types'
 
 const ArticleListContainer = styled.div`
     display: flex;
