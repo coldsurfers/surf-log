@@ -5,11 +5,9 @@
   "scripts": {
     "postinstall": "yarn patch-package",
     "dev": "next dev",
-    "prebuild": "yarn ready",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint",
-    "ready": "yarn ts-node ./bin/parseVelogPosts.ts && yarn ts-node ./bin/createArticleMeta.ts && yarn ts-node ./bin/generateSitemap.ts"
+    "lint": "next lint"
   },
   "dependencies": {
     "@emotion/css": "^11.7.1",
