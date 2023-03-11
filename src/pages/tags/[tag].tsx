@@ -3,9 +3,10 @@ import { GetStaticPaths, GetStaticProps, NextPage } from 'next'
 import { useRouter } from 'next/router'
 import ArticleListTemplate from '../../components/templates/ArticleListTemplate'
 import fetcher from '../../lib/fetcher'
+import fetchArticleList from '../../lib/fetcher/articleList'
+import { Article } from '../../lib/fetcher/types'
 import useArticles from '../../lib/hooks/useArticles'
 import { themedPalette } from '../../lib/theme'
-import { Article } from '../../types/article'
 
 const TagTitle = styled.h1`
     margin: 0px;
@@ -65,11 +66,11 @@ export const getStaticProps: GetStaticProps<InitialProps> = async (ctx) => {
         }
     }
     const { tag } = ctx.params
-    const { list } = await fetcher.articleList({ page: 1, tag: tag as string })
+    const articleList = await fetchArticleList({ page: 1, tag: tag as string })
 
     return {
         props: {
-            initialData: list,
+            initialData: articleList,
         },
     }
 }
