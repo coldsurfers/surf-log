@@ -1,7 +1,7 @@
 import axios from 'axios'
 
 const axiosClient = axios.create({
-    baseURL: 'https://api.coldsurf.io',
+    baseURL: process.env.SERVER_HOST,
 })
 
 export default axiosClient

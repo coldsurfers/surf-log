@@ -3,7 +3,6 @@ import '../lib/ga/initialize'
 import 'open-color/open-color.css'
 import type { AppContext, AppProps } from 'next/app'
 import Layout from '../components/layouts/PageLayout'
-import { Article } from '../types/article'
 import App from 'next/app'
 import NetworkOfflineTemplate from '../components/templates/NetworkOfflineTemplate'
 import Error from 'next/error'
@@ -20,7 +19,7 @@ import { useRouter } from 'next/router'
 import { pageView } from '../lib/ga/utils'
 import { QueryClient, QueryClientProvider } from 'react-query'
 import { ReactQueryDevtools } from 'react-query/devtools'
-import fetcher from '../lib/fetcher'
+import { fetchCategoryList } from '../lib/fetcher/categoryList'
 
 const queryClient = new QueryClient()
 
@@ -130,7 +129,7 @@ function MyApp({ Component, pageProps }: AppProps) {
 
 MyApp.getInitialProps = async (appContext: AppContext) => {
     const appProps = await App.getInitialProps(appContext)
-    const { articleMeta } = fetcher.getArticleMeta()
+    const categoryList = await fetchCategoryList()
 
     const { res } = appContext.ctx
 
@@ -145,7 +144,7 @@ MyApp.getInitialProps = async (appContext: AppContext) => {
     }
 
     appProps.pageProps = {
-        categories: articleMeta.categories,
+        categories: categoryList.map((category) => category.name),
         statusCode: isNotFound ? 404 : res?.statusCode ?? 200,
     }
 
