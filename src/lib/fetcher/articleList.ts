@@ -6,11 +6,13 @@ const fetchArticleList = async ({
     category,
     tag,
     count,
+    isPublic = true,
 }: {
     page?: number
     category?: string
     tag?: string
     count?: number
+    isPublic?: boolean
 }): Promise<Article[]> => {
     try {
         let url = `/article/list?`
@@ -25,6 +27,9 @@ const fetchArticleList = async ({
         }
         if (count) {
             url += `&count=${count}`
+        }
+        if (typeof isPublic === 'boolean') {
+            url += `&isPublic=${isPublic}`
         }
         const { data: articleList } = await axiosClient.get<Article[]>(url)
         return articleList
