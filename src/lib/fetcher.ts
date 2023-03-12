@@ -1,4 +1,3 @@
-import { ArticleMeta } from '../types/articleMeta'
 import { EditorSaveModalValues } from '../types/modal'
 
 const headers = new Headers({
@@ -90,13 +89,6 @@ const fetcher = {
         })
         const data = (await res.json()) as TemporarySaveArticleData
         return data
-    },
-    getArticleMeta: function (): { articleMeta: ArticleMeta } {
-        const articleMeta =
-            require('../../public/article-meta.json') as ArticleMeta
-        return {
-            articleMeta,
-        }
     },
     saveFile: async function ({ file }: { file: File }) {
         const formData = new FormData()

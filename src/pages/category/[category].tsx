@@ -1,8 +1,7 @@
-import { GetStaticPaths, GetStaticProps, NextPage } from 'next'
+import { GetServerSideProps, NextPage } from 'next'
 import Head from 'next/head'
 import { useRouter } from 'next/router'
 import ArticleListTemplate from '../../components/templates/ArticleListTemplate'
-import fetcher from '../../lib/fetcher'
 import fetchArticleList from '../../lib/fetcher/articleList'
 import { Article } from '../../lib/fetcher/types'
 import useArticles from '../../lib/hooks/useArticles'
@@ -38,21 +37,7 @@ const Category: NextPage<InitialProps> = ({ initialData }) => {
     )
 }
 
-export const getStaticPaths: GetStaticPaths = (context) => {
-    const { articleMeta } = fetcher.getArticleMeta()
-    const { categories } = articleMeta
-
-    return {
-        paths: categories.map((category) => ({
-            params: {
-                category,
-            },
-        })),
-        fallback: false,
-    }
-}
-
-export const getStaticProps: GetStaticProps<
+export const getServerSideProps: GetServerSideProps<
     InitialProps,
     {
         category: string

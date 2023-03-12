@@ -1,8 +1,7 @@
 import styled from '@emotion/styled'
-import { GetStaticPaths, GetStaticProps, NextPage } from 'next'
+import { GetServerSideProps, NextPage } from 'next'
 import { useRouter } from 'next/router'
 import ArticleListTemplate from '../../components/templates/ArticleListTemplate'
-import fetcher from '../../lib/fetcher'
 import fetchArticleList from '../../lib/fetcher/articleList'
 import { Article } from '../../lib/fetcher/types'
 import useArticles from '../../lib/hooks/useArticles'
@@ -38,26 +37,9 @@ const TagsTagPage: NextPage<InitialProps> = ({ initialData }) => {
     )
 }
 
-export const getStaticPaths: GetStaticPaths = () => {
-    const { articleMeta } = fetcher.getArticleMeta()
-    const { articles } = articleMeta
-    const tags = [
-        ...new Set(
-            Object.entries(articles).flatMap(([key, data]) => data.data.tags)
-        ),
-    ].filter((tag) => tag !== undefined)
-
-    return {
-        paths: tags.map((tag) => ({
-            params: {
-                tag,
-            },
-        })),
-        fallback: false,
-    }
-}
-
-export const getStaticProps: GetStaticProps<InitialProps> = async (ctx) => {
+export const getServerSideProps: GetServerSideProps<InitialProps> = async (
+    ctx
+) => {
     if (!ctx.params?.tag) {
         return {
             props: {
