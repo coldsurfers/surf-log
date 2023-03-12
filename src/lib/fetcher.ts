@@ -45,29 +45,6 @@ const fetcher = {
         const data = (await res.json()) as GetTempSavedData
         return data
     },
-    saveArticle: async function ({
-        excerpt,
-        modalValues,
-        editorText,
-        tags,
-    }: {
-        excerpt?: string
-        modalValues: EditorSaveModalValues
-        editorText: string
-        tags: string[]
-    }) {
-        const res = await this.fetch(`${preURL}/save`, {
-            method: excerpt ? 'PATCH' : 'POST',
-            body: JSON.stringify({
-                ...modalValues,
-                text: editorText,
-                tags,
-            }),
-            headers,
-        })
-        const data = (await res.json()) as SaveArticleData
-        return data
-    },
     removeArticle: async function ({ excerpt }: { excerpt: string }) {
         const res = await this.fetch(`${preURL}/article/${excerpt}`, {
             method: 'DELETE',

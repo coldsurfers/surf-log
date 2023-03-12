@@ -1,8 +1,8 @@
 import { useRouter } from 'next/router'
 import { useEffect } from 'react'
 import { EditorSaveModalValues } from '../../types/modal'
-import fetcher from '../fetcher'
 import { useMutation } from 'react-query'
+import { fetchSaveArticle } from '../fetcher/saveArticle'
 
 function useSave({ editorText }: { editorText: string }) {
     const router = useRouter()
@@ -20,9 +20,12 @@ function useSave({ editorText }: { editorText: string }) {
             modalValues: EditorSaveModalValues
             tags: string[]
         }) => {
-            return await fetcher.saveArticle({
-                excerpt: excerpt as string,
-                modalValues,
+            const { title, excerpt, thumbnail, category } = modalValues
+            return await fetchSaveArticle({
+                title,
+                excerpt,
+                thumbnail,
+                category,
                 editorText,
                 tags,
             })
@@ -30,14 +33,8 @@ function useSave({ editorText }: { editorText: string }) {
     )
 
     useEffect(() => {
-        if (!data) {
-            return
-        }
-        const { error } = data
-        if (error === null) {
+        if (data) {
             router.push('/')
-        } else {
-            console.error(error)
         }
     }, [data, router])
 
