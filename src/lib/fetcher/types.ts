@@ -22,3 +22,18 @@ export interface Article {
     isPublic: boolean
     createdAt: string
 }
+
+export interface PresignURLResponse {
+    url: string
+    fields: {
+        acl: string
+        'Content-Type': string
+        bucket: string
+        'X-Amz-Algorithm': string
+        'X-Amz-Credential': string
+        'X-Amz-Date': string
+        key: string
+        Policy: string
+        'X-Amz-Signature': string
+    }
+}
