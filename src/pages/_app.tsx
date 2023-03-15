@@ -137,7 +137,10 @@ MyApp.getInitialProps = async (appContext: AppContext) => {
     if (res?.statusCode === 404) {
         isNotFound = true
     }
-    if (appContext.router.pathname === '/editor') {
+    if (
+        appContext.router.pathname === '/editor' ||
+        appContext.router.pathname === '/article/temp'
+    ) {
         if (process.env.NODE_ENV !== 'development') {
             isNotFound = true
         }
