@@ -69,7 +69,6 @@ const EditorPage: NextPage = () => {
     }>({})
     const [tagValue, setTagValue] = useState<string>('')
     const [tags, setTags] = useState<string[]>([])
-    const [fileDestinations, setFileDestinations] = useState<string[]>([])
 
     const onClickSaveButton = useCallback(() => {
         setModalOpen(true)
@@ -114,11 +113,6 @@ const EditorPage: NextPage = () => {
             save({ modalValues, tags })
         },
         [save, tags]
-    )
-
-    const onFileUploaded = useCallback(
-        (path: string) => setFileDestinations((prev) => prev.concat(path)),
-        []
     )
 
     useEffect(() => {
@@ -191,7 +185,6 @@ const EditorPage: NextPage = () => {
                 <EditorRenderer
                     defaultValue={defaultEditorValue}
                     onCodeMirrorChange={onCodeMirrorChange}
-                    onFileUploaded={onFileUploaded}
                 />
             </EditorPanel>
             <PreviewPanel>

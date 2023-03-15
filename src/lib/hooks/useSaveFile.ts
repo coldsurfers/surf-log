@@ -1,10 +1,26 @@
 import { useMutation } from 'react-query'
-import fetcher, { FetchSaveFileResponseData } from '../fetcher'
+import { getPresigned, uploadToS3 } from '../fetcher/upload'
 
 function useSaveFile() {
-    return useMutation<FetchSaveFileResponseData, unknown, { file: File }>(
-        async ({ file }: { file: File }) => {
-            return await fetcher.saveFile({ file })
+    return useMutation<
+        string | null,
+        unknown,
+        { type: 'thumbnail' | 'content-images'; file: File }
+    >(
+        async ({
+            type,
+            file,
+        }: {
+            type: 'thumbnail' | 'content-images'
+            file: File
+        }) => {
+            const response = await getPresigned({
+                type,
+                filename: file.name,
+                filetype: file.type as 'image/png' | 'image/jpeg',
+            })
+            if (!response) return null
+            return await uploadToS3(response.data, file)
         }
     )
 }

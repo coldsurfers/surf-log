@@ -30,18 +30,13 @@ const EditorContent = styled.div`
 interface Props {
     defaultValue?: string
     onCodeMirrorChange: (editor: Editor, changeObj: EditorChange) => void
-    onFileUploaded?: (path: string) => void
 }
 
-const EditorRenderer: FC<Props> = ({
-    defaultValue,
-    onCodeMirrorChange,
-    onFileUploaded,
-}) => {
+const EditorRenderer: FC<Props> = ({ defaultValue, onCodeMirrorChange }) => {
     const editorRef = useRef<HTMLDivElement>(null)
     const codeMirrorRef = useRef<Editor | null>(null)
     const codeMirrorCursorRef = useRef<Position | null>(null)
-    const { mutate: mutateSaveFile, data: saveFileData } = useSaveFile()
+    const { mutate: mutateSaveFile, data: uploadedS3URL } = useSaveFile()
 
     const onDragOverEnd: DragEventHandler<HTMLElement> = useCallback((e) => {
         e.preventDefault()
@@ -55,7 +50,7 @@ const EditorRenderer: FC<Props> = ({
             const targetItem = items[0]
             const file = targetItem.getAsFile()
             if (file !== null) {
-                mutateSaveFile({ file })
+                mutateSaveFile({ file, type: 'content-images' })
             }
         },
         [mutateSaveFile]
@@ -115,26 +110,21 @@ const EditorRenderer: FC<Props> = ({
     }, [])
 
     useEffect(() => {
-        if (saveFileData) {
-            const { path, originalname } = saveFileData
-            if (onFileUploaded) {
-                onFileUploaded(path)
-            }
-            const urlPath = `${path.split('public').join('')}`
+        if (uploadedS3URL) {
             const { current: ref } = codeMirrorRef
             if (!ref) return
             const existingCodeMirrorValue = ref.getValue()
             if (existingCodeMirrorValue) {
                 codeMirrorRef.current?.setValue(
-                    `${existingCodeMirrorValue}\n![${originalname}](${urlPath})`
+                    `${existingCodeMirrorValue}\n![${uploadedS3URL}](${uploadedS3URL})`
                 )
             } else {
                 codeMirrorRef.current?.setValue(
-                    `${existingCodeMirrorValue}![${originalname}](${urlPath})`
+                    `${existingCodeMirrorValue}![${uploadedS3URL}](${uploadedS3URL})`
                 )
             }
         }
-    }, [onFileUploaded, saveFileData])
+    }, [uploadedS3URL])
 
     return (
         <EditorContent
