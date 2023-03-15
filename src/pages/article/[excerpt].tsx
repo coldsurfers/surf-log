@@ -7,7 +7,6 @@ import { useCallback, useMemo, useState } from 'react'
 import Head from 'next/head'
 import MenuFloatingButton from '../../components/buttons/MenuFloatIngButton'
 import ArticleRemoveModal from '../../components/modal/ArticleRemoveModal'
-import fetcher from '../../lib/fetcher'
 import useArticle from '../../lib/hooks/useArticle'
 import Error from 'next/error'
 import { format } from 'date-fns'
@@ -16,6 +15,7 @@ import TagBadge from '../../components/badges/TagBadge'
 import Link from 'next/link'
 import { Article } from '../../lib/fetcher/types'
 import { fetchArticleByExcerpt } from '../../lib/fetcher/articleByExcerpt'
+import useRemoveArticle from '../../lib/hooks/useRemoveArticle'
 
 const ContentContainer = styled.div`
     background: #ffffff;
@@ -61,6 +61,7 @@ const Excerpt: NextPage<InitialProps> = ({ initialData }) => {
         excerpt: router.query.excerpt as string,
     })
     const [removeModalOpen, setRemoveModalOpen] = useState<boolean>(false)
+    const { mutateAsync: removeArticleByExcerpt } = useRemoveArticle()
 
     const onClickEdit = useCallback(() => {
         if (!article) return
@@ -79,11 +80,9 @@ const Excerpt: NextPage<InitialProps> = ({ initialData }) => {
         if (!article) return
         const { excerpt } = article
         if (!excerpt) return
-        await fetcher.removeArticle({
-            excerpt,
-        })
+        await removeArticleByExcerpt({ excerpt })
         router.push('/')
-    }, [article, router])
+    }, [article, removeArticleByExcerpt, router])
 
     const menu = useMemo(
         () => [

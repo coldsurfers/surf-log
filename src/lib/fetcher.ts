@@ -45,13 +45,6 @@ const fetcher = {
         const data = (await res.json()) as GetTempSavedData
         return data
     },
-    removeArticle: async function ({ excerpt }: { excerpt: string }) {
-        const res = await this.fetch(`${preURL}/article/${excerpt}`, {
-            method: 'DELETE',
-        })
-        const data = (await res.json()) as RemoveArticleData
-        return data
-    },
     temporarySaveArticle: async function ({
         editorText,
     }: {

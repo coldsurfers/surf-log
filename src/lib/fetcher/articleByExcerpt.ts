@@ -14,3 +14,13 @@ export const fetchArticleByExcerpt = async (
         return null
     }
 }
+
+export const removeArticleByExcerpt = async (excerpt: string) => {
+    try {
+        const { data } = await axiosClient.delete<void>(`/article/${excerpt}`)
+        return data
+    } catch (e) {
+        console.error(e)
+        return null
+    }
+}
