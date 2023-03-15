@@ -109,18 +109,14 @@ function MyApp({ Component, pageProps }: AppProps) {
         <QueryClientProvider client={queryClient}>
             <HtmlHead />
             <LoadingBar ref={loadingBarRef} color="#f1f3f5" />
-            {isOnline ? (
-                <Layout
-                    theme={theme}
-                    onToggleTheme={handleToggleTheme}
-                    categories={categories}
-                    currentArticle={article}
-                >
-                    <Component {...pageProps} />
-                </Layout>
-            ) : (
-                <NetworkOfflineTemplate />
-            )}
+            <Layout
+                theme={theme}
+                onToggleTheme={handleToggleTheme}
+                categories={categories}
+                currentArticle={article}
+            >
+                <Component {...pageProps} />
+            </Layout>
             <ModalRootPortalTag htmlId={MODAL_ROOT_PORTAL_TAG_HTML_ID} />
             <ReactQueryDevtools initialIsOpen={false} />
         </QueryClientProvider>
