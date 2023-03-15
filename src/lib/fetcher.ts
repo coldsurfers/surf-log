@@ -67,17 +67,6 @@ const fetcher = {
         const data = (await res.json()) as TemporarySaveArticleData
         return data
     },
-    saveFile: async function ({ file }: { file: File }) {
-        const formData = new FormData()
-        formData.append('editorFile', file, file.name)
-        const res = await fetch('/api/save/file', {
-            method: 'POST',
-            body: formData,
-        })
-        const data = (await res.json()) as FetchSaveFileResponseData
-
-        return data
-    },
 }
 
 export default fetcher
