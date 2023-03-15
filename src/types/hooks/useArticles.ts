@@ -5,6 +5,7 @@ export interface UseArticlesProps
     extends WithInitialDataHooksProps<Article[] | undefined> {
     category?: string
     tag?: string
+    isPublic?: boolean
 }
 
 export interface UseArticlesReturnType {

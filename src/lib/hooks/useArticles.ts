@@ -5,7 +5,12 @@ import { DEFAULT_PAGINATION_COUNT } from '../constants'
 import fetchArticleList from '../fetcher/articleList'
 import { Article } from '../fetcher/types'
 
-const useArticles: UseArticles = ({ category, tag, initialData }) => {
+const useArticles: UseArticles = ({
+    category,
+    tag,
+    isPublic = true,
+    initialData,
+}) => {
     const {
         data,
         isFetching,
@@ -14,7 +19,7 @@ const useArticles: UseArticles = ({ category, tag, initialData }) => {
         isFetchingNextPage,
         isLoading,
     } = useInfiniteQuery<Article[]>(
-        ['getArticleList', category, tag],
+        ['getArticleList', category, tag, isPublic],
         async ({ pageParam = 0, queryKey }) => {
             const [, category, tag] = queryKey as [
                 string,
@@ -25,6 +30,7 @@ const useArticles: UseArticles = ({ category, tag, initialData }) => {
                 page: pageParam,
                 category,
                 tag,
+                isPublic,
             })
             return articleList
         },
