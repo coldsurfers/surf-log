@@ -1,14 +1,9 @@
 import axiosClient from '../axiosClient'
-import { Article } from './types'
+import { Article, SaveArticleBody } from './types'
 
-export const fetchSaveArticle = async (data: {
-    title: string
-    excerpt: string
-    thumbnail: string
-    category: string
-    editorText: string
-    tags: string[]
-}): Promise<Article | null> => {
+export const fetchSaveArticle = async (
+    data: SaveArticleBody
+): Promise<Article | null> => {
     try {
         const { data: article } = await axiosClient.post<Article>(
             '/article/save',

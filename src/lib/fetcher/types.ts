@@ -37,3 +37,13 @@ export interface PresignURLResponse {
         'X-Amz-Signature': string
     }
 }
+
+export interface SaveArticleBody {
+    title: string
+    excerpt: string
+    thumbnail: string
+    category: string
+    editorText: string
+    tags: string[]
+    isPublic: boolean
+}

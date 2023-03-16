@@ -4,6 +4,7 @@ export type EditorSaveModalValues = {
     thumbnail: string
     category: string
     createdAt?: string
+    isPublic: boolean
 }
 
 export interface BaseModalProps {

@@ -20,7 +20,8 @@ function useSave({ editorText }: { editorText: string }) {
             modalValues: EditorSaveModalValues
             tags: string[]
         }) => {
-            const { title, excerpt, thumbnail, category } = modalValues
+            const { title, excerpt, thumbnail, category, isPublic } =
+                modalValues
             return await fetchSaveArticle({
                 title,
                 excerpt,
@@ -28,6 +29,7 @@ function useSave({ editorText }: { editorText: string }) {
                 category,
                 editorText,
                 tags,
+                isPublic,
             })
         }
     )

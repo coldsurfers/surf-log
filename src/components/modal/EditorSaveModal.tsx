@@ -26,13 +26,7 @@ const EditorSaveModal: FC<Props> = ({
     onClickSave,
     defaultModalValues,
 }) => {
-    const [modalValues, setModalValues] = useState<{
-        title: string
-        excerpt: string
-        thumbnail: string
-        category: string
-        createdAt?: string
-    }>(
+    const [modalValues, setModalValues] = useState<EditorSaveModalValues>(
         defaultModalValues
             ? defaultModalValues
             : {
@@ -40,12 +34,13 @@ const EditorSaveModal: FC<Props> = ({
                   excerpt: '',
                   thumbnail: '',
                   category: '',
+                  isPublic: false,
               }
     )
 
     const handleChange: ChangeEventHandler<HTMLInputElement> = useCallback(
         (e) => {
-            const { name, value } = e.target
+            const { name, value, checked } = e.target
             setModalValues((prevState) => ({
                 ...prevState,
                 [name]: value,
@@ -65,6 +60,7 @@ const EditorSaveModal: FC<Props> = ({
                 excerpt: '',
                 thumbnail: '',
                 category: '',
+                isPublic: false,
             })
         }
     }, [open])
@@ -131,6 +127,18 @@ const EditorSaveModal: FC<Props> = ({
                     name="thumbnail"
                     value={modalValues.thumbnail}
                     onChange={handleChange}
+                />
+                <label>isPublic</label>
+                <input
+                    type="checkbox"
+                    name="isPulic"
+                    checked={modalValues.isPublic}
+                    onClick={() =>
+                        setModalValues((prev) => ({
+                            ...prev,
+                            isPublic: !prev.isPublic,
+                        }))
+                    }
                 />
                 <button onClick={handleClickSave}>save</button>
             </SaveModal>
