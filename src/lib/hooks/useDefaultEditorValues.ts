@@ -35,6 +35,7 @@ function useDefaultEditorValues() {
                 excerpt,
                 thumbnail,
                 createdAt,
+                isPublic,
             } = article
             setDefaultEditorValue(content)
             setDefaultModalValues({
@@ -43,6 +44,7 @@ function useDefaultEditorValues() {
                 excerpt: excerpt ?? '',
                 thumbnail: thumbnail ?? '',
                 createdAt: createdAt ?? '',
+                isPublic,
             })
         }
     }, [excerpt])
