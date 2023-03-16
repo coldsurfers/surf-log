@@ -1,20 +1,25 @@
 import { NextPage } from 'next'
+import ArticleListTemplate from '../../components/templates/ArticleListTemplate'
 import useArticles from '../../lib/hooks/useArticles'
 
 interface InitialProps {}
 
 const ArticleTempPage: NextPage<InitialProps> = () => {
-    const { data: tempArticles, isLoading } = useArticles({
+    const {
+        data: tempArticles,
+        loadMore,
+        isLoading,
+    } = useArticles({
         isPublic: false,
         initialData: undefined,
     })
     if (isLoading) return null
     return (
-        <div>
-            {tempArticles.map((article) => (
-                <h1 key={article.id}>{article.title}</h1>
-            ))}
-        </div>
+        <ArticleListTemplate
+            articles={tempArticles}
+            onLoadMore={loadMore}
+            isLoading={isLoading}
+        />
     )
 }
 
