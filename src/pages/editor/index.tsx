@@ -139,12 +139,18 @@ const EditorPage: NextPage = () => {
         const onKeyup = (e: KeyboardEvent) => {
             keydownMemoRef.current = {}
         }
+        const onBeforeunload = (e: BeforeUnloadEvent) => {
+            e.preventDefault()
+            e.returnValue = ''
+        }
         document.addEventListener('keydown', onKeydown)
         document.addEventListener('keyup', onKeyup)
+        window.addEventListener('beforeunload', onBeforeunload)
 
         return () => {
             document.removeEventListener('keydown', onKeydown)
             document.removeEventListener('keyup', onKeyup)
+            window.removeEventListener('beforeunload', onBeforeunload)
         }
     }, [modalOpen])
 
