@@ -45,21 +45,6 @@ const fetcher = {
         const data = (await res.json()) as GetTempSavedData
         return data
     },
-    temporarySaveArticle: async function ({
-        editorText,
-    }: {
-        editorText: string
-    }) {
-        const res = await this.fetch(`${preURL}/save/temp`, {
-            method: 'POST',
-            body: JSON.stringify({
-                text: editorText,
-            }),
-            headers,
-        })
-        const data = (await res.json()) as TemporarySaveArticleData
-        return data
-    },
 }
 
 export default fetcher

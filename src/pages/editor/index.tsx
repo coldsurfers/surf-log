@@ -13,7 +13,6 @@ import { css } from '@emotion/css'
 import FloatingButton from '../../components/buttons/FloatingButton'
 import EditorSaveModal from '../../components/modal/EditorSaveModal'
 import EditorRenderer from '../../components/templates/EditorRenderer'
-import useTempSave from '../../lib/hooks/useTempSave'
 import useSave from '../../lib/hooks/useSave'
 import useDefaultEditorValues from '../../lib/hooks/useDefaultEditorValues'
 import { EditorSaveModalValues } from '../../types/modal'
@@ -60,7 +59,6 @@ const TagInput = styled.input`
 
 const EditorPage: NextPage = () => {
     const [editorText, setEditorText] = useState<string>('')
-    useTempSave({ editorText })
     const { save } = useSave({ editorText })
     const { defaultEditorValue, defaultModalValues } = useDefaultEditorValues()
     const [modalOpen, setModalOpen] = useState<boolean>(false)
