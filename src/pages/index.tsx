@@ -1,4 +1,4 @@
-import type { GetStaticProps, NextPage } from 'next'
+import type { GetServerSideProps, NextPage } from 'next'
 import ArticleListTemplate from '../components/templates/ArticleListTemplate'
 import Head from 'next/head'
 import useArticles from '../lib/hooks/useArticles'
@@ -48,7 +48,9 @@ const Home: NextPage<InitialProps> = ({ initialData }) => {
     )
 }
 
-export const getStaticProps: GetStaticProps<InitialProps> = async (ctx) => {
+export const getServerSideProps: GetServerSideProps<InitialProps> = async (
+    ctx
+) => {
     const articleList = await fetchArticleList({
         page: 1,
     })
