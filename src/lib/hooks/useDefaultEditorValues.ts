@@ -1,7 +1,6 @@
 import { useRouter } from 'next/router'
 import { useCallback, useEffect, useState } from 'react'
 import { EditorSaveModalValues } from '../../types/modal'
-import fetcher from '../fetcher'
 import { fetchArticleByExcerpt } from '../fetcher/articleByExcerpt'
 
 function useDefaultEditorValues() {
@@ -13,14 +12,6 @@ function useDefaultEditorValues() {
     const [defaultModalValues, setDefaultModalValues] = useState<
         EditorSaveModalValues | undefined
     >(undefined)
-
-    const getTempFileText = useCallback(async () => {
-        const data = await fetcher.getTempSaved()
-        const { error, tempArticleText } = data
-        if (!error && tempArticleText) {
-            setDefaultEditorValue(tempArticleText)
-        }
-    }, [])
 
     const getExistingFile = useCallback(async () => {
         if (!excerpt) {
@@ -53,12 +44,10 @@ function useDefaultEditorValues() {
         const initialize = async () => {
             if (excerpt) {
                 getExistingFile()
-            } else {
-                await getTempFileText()
             }
         }
         initialize()
-    }, [excerpt, getExistingFile, getTempFileText])
+    }, [excerpt, getExistingFile])
 
     return {
         defaultEditorValue,

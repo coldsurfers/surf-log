@@ -1,6 +1,5 @@
 import type { GetStaticProps, NextPage } from 'next'
 import ArticleListTemplate from '../components/templates/ArticleListTemplate'
-import fetcher from '../lib/fetcher'
 import Head from 'next/head'
 import useArticles from '../lib/hooks/useArticles'
 import { Profiler } from 'react'
