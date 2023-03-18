@@ -1,8 +1,6 @@
 import fs from 'fs'
 import path from 'path'
 import * as dateFns from 'date-fns'
-import articleMetaJSON from '../public/article-meta.json'
-import { ArticleMeta } from '../src/types/articleMeta'
 
 const sitemapPath = path.resolve(__dirname, '../public/sitemap.xml')
 
@@ -11,7 +9,7 @@ const sitemapXmlStringPre = `<?xml version="1.0" encoding="UTF-8"?>
 const sitemapXmlStringPost = `</urlset>`
 const urlHost = 'https://blog.coldsurf.io'
 
-function generateSitemap() {
+async function generateSitemap() {
     const exist = fs.existsSync(sitemapPath)
     if (exist) {
         fs.rmSync(sitemapPath)
@@ -32,16 +30,20 @@ function generateSitemap() {
             pathname: '/about',
         },
     ]
-
-    const { articles } = articleMetaJSON as ArticleMeta
+    const articleMeta = (await import('../public/article-meta.json')).default
+    const { articles } = articleMeta
     const categories = [
         ...new Set(
-            Object.entries(articles).map(([key, data]) => data.data.category)
+            Object.entries(articles).map(
+                ([key, data]) => data.blogArticleCategory.name
+            )
         ),
     ].sort()
     const tags = [
         ...new Set(
-            Object.entries(articles).flatMap(([key, data]) => data.data.tags)
+            Object.entries(articles).flatMap(([key, data]) =>
+                data.blogArticleTags.map((tag) => tag.blogArticleTag.name)
+            )
         ),
     ].filter((tag) => tag !== undefined)
 
@@ -65,9 +67,9 @@ function generateSitemap() {
     // article route
     articlesArray.forEach((article, index) => {
         routes.push({
-            pathname: `/article/${article.excerpt}`,
-            lastmod: article.data.createdAt
-                ? dateFns.format(new Date(article.data.createdAt), 'yyyy-MM-dd')
+            pathname: `/article/${encodeURIComponent(article.excerpt)}`,
+            lastmod: article.createdAt
+                ? dateFns.format(new Date(article.createdAt), 'yyyy-MM-dd')
                 : undefined,
         })
     })
