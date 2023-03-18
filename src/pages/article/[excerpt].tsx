@@ -1,4 +1,4 @@
-import { GetServerSideProps, NextPage } from 'next'
+import { GetStaticPaths, GetStaticProps, NextPage } from 'next'
 import styled from '@emotion/styled'
 import mediaQuery from '../../lib/mediaQuery'
 import MarkdownRenderer from '../../components/templates/MarkdownRenderer'
@@ -7,15 +7,14 @@ import { useCallback, useMemo, useState } from 'react'
 import Head from 'next/head'
 import MenuFloatingButton from '../../components/buttons/MenuFloatIngButton'
 import ArticleRemoveModal from '../../components/modal/ArticleRemoveModal'
-import useArticle from '../../lib/hooks/useArticle'
 import Error from 'next/error'
 import { format } from 'date-fns'
 import { ko } from 'date-fns/locale'
 import TagBadge from '../../components/badges/TagBadge'
 import Link from 'next/link'
-import { Article } from '../../lib/fetcher/types'
-import { fetchArticleByExcerpt } from '../../lib/fetcher/articleByExcerpt'
 import useRemoveArticle from '../../lib/hooks/useRemoveArticle'
+import { Article } from '../../lib/fetcher/types'
+import { fetchArticleMeta } from '../../lib/fetcher/articleMeta'
 
 const ContentContainer = styled.div`
     background: #ffffff;
@@ -55,11 +54,8 @@ interface InitialProps {
 }
 
 const Excerpt: NextPage<InitialProps> = ({ initialData }) => {
+    const article = initialData
     const router = useRouter()
-    const { article } = useArticle({
-        initialData,
-        excerpt: router.query.excerpt as string,
-    })
     const [removeModalOpen, setRemoveModalOpen] = useState<boolean>(false)
     const { mutateAsync: removeArticleByExcerpt } = useRemoveArticle()
 
@@ -162,24 +158,47 @@ const Excerpt: NextPage<InitialProps> = ({ initialData }) => {
     )
 }
 
-export const getServerSideProps: GetServerSideProps<
-    InitialProps,
-    {
-        excerpt: string
+export const getStaticPaths: GetStaticPaths = async (ctx) => {
+    const data = await fetchArticleMeta()
+    if (!data) {
+        return {
+            paths: [],
+            fallback: false,
+        }
     }
+    const { articles } = data
+    return {
+        paths: Object.keys(articles).map(
+            (excerpt) => `/article/${encodeURIComponent(excerpt)}`
+        ),
+        fallback: false,
+    }
+}
+
+export const getStaticProps: GetStaticProps<
+    InitialProps,
+    { excerpt: string }
 > = async (ctx) => {
-    if (!ctx.params) {
+    if (!ctx.params)
+        return {
+            props: {
+                initialData: undefined,
+            },
+        }
+    const { excerpt } = ctx.params
+
+    const data = await fetchArticleMeta()
+    if (!data) {
         return {
             props: {
                 initialData: undefined,
             },
         }
     }
-    const { excerpt } = ctx.params
-    const article = await fetchArticleByExcerpt(excerpt)
+    const { articles } = data
     return {
         props: {
-            initialData: article ?? undefined,
+            initialData: articles[excerpt as keyof typeof articles],
         },
     }
 }

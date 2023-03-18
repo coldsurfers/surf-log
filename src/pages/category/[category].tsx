@@ -1,10 +1,9 @@
-import { GetServerSideProps, NextPage } from 'next'
+import { GetStaticPaths, GetStaticProps, NextPage } from 'next'
 import Head from 'next/head'
 import { useRouter } from 'next/router'
 import ArticleListTemplate from '../../components/templates/ArticleListTemplate'
-import fetchArticleList from '../../lib/fetcher/articleList'
+import { fetchArticleMeta } from '../../lib/fetcher/articleMeta'
 import { Article } from '../../lib/fetcher/types'
-import useArticles from '../../lib/hooks/useArticles'
 
 interface InitialProps {
     initialData: Article[]
@@ -13,10 +12,7 @@ interface InitialProps {
 const Category: NextPage<InitialProps> = ({ initialData }) => {
     const router = useRouter()
     const { category } = router.query
-    const { data, isLoading, loadMore } = useArticles({
-        category: category as string | undefined,
-        initialData,
-    })
+    const data = initialData
 
     return (
         <>
@@ -30,14 +26,29 @@ const Category: NextPage<InitialProps> = ({ initialData }) => {
             </Head>
             <ArticleListTemplate
                 articles={data}
-                onLoadMore={loadMore}
-                isLoading={isLoading}
+                onLoadMore={() => {}}
+                isLoading={false}
             />
         </>
     )
 }
 
-export const getServerSideProps: GetServerSideProps<
+export const getStaticPaths: GetStaticPaths = async (ctx) => {
+    const data = await fetchArticleMeta()
+    if (!data) {
+        return {
+            paths: [],
+            fallback: false,
+        }
+    }
+    const { categories } = data
+    return {
+        paths: categories.map((category) => `/category/${category}`),
+        fallback: false,
+    }
+}
+
+export const getStaticProps: GetStaticProps<
     InitialProps,
     {
         category: string
@@ -51,11 +62,24 @@ export const getServerSideProps: GetServerSideProps<
         }
     }
     const { category } = ctx.params
-    const articleList = await fetchArticleList({ page: 1, category })
+    const data = await fetchArticleMeta()
+    if (!data) {
+        return {
+            props: {
+                initialData: [],
+            },
+        }
+    }
+    const { articles } = data
 
     return {
         props: {
-            initialData: articleList,
+            initialData: Object.keys(articles)
+                .map((excerpt) => articles[excerpt as keyof typeof articles])
+                .filter(
+                    (blogArticle) =>
+                        blogArticle.blogArticleCategory?.name === category
+                ),
         },
     }
 }

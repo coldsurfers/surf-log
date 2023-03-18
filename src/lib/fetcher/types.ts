@@ -23,6 +23,12 @@ export interface Article {
     createdAt: string
 }
 
+export interface Tag {
+    id: number
+    name: string
+    createdAt: string
+}
+
 export interface PresignURLResponse {
     url: string
     fields: {

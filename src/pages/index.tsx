@@ -1,20 +1,15 @@
-import type { GetServerSideProps, NextPage } from 'next'
+import type { GetStaticProps, NextPage } from 'next'
 import ArticleListTemplate from '../components/templates/ArticleListTemplate'
 import Head from 'next/head'
-import useArticles from '../lib/hooks/useArticles'
 import { Profiler } from 'react'
 import { Article } from '../lib/fetcher/types'
-import fetchArticleList from '../lib/fetcher/articleList'
+import { fetchArticleMeta } from '../lib/fetcher/articleMeta'
 
 interface InitialProps {
     initialData: Article[]
 }
 
 const Home: NextPage<InitialProps> = ({ initialData }) => {
-    const { data, loadMore, isLoading } = useArticles({
-        initialData,
-    })
-
     return (
         <>
             <Head>
@@ -39,25 +34,30 @@ const Home: NextPage<InitialProps> = ({ initialData }) => {
                 }}
             >
                 <ArticleListTemplate
-                    articles={data}
-                    onLoadMore={loadMore}
-                    isLoading={isLoading}
+                    articles={initialData}
+                    onLoadMore={() => {}}
+                    isLoading={false}
                 />
             </Profiler>
         </>
     )
 }
 
-export const getServerSideProps: GetServerSideProps<InitialProps> = async (
-    ctx
-) => {
-    const articleList = await fetchArticleList({
-        page: 1,
-    })
-
+export const getStaticProps: GetStaticProps<InitialProps> = async (ctx) => {
+    const data = await fetchArticleMeta()
+    if (!data) {
+        return {
+            props: {
+                initialData: [],
+            },
+        }
+    }
+    const { articles } = data
     return {
         props: {
-            initialData: articleList,
+            initialData: Object.keys(articles).map(
+                (excerpt) => articles[excerpt as keyof typeof articles]
+            ),
         },
     }
 }

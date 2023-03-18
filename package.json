@@ -5,6 +5,7 @@
   "scripts": {
     "postinstall": "yarn patch-package",
     "dev": "next dev",
+    "prebuild": "yarn ts-node ./ci/createArticleMeta.ts",
     "build": "next build",
     "start": "next start",
     "lint": "next lint"

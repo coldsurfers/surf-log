@@ -1,10 +1,9 @@
 import styled from '@emotion/styled'
-import { GetServerSideProps, NextPage } from 'next'
+import { GetStaticPaths, GetStaticProps, NextPage } from 'next'
 import { useRouter } from 'next/router'
 import ArticleListTemplate from '../../components/templates/ArticleListTemplate'
-import fetchArticleList from '../../lib/fetcher/articleList'
+import { fetchArticleMeta } from '../../lib/fetcher/articleMeta'
 import { Article } from '../../lib/fetcher/types'
-import useArticles from '../../lib/hooks/useArticles'
 import { themedPalette } from '../../lib/theme'
 
 const TagTitle = styled.h1`
@@ -21,25 +20,39 @@ interface InitialProps {
 const TagsTagPage: NextPage<InitialProps> = ({ initialData }) => {
     const router = useRouter()
     const { tag } = router.query
-    const { data, loadMore, isLoading } = useArticles({
-        tag: tag as string | undefined,
-        initialData,
-    })
+    const data = initialData
     return (
         <>
             <TagTitle>#{tag}</TagTitle>
             <ArticleListTemplate
                 articles={data}
-                onLoadMore={loadMore}
-                isLoading={isLoading}
+                onLoadMore={() => {}}
+                isLoading={false}
             />
         </>
     )
 }
 
-export const getServerSideProps: GetServerSideProps<InitialProps> = async (
-    ctx
-) => {
+export const getStaticPaths: GetStaticPaths = async (ctx) => {
+    const data = await fetchArticleMeta()
+    if (!data) {
+        return {
+            paths: [],
+            fallback: false,
+        }
+    }
+    const { tags } = data
+
+    return {
+        paths: tags.map((tag) => `/tags/${tag}`),
+        fallback: false,
+    }
+}
+
+export const getStaticProps: GetStaticProps<
+    InitialProps,
+    { tag: string }
+> = async (ctx) => {
     if (!ctx.params?.tag) {
         return {
             props: {
@@ -48,11 +61,25 @@ export const getServerSideProps: GetServerSideProps<InitialProps> = async (
         }
     }
     const { tag } = ctx.params
-    const articleList = await fetchArticleList({ page: 1, tag: tag as string })
-
+    const data = await fetchArticleMeta()
+    if (!data) {
+        return {
+            props: {
+                initialData: [],
+            },
+        }
+    }
+    const { articles } = data
     return {
         props: {
-            initialData: articleList,
+            initialData: Object.keys(articles)
+                .map((excerpt) => articles[excerpt as keyof typeof articles])
+                .filter((article) =>
+                    article.blogArticleTags?.some(
+                        (blogArticleTag) =>
+                            blogArticleTag.blogArticleTag.name === tag
+                    )
+                ),
         },
     }
 }
