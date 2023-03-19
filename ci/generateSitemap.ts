@@ -1,6 +1,7 @@
 import fs from 'fs'
 import path from 'path'
 import * as dateFns from 'date-fns'
+import { ArticleMeta } from '../src/types/articleMeta'
 
 const sitemapPath = path.resolve(__dirname, '../public/sitemap.xml')
 
@@ -30,19 +31,22 @@ async function generateSitemap() {
             pathname: '/about',
         },
     ]
-    const articleMeta = (await import('../public/article-meta.json')).default
+    const articleMeta = (await import('../public/article-meta.json'))
+        .default as ArticleMeta
     const { articles } = articleMeta
     const categories = [
         ...new Set(
             Object.entries(articles).map(
-                ([key, data]) => data.blogArticleCategory.name
+                ([key, data]) => data.blogArticleCategory?.name
             )
         ),
-    ].sort()
+    ]
+        .filter((category) => category !== undefined)
+        .sort()
     const tags = [
         ...new Set(
             Object.entries(articles).flatMap(([key, data]) =>
-                data.blogArticleTags.map((tag) => tag.blogArticleTag.name)
+                data.blogArticleTags?.map((tag) => tag.blogArticleTag.name)
             )
         ),
     ].filter((tag) => tag !== undefined)
