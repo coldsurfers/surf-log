@@ -68,28 +68,19 @@ injectGlobal`
         -webkit-border-radius: 80px;
     }
     /** scrollbar unset end */
-    body {
+    html {
         background: ${themedPalette['body-background']};
         font-family: var(--common-font-family);
         margin: 0px;
+        color-scheme: light;
+        ${lightTheme};
     }
 
-    body {
-        @media (prefers-color-scheme: light) {
-            ${lightTheme}
-        }
-
-        @media (prefers-color-scheme: dark) {
-            ${darkTheme}
-        }
+    html.dark {
+        color-scheme: dark;
+        ${darkTheme};
     }
 
-    body[data-theme='light'] {
-        ${lightTheme}
-    }
-    body[data-theme='dark'] {
-        ${darkTheme}
-    }
     a {
         text-decoration: none;
         color: inherit;

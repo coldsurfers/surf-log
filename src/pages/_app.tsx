@@ -23,6 +23,13 @@ import { fetchArticleMeta } from '../lib/fetcher/articleMeta'
 import extractFromCookie from '../lib/extractFromCookie'
 import { Article } from '../lib/fetcher/types'
 
+declare global {
+    interface Window {
+        __theme: string
+        __setPreferredTheme: (theme: string) => void
+    }
+}
+
 const queryClient = new QueryClient()
 
 type AppProps<P = any> = {
@@ -35,12 +42,14 @@ function MyApp({
 }: AppProps<{
     categories: string[]
     statusCode: number
-    theme: 'light' | 'dark' | 'default' | null
     article?: Article
 }>) {
-    const { categories, article, statusCode, theme: initialTheme } = pageProps
+    const { categories, article, statusCode } = pageProps
     const [theme, setTheme] = useState<'light' | 'dark' | 'default'>(() => {
-        return initialTheme ?? 'default'
+        if (typeof window !== 'undefined') {
+            return window.__theme as 'light' | 'dark'
+        }
+        return 'default'
     })
     const loadingBarRef = useRef<LoadingBarRef>(null)
     const { isOnline } = useNetworkStatus()
@@ -72,8 +81,7 @@ function MyApp({
     }, [])
 
     useEffect(() => {
-        localStorage.setItem(THEME_UNIQUE_KEY, theme)
-        document.cookie = `${THEME_UNIQUE_KEY}=${theme}; path=/;`
+        window.__setPreferredTheme(theme)
     }, [theme])
 
     useEffect(() => {
@@ -96,29 +104,6 @@ function MyApp({
             router.events.off('routeChangeComplete', onRouteChangeComplete)
         }
     }, [router.events])
-
-    useEffect(() => {
-        const onPrefersColorSchemeChanged = (e: MediaQueryListEvent) => {
-            if (localStorage.getItem(THEME_UNIQUE_KEY) === null) {
-                setTheme(e.matches ? 'dark' : 'light')
-            }
-        }
-        window
-            .matchMedia('(prefers-color-scheme: dark)')
-            .addListener(onPrefersColorSchemeChanged)
-
-        return () => {
-            window
-                .matchMedia('(prefers-color-scheme: dark)')
-                .addListener(onPrefersColorSchemeChanged)
-        }
-    }, [])
-
-    useEffect(() => {
-        if (theme !== 'default') {
-            document.body.dataset.theme = theme
-        }
-    }, [theme])
 
     if (statusCode === 404) {
         return <Error statusCode={statusCode} />
