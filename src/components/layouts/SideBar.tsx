@@ -6,8 +6,8 @@ import mediaQuery from '../../lib/mediaQuery'
 import { themedPalette } from '../../lib/theme'
 
 const Container = styled.nav`
+    position: relative;
     width: 230px;
-    height: 100vh;
     background-color: transparent;
 
     ${mediaQuery.medium} {
@@ -156,7 +156,7 @@ const SideBar: FC<Props> = (props) => {
         return null
     }
     return (
-        <Container style={{ position: 'relative' }}>
+        <Container>
             <div
                 ref={sideBarTopSpaceRef}
                 style={{
