@@ -2,8 +2,8 @@ import styled from '@emotion/styled'
 import { useRouter } from 'next/router'
 import { FC } from 'react'
 import breakpoints from '../../lib/breakpoints'
+import { Article } from '../../lib/fetcher/types'
 import mediaQuery from '../../lib/mediaQuery'
-import { Article } from '../../types/article'
 import Header from './Header'
 import SideBar from './SideBar'
 
@@ -77,7 +77,9 @@ const PageLayout: FC<Props> = ({
                 <ChildrenWithSideBar>
                     <SideBar
                         categories={categories}
-                        currentArticleCategory={currentArticle?.data.category}
+                        currentArticleCategory={
+                            currentArticle?.blogArticleCategory?.name
+                        }
                     />
                     <ChildrenWrapper>{children}</ChildrenWrapper>
                 </ChildrenWithSideBar>

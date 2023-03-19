@@ -1,7 +1,7 @@
 import '../lib/injectGlobalStyle'
 import '../lib/ga/initialize'
 import 'open-color/open-color.css'
-import type { AppContext, AppProps } from 'next/app'
+import type { AppContext, AppProps as NextAppProps } from 'next/app'
 import Layout from '../components/layouts/PageLayout'
 import App from 'next/app'
 import NetworkOfflineTemplate from '../components/templates/NetworkOfflineTemplate'
@@ -20,21 +20,35 @@ import { pageView } from '../lib/ga/utils'
 import { QueryClient, QueryClientProvider } from 'react-query'
 import { ReactQueryDevtools } from 'react-query/devtools'
 import { fetchArticleMeta } from '../lib/fetcher/articleMeta'
+import extractFromCookie from '../lib/extractFromCookie'
+import { Article } from '../lib/fetcher/types'
 
 const queryClient = new QueryClient()
 
-function MyApp({ Component, pageProps }: AppProps) {
-    const [theme, setTheme] = useState<'light' | 'dark' | 'default'>('default')
+type AppProps<P = any> = {
+    pageProps: P
+} & Omit<NextAppProps<P>, 'pageProps'>
+
+function MyApp({
+    Component,
+    pageProps,
+}: AppProps<{
+    categories: string[]
+    statusCode: number
+    theme: 'light' | 'dark' | 'default' | null
+    article?: Article
+}>) {
+    const { categories, article, statusCode, theme: initialTheme } = pageProps
+    const [theme, setTheme] = useState<'light' | 'dark' | 'default'>(() => {
+        return initialTheme ?? 'default'
+    })
     const loadingBarRef = useRef<LoadingBarRef>(null)
-    const { categories, article, statusCode } = pageProps
     const { isOnline } = useNetworkStatus()
     const router = useRouter()
 
     const handleToggleTheme = useCallback(() => {
         setTheme((prev) => {
             const theme = prev === 'light' ? 'dark' : 'light'
-            localStorage.setItem(THEME_UNIQUE_KEY, theme)
-            document.cookie = `${THEME_UNIQUE_KEY}=${theme}; path=/;`
             return theme
         })
     }, [])
@@ -56,6 +70,11 @@ function MyApp({ Component, pageProps }: AppProps) {
             }
         }
     }, [])
+
+    useEffect(() => {
+        localStorage.setItem(THEME_UNIQUE_KEY, theme)
+        document.cookie = `${THEME_UNIQUE_KEY}=${theme}; path=/;`
+    }, [theme])
 
     useEffect(() => {
         pageView(router.asPath)
@@ -105,6 +124,8 @@ function MyApp({ Component, pageProps }: AppProps) {
         return <Error statusCode={statusCode} />
     }
 
+    if (theme === 'default') return null
+
     return (
         <QueryClientProvider client={queryClient}>
             <HtmlHead />
@@ -129,6 +150,16 @@ MyApp.getInitialProps = async (appContext: AppContext) => {
 
     const { res } = appContext.ctx
 
+    const { query } = appContext.router
+
+    let currentArticle: Article | undefined
+
+    if (data !== null && query.excerpt) {
+        const { excerpt } = query
+        const { articles } = data
+        currentArticle = data.articles[excerpt as keyof typeof articles]
+    }
+
     let isNotFound = false
     if (res?.statusCode === 404) {
         isNotFound = true
@@ -145,6 +176,11 @@ MyApp.getInitialProps = async (appContext: AppContext) => {
     appProps.pageProps = {
         categories: data ? data.categories.map((category) => category) : [],
         statusCode: isNotFound ? 404 : res?.statusCode ?? 200,
+        theme: extractFromCookie(
+            appContext.ctx.req?.headers.cookie,
+            THEME_UNIQUE_KEY
+        ),
+        article: currentArticle,
     }
 
     return {
