@@ -69,16 +69,21 @@ injectGlobal`
     }
     /** scrollbar unset end */
     body {
-        ${lightTheme}
         background: ${themedPalette['body-background']};
         font-family: var(--common-font-family);
         margin: 0px;
     }
-    @media (prefers-color-scheme: dark) {
-        body {
+
+    body {
+        @media (prefers-color-scheme: light) {
+            ${lightTheme}
+        }
+
+        @media (prefers-color-scheme: dark) {
             ${darkTheme}
         }
     }
+
     body[data-theme='light'] {
         ${lightTheme}
     }
