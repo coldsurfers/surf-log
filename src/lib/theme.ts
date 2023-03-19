@@ -14,4 +14,12 @@ export const themedPalette = {
     'header-logo-background': cssVar('header-logo-background'),
     'header-logo-text-color': cssVar('header-logo-text-color'),
     'tag-page-title-text-color': cssVar('tag-page-title-text-color'),
+    'markdown-background': cssVar('markdown-background'),
+    'markdown-text-color': cssVar('markdown-text-color'),
+    'markdown-blockquote-background-color': cssVar(
+        'markdown-blockquote-background-color'
+    ),
+    'markdown-code-fragment-border': cssVar('markdown-code-fragment-border'),
+    'tag-badge-background-color': cssVar('tag-badge-background-color'),
+    'tag-badge-text-color': cssVar('tag-badge-text-color'),
 }

@@ -13,6 +13,14 @@ const lightTheme = `
     --header-logo-background: var(--oc-gray-3);
     --header-logo-text-color: #000000;
     --tag-page-title-text-color: #000000;
+
+    --markdown-background: #ffffff;
+    --markdown-text-color: #000000;
+    --markdown-blockquote-background-color: var(--oc-gray-1);
+    --markdown-code-fragment-border: 1px solid var(--oc-gray-2);
+
+    --tag-badge-background-color: var(--oc-gray-2);
+    --tag-badge-text-color: var(--oc-gray-9);
 `
 const darkTheme = `
     --body-background: var(--oc-gray-9);
@@ -26,6 +34,14 @@ const darkTheme = `
     --header-logo-background: var(--oc-gray-8);
     --header-logo-text-color: #ffffff;
     --tag-page-title-text-color: #ffffff;
+
+    --markdown-background: var(--oc-gray-8);
+    --markdown-text-color: #ffffff;
+    --markdown-blockquote-background-color: var(--oc-gray-9);
+    --markdown-code-fragment-border: 1px solid var(--oc-gray-7);
+
+    --tag-badge-background-color: var(--oc-gray-7);
+    --tag-badge-text-color: var(--oc-gray-2);
 `
 
 injectGlobal`

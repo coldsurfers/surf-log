@@ -2,6 +2,7 @@ import 'prismjs/themes/prism-tomorrow.css'
 import { css } from '@emotion/css'
 import { FC, useEffect } from 'react'
 import { marked } from 'marked'
+import { themedPalette } from '../../lib/theme'
 
 let prism: any = null
 const isBrowser = typeof window !== 'undefined'
@@ -34,7 +35,9 @@ const MarkdownRenderer: FC<Props> = ({ text }) => {
                 blockquote {
                     border-left: 4px solid var(--oc-blue-6);
                     padding: 1rem;
-                    background: var(--oc-gray-1);
+                    background: ${themedPalette[
+                        'markdown-blockquote-background-color'
+                    ]};
                     margin-left: 0;
                     margin-right: 0;
                     p {
@@ -49,7 +52,6 @@ const MarkdownRenderer: FC<Props> = ({ text }) => {
                     font-weight: 500;
                 }
 
-                // 텍스트 사이의 코드
                 h1,
                 h2,
                 h3,
@@ -59,14 +61,20 @@ const MarkdownRenderer: FC<Props> = ({ text }) => {
                 p {
                     line-height: 1.5em;
                     word-break: break-word;
+                    color: ${themedPalette['markdown-text-color']};
+                    // 텍스트 사이의 코드
                     code {
                         font-family: ui-monospace, SFMono-Regular, SF Mono,
                             Menlo, Consolas, Liberation Mono, monospace;
-                        background: var(--oc-gray-0);
+                        background: ${themedPalette[
+                            'markdown-blockquote-background-color'
+                        ]};
                         padding: 0.25rem;
                         font-size: 0.8em;
                         color: var(--oc-blue-6);
-                        border: 1px solid var(--oc-gray-2);
+                        border: ${themedPalette[
+                            'markdown-code-fragment-border'
+                        ]};
                         border-radius: 2px;
                     }
                 }

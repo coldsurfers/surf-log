@@ -15,9 +15,10 @@ import Link from 'next/link'
 import useRemoveArticle from '../../lib/hooks/useRemoveArticle'
 import { Article } from '../../lib/fetcher/types'
 import { fetchArticleMeta } from '../../lib/fetcher/articleMeta'
+import { themedPalette } from '../../lib/theme'
 
 const ContentContainer = styled.div`
-    background: #ffffff;
+    background: ${themedPalette['markdown-background']};
     padding: 2rem;
     border-radius: 12px;
     box-shadow: 0px -5px 20px 10px rgb(92 95 112 / 8%);
@@ -36,11 +37,13 @@ const CategoryText = styled.p`
     font-weight: bold;
     font-size: 20px;
     margin: 0px;
+    color: ${themedPalette['markdown-text-color']};
 `
 
 const CreatedDateText = styled.p`
     margin: 0px;
     margin-top: 4px;
+    color: ${themedPalette['markdown-text-color']};
 `
 
 const TagsWrapper = styled.div`
@@ -135,7 +138,7 @@ const Excerpt: NextPage<InitialProps> = ({ initialData }) => {
                                             passHref
                                         >
                                             <TagBadge>
-                                                {blogArticleTag.name}
+                                                #{blogArticleTag.name}
                                             </TagBadge>
                                         </Link>
                                     )
