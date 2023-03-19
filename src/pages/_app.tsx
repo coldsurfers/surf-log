@@ -19,7 +19,7 @@ import { useRouter } from 'next/router'
 import { pageView } from '../lib/ga/utils'
 import { QueryClient, QueryClientProvider } from 'react-query'
 import { ReactQueryDevtools } from 'react-query/devtools'
-import { fetchCategoryList } from '../lib/fetcher/categoryList'
+import { fetchArticleMeta } from '../lib/fetcher/articleMeta'
 
 const queryClient = new QueryClient()
 
@@ -125,7 +125,7 @@ function MyApp({ Component, pageProps }: AppProps) {
 
 MyApp.getInitialProps = async (appContext: AppContext) => {
     const appProps = await App.getInitialProps(appContext)
-    const categoryList = await fetchCategoryList()
+    const data = await fetchArticleMeta()
 
     const { res } = appContext.ctx
 
@@ -143,7 +143,7 @@ MyApp.getInitialProps = async (appContext: AppContext) => {
     }
 
     appProps.pageProps = {
-        categories: categoryList.map((category) => category.name),
+        categories: data ? data.categories.map((category) => category) : [],
         statusCode: isNotFound ? 404 : res?.statusCode ?? 200,
     }
 
