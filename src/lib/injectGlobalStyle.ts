@@ -46,6 +46,7 @@ const darkTheme = `
 
 injectGlobal`
     @import url('//cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css');
+
     :root {
         --header-height: 56px;
         --common-font-family: Pretendard, -apple-system, BlinkMacSystemFont, system-ui, Roboto, 'Helvetica Neue', 'Segoe UI', 'Apple SD Gothic Neo', 'Noto Sans KR', 'Malgun Gothic', 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', sans-serif;
@@ -71,7 +72,6 @@ injectGlobal`
     html {
         background: ${themedPalette['body-background']};
         font-family: var(--common-font-family);
-        margin: 0px;
         color-scheme: light;
         ${lightTheme};
     }
@@ -79,6 +79,11 @@ injectGlobal`
     html.dark {
         color-scheme: dark;
         ${darkTheme};
+    }
+
+    html, body {
+        margin: 0;
+        padding: 0;
     }
 
     a {
