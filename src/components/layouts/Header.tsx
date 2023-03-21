@@ -42,7 +42,7 @@ const ContainerInner = styled.div`
     }
 `
 
-const Logo = styled.a`
+const Logo = styled.div`
     width: auto;
     height: 38px;
     border-radius: 13px;

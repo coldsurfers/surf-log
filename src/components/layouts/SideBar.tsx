@@ -50,7 +50,7 @@ const NavItem = styled.li`
     }
 `
 
-const NavLink = styled.a<{ matched?: boolean }>`
+const NavLink = styled(Link)<{ matched?: boolean }>`
     transition: all 0.1s ease;
     width: 100%;
     height: 33px;
@@ -165,24 +165,26 @@ const SideBar: FC<Props> = (props) => {
             />
             <NavItemList isFixed={isFixed}>
                 <NavItem>
-                    <Link href={`/`} passHref>
-                        <NavLink matched={router.pathname === '/'}>
-                            <NavLinkText>All</NavLinkText>
-                        </NavLink>
-                    </Link>
+                    <NavLink
+                        href="/"
+                        passHref
+                        matched={router.pathname === '/'}
+                    >
+                        <NavLinkText>All</NavLinkText>
+                    </NavLink>
                 </NavItem>
                 {categories.map((category) => (
                     <NavItem key={category}>
-                        <Link href={`/category/${category}`} passHref>
-                            <NavLink
-                                matched={
-                                    category === router.query.category ||
-                                    category === currentArticleCategory
-                                }
-                            >
-                                <NavLinkText>{category}</NavLinkText>
-                            </NavLink>
-                        </Link>
+                        <NavLink
+                            href={`/category/${category}`}
+                            passHref
+                            matched={
+                                category === router.query.category ||
+                                category === currentArticleCategory
+                            }
+                        >
+                            <NavLinkText>{category}</NavLinkText>
+                        </NavLink>
                     </NavItem>
                 ))}
             </NavItemList>

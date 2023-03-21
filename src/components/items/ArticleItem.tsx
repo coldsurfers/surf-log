@@ -7,8 +7,8 @@ import { format } from 'date-fns'
 import { ko } from 'date-fns/locale'
 import { Article } from '../../lib/fetcher/types'
 
-const ArticleContainer = styled.a`
-    width: calc(100% / 3 - 1rem * 2);
+const ArticleContainer = styled(Link)`
+    width: calc((100% / 3) - 1rem * 2);
     margin: 1rem;
     height: 280px;
     border-radius: 12px;
@@ -110,40 +110,38 @@ const ArticleItem: FC<Props> = ({ article }) => {
                 console.log(...props)
             }}
         >
-            <Link href={`/article/${article.excerpt}`} passHref>
-                <ArticleContainer>
-                    <ThumbnailWrapper>
-                        {article.thumbnail ? (
-                            <img
-                                src={`${process.env.HOST_URL}/thumbnails/${article.thumbnail}`}
-                                alt="thumbnail"
-                                style={{
-                                    objectFit: 'cover',
-                                    width: '100%',
-                                    height: '100%',
-                                }}
-                            />
-                        ) : (
-                            <div />
-                        )}
-                    </ThumbnailWrapper>
-                    <ArticleDescWarpper>
-                        <ArticleTitle>{article.title}</ArticleTitle>
-                        <ArticleSubTitle>{article.excerpt}</ArticleSubTitle>
-                    </ArticleDescWarpper>
-                    {article.createdAt && (
-                        <ArticleDate>
-                            {format(
-                                new Date(article.createdAt),
-                                'yyyy-MM-dd HH:mm',
-                                {
-                                    locale: ko,
-                                }
-                            )}
-                        </ArticleDate>
+            <ArticleContainer href={`/article/${article.excerpt}`} passHref>
+                <ThumbnailWrapper>
+                    {article.thumbnail ? (
+                        <img
+                            src={`${process.env.HOST_URL}/thumbnails/${article.thumbnail}`}
+                            alt="thumbnail"
+                            style={{
+                                objectFit: 'cover',
+                                width: '100%',
+                                height: '100%',
+                            }}
+                        />
+                    ) : (
+                        <div />
                     )}
-                </ArticleContainer>
-            </Link>
+                </ThumbnailWrapper>
+                <ArticleDescWarpper>
+                    <ArticleTitle>{article.title}</ArticleTitle>
+                    <ArticleSubTitle>{article.excerpt}</ArticleSubTitle>
+                </ArticleDescWarpper>
+                {article.createdAt && (
+                    <ArticleDate>
+                        {format(
+                            new Date(article.createdAt),
+                            'yyyy-MM-dd HH:mm',
+                            {
+                                locale: ko,
+                            }
+                        )}
+                    </ArticleDate>
+                )}
+            </ArticleContainer>
         </Profiler>
     )
 }

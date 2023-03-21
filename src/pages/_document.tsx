@@ -54,9 +54,9 @@ export default class AppDocument extends Document<{ theme: string | null }> {
                                 function setTheme(newTheme) {
                                     window.__theme = newTheme;
                                     if (newTheme === 'dark') {
-                                    document.documentElement.classList.add('dark');
+                                        document.documentElement.classList.add('dark');
                                     } else if (newTheme === 'light') {
-                                    document.documentElement.classList.remove('dark');
+                                        document.documentElement.classList.remove('dark');
                                     }
                                 }
                                 var preferredTheme;
@@ -67,7 +67,7 @@ export default class AppDocument extends Document<{ theme: string | null }> {
                                     preferredTheme = newTheme;
                                     setTheme(newTheme);
                                     try {
-                                    localStorage.setItem('${THEME_UNIQUE_KEY}', newTheme);
+                                        localStorage.setItem('${THEME_UNIQUE_KEY}', newTheme);
                                     } catch (err) { }
                                 };
                                 var initialTheme = preferredTheme;
@@ -78,7 +78,7 @@ export default class AppDocument extends Document<{ theme: string | null }> {
                                 setTheme(initialTheme);
                                 darkQuery.addEventListener('change', function (e) {
                                     if (!preferredTheme) {
-                                    setTheme(e.matches ? 'dark' : 'light');
+                                        setTheme(e.matches ? 'dark' : 'light');
                                     }
                                 });
                                 // Detect whether the browser is Mac to display platform specific content

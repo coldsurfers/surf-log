@@ -1,4 +1,4 @@
-import '../lib/injectGlobalStyle'
+// import '../lib/injectGlobalStyle'
 import '../lib/ga/initialize'
 import 'open-color/open-color.css'
 import type { AppContext, AppProps as NextAppProps } from 'next/app'
@@ -22,6 +22,7 @@ import { ReactQueryDevtools } from 'react-query/devtools'
 import { fetchArticleMeta } from '../lib/fetcher/articleMeta'
 import extractFromCookie from '../lib/extractFromCookie'
 import { Article } from '../lib/fetcher/types'
+import { globalStyles } from '../lib/injectGlobalStyle'
 
 declare global {
     interface Window {
@@ -45,12 +46,7 @@ function MyApp({
     article?: Article
 }>) {
     const { categories, article, statusCode } = pageProps
-    const [theme, setTheme] = useState<'light' | 'dark' | 'default'>(() => {
-        if (typeof window !== 'undefined') {
-            return window.__theme as 'light' | 'dark'
-        }
-        return 'default'
-    })
+    const [theme, setTheme] = useState<'light' | 'dark' | 'default'>('default')
     const loadingBarRef = useRef<LoadingBarRef>(null)
     const { isOnline } = useNetworkStatus()
     const router = useRouter()
@@ -58,31 +54,12 @@ function MyApp({
     const handleToggleTheme = useCallback(() => {
         setTheme((prev) => {
             const theme = prev === 'light' ? 'dark' : 'light'
+            window.__setPreferredTheme(theme)
             return theme
         })
     }, [])
 
-    useEffect(() => {
-        const storedTheme = localStorage.getItem(THEME_UNIQUE_KEY)
-        if (storedTheme === 'dark') {
-            setTheme('dark')
-        } else if (storedTheme === 'light') {
-            setTheme('light')
-        } else {
-            const systemPrefersDark = window.matchMedia(
-                '(prefers-color-scheme: dark)'
-            ).matches
-            if (systemPrefersDark) {
-                setTheme('dark')
-            } else {
-                setTheme('light')
-            }
-        }
-    }, [])
-
-    useEffect(() => {
-        window.__setPreferredTheme(theme)
-    }, [theme])
+    useEffect(() => setTheme(window.__theme as 'light' | 'dark'), [])
 
     useEffect(() => {
         pageView(router.asPath)
@@ -112,20 +89,23 @@ function MyApp({
     if (theme === 'default') return null
 
     return (
-        <QueryClientProvider client={queryClient}>
-            <HtmlHead />
-            <LoadingBar ref={loadingBarRef} color="#f1f3f5" />
-            <Layout
-                theme={theme}
-                onToggleTheme={handleToggleTheme}
-                categories={categories}
-                currentArticle={article}
-            >
-                <Component {...pageProps} />
-            </Layout>
-            <ModalRootPortalTag htmlId={MODAL_ROOT_PORTAL_TAG_HTML_ID} />
-            <ReactQueryDevtools initialIsOpen={false} />
-        </QueryClientProvider>
+        <>
+            {globalStyles}
+            <QueryClientProvider client={queryClient}>
+                <HtmlHead />
+                <LoadingBar ref={loadingBarRef} color="#f1f3f5" />
+                <Layout
+                    theme={theme}
+                    onToggleTheme={handleToggleTheme}
+                    categories={categories}
+                    currentArticle={article}
+                >
+                    <Component {...pageProps} />
+                </Layout>
+                <ModalRootPortalTag htmlId={MODAL_ROOT_PORTAL_TAG_HTML_ID} />
+                <ReactQueryDevtools initialIsOpen={false} />
+            </QueryClientProvider>
+        </>
     )
 }
 
