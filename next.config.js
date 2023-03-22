@@ -6,6 +6,9 @@ const nextConfig = {
         SERVER_HOST: process.env.SERVER_HOST,
         HOST_URL: process.env.HOST_URL,
     },
+    images: {
+        domains: ['localhost:3000', 'blog.coldsurf.io'],
+    },
 }
 
 module.exports = nextConfig

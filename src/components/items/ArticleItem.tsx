@@ -6,6 +6,7 @@ import { themedPalette } from '../../lib/theme'
 import { format } from 'date-fns'
 import { ko } from 'date-fns/locale'
 import { Article } from '../../lib/fetcher/types'
+import Image from 'next/image'
 
 const ArticleContainer = styled(Link)`
     width: calc((100% / 3) - 1rem * 2);
@@ -113,13 +114,12 @@ const ArticleItem: FC<Props> = ({ article }) => {
             <ArticleContainer href={`/article/${article.excerpt}`} passHref>
                 <ThumbnailWrapper>
                     {article.thumbnail ? (
-                        <img
+                        <Image
                             src={`${process.env.HOST_URL}/thumbnails/${article.thumbnail}`}
                             alt="thumbnail"
+                            fill
                             style={{
                                 objectFit: 'cover',
-                                width: '100%',
-                                height: '100%',
                             }}
                         />
                     ) : (
