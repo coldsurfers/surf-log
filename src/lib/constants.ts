@@ -5,4 +5,4 @@ export const DEFAULT_PAGINATION_COUNT = 15
 export const THEME_UNIQUE_KEY = '@surf-log:theme'
 
 export const SIDEBAR_WIDTH = '230px'
-export const MEDIA_QUERY_LARGE_HORIZONTAL_SPACE = '8rem'
+export const MEDIA_QUERY_LARGE_HORIZONTAL_SPACE = '4rem'

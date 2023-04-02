@@ -25,7 +25,7 @@ const ChildrenWithSideBar = styled.div`
     width: ${breakpoints.large}px;
 
     ${mediaQuery.large} {
-        width: calc(100% - 8rem * 2);
+        width: calc(100% - ${MEDIA_QUERY_LARGE_HORIZONTAL_SPACE} * 2);
     }
 
     ${mediaQuery.medium} {

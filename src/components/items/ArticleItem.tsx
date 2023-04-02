@@ -24,6 +24,11 @@ const ArticleContainer = styled(Link)`
         transition: all 0.15s;
     }
 
+    ${mediaQuery.medium} {
+        margin: 0.5rem;
+        width: calc((100% / 3) - 0.5rem * 2);
+    }
+
     ${mediaQuery.small} {
         width: calc(100% - 1rem * 2);
         margin-left: 1rem;

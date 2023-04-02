@@ -16,6 +16,10 @@ const ArticleListContainer = styled.div`
     margin-top: -1rem;
     margin-left: 2rem;
 
+    ${mediaQuery.medium} {
+        margin-left: unset;
+    }
+
     ${mediaQuery.small} {
         flex-direction: column;
         justify-content: unset;
