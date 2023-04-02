@@ -59,7 +59,6 @@ export const globalStyles = (
             }
             /** scrollbar unset */
             ::-webkit-scrollbar {
-                width: 0px;
                 background-color: rgba(0, 0, 0, 0);
                 -webkit-border-radius: 80px;
             }
@@ -80,6 +79,7 @@ export const globalStyles = (
                 font-family: var(--common-font-family);
                 color-scheme: light;
                 ${lightTheme};
+                overflow-y: overlay;
             }
 
             html.dark {
