@@ -20,12 +20,14 @@ import { themedPalette } from '../../lib/theme'
 const ContentContainer = styled.div`
     background: ${themedPalette['markdown-background']};
     padding: 2rem;
+    margin-left: 2rem;
     border-radius: 12px;
     box-shadow: 0px -5px 20px 10px rgb(92 95 112 / 8%);
     margin-bottom: ${process.env.NODE_ENV === 'development' ? '100px' : '1rem'};
 
     ${mediaQuery.small} {
         padding: 1.25rem;
+        margin-left: unset;
     }
 `
 

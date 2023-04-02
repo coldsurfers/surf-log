@@ -14,6 +14,7 @@ const ArticleListContainer = styled.div`
     flex-wrap: wrap;
     justify-content: flex-start;
     margin-top: -1rem;
+    margin-left: 2rem;
 
     ${mediaQuery.small} {
         flex-direction: column;

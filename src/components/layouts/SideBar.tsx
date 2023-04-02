@@ -4,10 +4,11 @@ import Link from 'next/link'
 import { useRouter } from 'next/router'
 import mediaQuery from '../../lib/mediaQuery'
 import { themedPalette } from '../../lib/theme'
+import { SIDEBAR_WIDTH } from '../../lib/constants'
 
 const Container = styled.nav`
     position: relative;
-    width: 230px;
+    min-width: ${SIDEBAR_WIDTH};
     background-color: transparent;
 
     ${mediaQuery.medium} {
@@ -19,7 +20,7 @@ const Container = styled.nav`
 const NavItemList = styled.ul<{ isFixed: boolean }>`
     position: ${(p) => (p.isFixed ? 'fixed' : 'relative')};
     top: ${(p) => (p.isFixed ? '1rem' : '0px')};
-    width: ${(p) => (p.isFixed ? '230px' : '100%')};
+    width: ${(p) => (p.isFixed ? SIDEBAR_WIDTH : '100%')};
 
     list-style: none;
     margin-block-start: 0px;

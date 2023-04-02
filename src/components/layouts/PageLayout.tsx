@@ -2,6 +2,10 @@ import styled from '@emotion/styled'
 import { useRouter } from 'next/router'
 import { FC } from 'react'
 import breakpoints from '../../lib/breakpoints'
+import {
+    MEDIA_QUERY_LARGE_HORIZONTAL_SPACE,
+    SIDEBAR_WIDTH,
+} from '../../lib/constants'
 import { Article } from '../../lib/fetcher/types'
 import mediaQuery from '../../lib/mediaQuery'
 import Header from './Header'
@@ -40,10 +44,19 @@ const ChildrenWithSideBar = styled.div`
 
 const ChildrenWrapper = styled.div`
     flex: 1;
-    padding-left: 2.5rem;
     margin-top: 90px;
 
+    width: calc(100% - ${SIDEBAR_WIDTH});
+
+    ${mediaQuery.large} {
+        width: calc(
+            100% - ${SIDEBAR_WIDTH} -
+                (${MEDIA_QUERY_LARGE_HORIZONTAL_SPACE} * 2)
+        );
+    }
+
     ${mediaQuery.medium} {
+        width: 100%;
         margin-top: 15px;
         padding-left: 0px;
     }

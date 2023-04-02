@@ -8,6 +8,7 @@ import { css } from '@emotion/css'
 import SunIcon from '../icons/SunIcon'
 import DoNotDisturbIcon from '../icons/DoNotDisturbIcon'
 import { themedPalette } from '../../lib/theme'
+import { MEDIA_QUERY_LARGE_HORIZONTAL_SPACE } from '../../lib/constants'
 
 const Container = styled.header`
     height: var(--header-height);
@@ -27,8 +28,8 @@ const ContainerInner = styled.div`
 
     ${mediaQuery.large} {
         width: 100%;
-        padding-left: 8rem;
-        padding-right: 8rem;
+        padding-left: ${MEDIA_QUERY_LARGE_HORIZONTAL_SPACE};
+        padding-right: ${MEDIA_QUERY_LARGE_HORIZONTAL_SPACE};
     }
 
     ${mediaQuery.medium} {

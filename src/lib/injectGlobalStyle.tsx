@@ -1,4 +1,3 @@
-// import { injectGlobal } from '@emotion/css'
 import { css, Global } from '@emotion/react'
 import { themedPalette } from './theme'
 
@@ -104,54 +103,3 @@ export const globalStyles = (
         `}
     />
 )
-
-// injectGlobal`
-//     @import url('//cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css');
-
-//     :root {
-//         --header-height: 56px;
-//         --common-font-family: Pretendard, -apple-system, BlinkMacSystemFont, system-ui, Roboto, 'Helvetica Neue', 'Segoe UI', 'Apple SD Gothic Neo', 'Noto Sans KR', 'Malgun Gothic', 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', sans-serif;
-//     }
-//     /** scrollbar unset */
-//     ::-webkit-scrollbar {
-//         width: 0px;
-//         background-color: rgba(0,0,0,0);
-//         -webkit-border-radius: 80px;
-//     }
-//     ::-webkit-scrollbar:hover {
-//         background-color: rgba(0, 0, 0, 0.09);
-//     }
-//     ::-webkit-scrollbar-thumb:vertical {
-//         background-color: rgba(0,0,0,0.61);
-//         -webkit-border-radius: 80px;
-//     }
-//     ::-webkit-scrollbar-thumb:vertical:active {
-//         background-color: rgba(0,0,0,0.61);
-//         -webkit-border-radius: 80px;
-//     }
-//     /** scrollbar unset end */
-//     html {
-//         background: ${themedPalette['body-background']};
-//         font-family: var(--common-font-family);
-//         color-scheme: light;
-//         ${lightTheme};
-//     }
-
-//     html.dark {
-//         color-scheme: dark;
-//         ${darkTheme};
-//     }
-
-//     html, body {
-//         margin: 0;
-//         padding: 0;
-//     }
-
-//     a {
-//         text-decoration: none;
-//         color: inherit;
-//     }
-//     button {
-//         font-family: var(--common-font-family);
-//     }
-// `
