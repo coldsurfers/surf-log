@@ -3,6 +3,7 @@ import { useRouter } from 'next/router'
 import { FC } from 'react'
 import breakpoints from '../../lib/breakpoints'
 import {
+    CONTAINER_WIDTH,
     MEDIA_QUERY_LARGE_HORIZONTAL_SPACE,
     SIDEBAR_WIDTH,
 } from '../../lib/constants'
@@ -22,7 +23,7 @@ const ChildrenWithSideBar = styled.div`
     flex-direction: row;
     margin-left: auto;
     margin-right: auto;
-    width: ${breakpoints.large}px;
+    width: ${CONTAINER_WIDTH};
 
     ${mediaQuery.large} {
         width: calc(100% - ${MEDIA_QUERY_LARGE_HORIZONTAL_SPACE} * 2);
