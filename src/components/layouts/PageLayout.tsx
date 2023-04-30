@@ -1,7 +1,6 @@
 import styled from '@emotion/styled'
 import { useRouter } from 'next/router'
 import { FC } from 'react'
-import breakpoints from '../../lib/breakpoints'
 import {
     CONTAINER_WIDTH,
     MEDIA_QUERY_LARGE_HORIZONTAL_SPACE,
@@ -9,6 +8,7 @@ import {
 } from '../../lib/constants'
 import { Article } from '../../lib/fetcher/types'
 import mediaQuery from '../../lib/mediaQuery'
+import { SurfLogColorScheme } from '../../types/colorScheme'
 import Header from './Header'
 import SideBar from './SideBar'
 
@@ -66,7 +66,7 @@ const ChildrenWrapper = styled.div`
 interface Props {
     categories: string[]
     currentArticle?: Article
-    theme: 'light' | 'dark' | 'default'
+    theme: SurfLogColorScheme
     onToggleTheme: () => void
 }
 

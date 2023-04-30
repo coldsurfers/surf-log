@@ -1,6 +1,5 @@
-// import '../lib/injectGlobalStyle'
 import '../lib/ga/initialize'
-import 'open-color/open-color.css'
+import '@coldsurfers/design-tokens/dist/css/color/variables.css'
 import type { AppContext, AppProps as NextAppProps } from 'next/app'
 import Layout from '../components/layouts/PageLayout'
 import App from 'next/app'
@@ -46,18 +45,10 @@ function MyApp({
     article?: Article
 }>) {
     const { categories, article, statusCode } = pageProps
-    const [theme, setTheme] = useState<'light' | 'dark' | 'default'>('default')
+    const [theme, setTheme] = useState<'light' | 'dark'>('light')
     const loadingBarRef = useRef<LoadingBarRef>(null)
     const { isOnline } = useNetworkStatus()
     const router = useRouter()
-
-    const handleToggleTheme = useCallback(() => {
-        setTheme((prev) => {
-            const theme = prev === 'light' ? 'dark' : 'light'
-            window.__setPreferredTheme(theme)
-            return theme
-        })
-    }, [])
 
     useEffect(() => setTheme(window.__theme as 'light' | 'dark'), [])
 
@@ -82,11 +73,17 @@ function MyApp({
         }
     }, [router.events])
 
+    const handleToggleTheme = useCallback(() => {
+        setTheme((prev) => {
+            const theme = prev === 'light' ? 'dark' : 'light'
+            window.__setPreferredTheme(theme)
+            return theme
+        })
+    }, [])
+
     if (statusCode === 404) {
         return <Error statusCode={statusCode} />
     }
-
-    if (theme === 'default') return null
 
     return (
         <>

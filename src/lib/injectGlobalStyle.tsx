@@ -1,5 +1,5 @@
 import { css, Global } from '@emotion/react'
-import { themedPalette } from './theme'
+import { generateCssVar, themeVariables } from '@coldsurfers/ocean-road'
 
 const lightTheme = `
     --body-background: var(--oc-gray-1);
@@ -75,15 +75,17 @@ export const globalStyles = (
             }
             /** scrollbar unset end */
             html {
-                background: ${themedPalette['body-background']};
+                background: ${themeVariables['color-background-2']};
                 font-family: var(--common-font-family);
                 color-scheme: light;
+                ${generateCssVar('lightMode')};
                 ${lightTheme};
                 overflow-y: overlay;
             }
 
             html.dark {
                 color-scheme: dark;
+                ${generateCssVar('darkMode')};
                 ${darkTheme};
             }
 

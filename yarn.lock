@@ -190,6 +190,20 @@
     "@babel/helper-validator-identifier" "^7.19.1"
     to-fast-properties "^2.0.0"
 
+"@coldsurfers/design-tokens@1.0.3":
+  version "1.0.3"
+  resolved "https://npm.pkg.github.com/download/@coldsurfers/design-tokens/1.0.3/e0a8350a9d7c49bb189447f3b056bf6bc67cac14#e0a8350a9d7c49bb189447f3b056bf6bc67cac14"
+  integrity sha512-FLrKsFVYAe/yNSgHP6e/yngBrdSlYN3Iu1ueULqmps6MeQh2NYC7uHAFeDYApREkeU+nt8HdRSLOh0mMvtlDEw==
+  dependencies:
+    open-color "^1.9.1"
+
+"@coldsurfers/ocean-road@1.0.15":
+  version "1.0.15"
+  resolved "https://npm.pkg.github.com/download/@coldsurfers/ocean-road/1.0.15/23518fdb5692a25664dd1ba77ab889b63b49cefc#23518fdb5692a25664dd1ba77ab889b63b49cefc"
+  integrity sha512-9KSkCmP++EMw6/F1UPWwSzIIrCLjqnPwnBSTnyFjf9EvhEFpbYPdkT35A2+QbqNDvQZQNshnz3F4MaNRVJlneA==
+  dependencies:
+    "@coldsurfers/design-tokens" "1.0.3"
+
 "@cspotcode/source-map-support@^0.8.0":
   version "0.8.1"
   resolved "https://registry.yarnpkg.com/@cspotcode/source-map-support/-/source-map-support-0.8.1.tgz#00629c35a688e05a88b1cda684fb9d5e73f000a1"

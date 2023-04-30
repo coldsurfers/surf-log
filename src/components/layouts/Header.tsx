@@ -1,22 +1,22 @@
 import { FC } from 'react'
 import styled from '@emotion/styled'
 import Link from 'next/link'
-import breakpoints from '../../lib/breakpoints'
 import mediaQuery from '../../lib/mediaQuery'
 import Toggle from 'react-toggle'
 import { css } from '@emotion/css'
 import SunIcon from '../icons/SunIcon'
 import DoNotDisturbIcon from '../icons/DoNotDisturbIcon'
-import { themedPalette } from '../../lib/theme'
 import {
     CONTAINER_WIDTH,
     MEDIA_QUERY_LARGE_HORIZONTAL_SPACE,
 } from '../../lib/constants'
+import { SurfLogColorScheme } from '../../types/colorScheme'
+import { colors, themeVariables } from '@coldsurfers/ocean-road'
 
 const Container = styled.header`
     height: var(--header-height);
     width: 100vw;
-    background-color: ${themedPalette['header-background']};
+    background-color: ${themeVariables['color-background-1']};
     display: flex;
 `
 
@@ -50,7 +50,7 @@ const Logo = styled.div`
     width: auto;
     height: 38px;
     border-radius: 13px;
-    background-color: ${themedPalette['header-logo-background']};
+    background-color: ${themeVariables['color-background-3']};
     padding-left: 0.8rem;
     padding-right: 0.8rem;
     border: none;
@@ -63,7 +63,7 @@ const LogoText = styled.p`
     font-size: 18px;
     line-height: 38px;
     font-weight: bold;
-    color: ${themedPalette['header-logo-text-color']};
+    color: ${colors['oc-black']};
 `
 
 const MeButton = styled.p`
@@ -83,7 +83,7 @@ const MeButton = styled.p`
 
 interface Props {
     onToggleTheme: () => void
-    theme: 'light' | 'dark' | 'default'
+    theme: SurfLogColorScheme
 }
 
 const Header: FC<Props> = ({ onToggleTheme, theme }) => {
