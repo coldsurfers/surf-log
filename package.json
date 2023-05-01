@@ -11,7 +11,6 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "@coldsurfers/design-tokens": "1.0.3",
     "@coldsurfers/ocean-road": "1.0.15",
     "@emotion/css": "11.10.6",
     "@emotion/react": "11.10.6",
