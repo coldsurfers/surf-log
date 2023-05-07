@@ -75,7 +75,7 @@ export const globalStyles = (
             }
             /** scrollbar unset end */
             html {
-                background: ${themeVariables['color-background-2']};
+                background: ${themeVariables['color-background-4']};
                 font-family: var(--common-font-family);
                 color-scheme: light;
                 ${generateCssVar('lightMode')};

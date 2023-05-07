@@ -16,7 +16,7 @@ import { colors, themeVariables } from '@coldsurfers/ocean-road'
 const Container = styled.header`
     height: var(--header-height);
     width: 100vw;
-    background-color: ${themeVariables['color-background-1']};
+    background-color: ${themeVariables['color-background-2']};
     display: flex;
 `
 

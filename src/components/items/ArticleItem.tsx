@@ -7,13 +7,14 @@ import { format } from 'date-fns'
 import { ko } from 'date-fns/locale'
 import { Article } from '../../lib/fetcher/types'
 import Image from 'next/image'
+import { themeVariables } from '@coldsurfers/ocean-road'
 
 const ArticleContainer = styled(Link)`
     width: calc((100% / 3) - 1rem * 2);
     margin: 1rem;
     height: 280px;
     border-radius: 12px;
-    background-color: ${themedPalette['article-container-background']};
+    background-color: ${themeVariables['color-background-3']};
     box-shadow: 10px 20px 20px 0 rgb(92 95 112 / 8%);
 
     display: flex;
