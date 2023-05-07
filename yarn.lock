@@ -190,19 +190,19 @@
     "@babel/helper-validator-identifier" "^7.19.1"
     to-fast-properties "^2.0.0"
 
-"@coldsurfers/design-tokens@1.7.0":
-  version "1.7.0"
-  resolved "https://npm.pkg.github.com/download/@coldsurfers/design-tokens/1.7.0/c33bd684acdb06540d5caacbe0dcbd3c7615814c#c33bd684acdb06540d5caacbe0dcbd3c7615814c"
-  integrity sha512-6pzHUBExsezCADQJqk8x8olluRmXlUYcJy8iUGpwIn6SXm1YnPda56djU+Lir5aOMJQQH+JgN00t0H3LcKu+Mg==
+"@coldsurfers/design-tokens@1.8.0":
+  version "1.8.0"
+  resolved "https://npm.pkg.github.com/download/@coldsurfers/design-tokens/1.8.0/61611a883ecc49b4960ec41f032ac815bf0b99fe#61611a883ecc49b4960ec41f032ac815bf0b99fe"
+  integrity sha512-96/xJRYYwXifzQcCm4U/rmcKZoYo9t21s4BvAI3gJrv8tUwML/ut8iDFH8aXhuHV10/xfDjvwoB117Fa1cuSfg==
   dependencies:
     open-color "^1.9.1"
 
-"@coldsurfers/ocean-road@1.1.0":
-  version "1.1.0"
-  resolved "https://npm.pkg.github.com/download/@coldsurfers/ocean-road/1.1.0/63d3e8d1b6dedbe8618f1846ef370b428c7aa23c#63d3e8d1b6dedbe8618f1846ef370b428c7aa23c"
-  integrity sha512-/jl0MQEhaqbQqVrZHKCIAha/tYtXpmJ0MviiINYyiCsaWjhs2uf/acclhirYcQdf5TnnbHOM1YAFwNT39rSrKQ==
+"@coldsurfers/ocean-road@1.2.0":
+  version "1.2.0"
+  resolved "https://npm.pkg.github.com/download/@coldsurfers/ocean-road/1.2.0/4f6c9f63fa80c632713c1fcd808221bc45efaa80#4f6c9f63fa80c632713c1fcd808221bc45efaa80"
+  integrity sha512-IiTUqvRpb3ut2AvV1q+xoxrhs8erF+IGVCZIMMXIFMjR5RNyqJ+qe+M5TPx7L31Xoj1kiL3IVFJr4xvtaMKLsw==
   dependencies:
-    "@coldsurfers/design-tokens" "1.7.0"
+    "@coldsurfers/design-tokens" "1.8.0"
 
 "@cspotcode/source-map-support@^0.8.0":
   version "0.8.1"
