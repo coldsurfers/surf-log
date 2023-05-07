@@ -3,8 +3,8 @@ import styled from '@emotion/styled'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
 import mediaQuery from '../../lib/mediaQuery'
-import { themedPalette } from '../../lib/theme'
 import { SIDEBAR_WIDTH } from '../../lib/constants'
+import { themeVariables } from '@coldsurfers/ocean-road'
 
 const Container = styled.nav`
     position: relative;
@@ -66,12 +66,10 @@ const NavLink = styled(Link)<{ matched?: boolean }>`
 
     border-radius: 9px;
     background: ${(p) =>
-        p.matched
-            ? `${themedPalette['sidebar-nav-item-highlighted-background']}`
-            : 'transparent'};
+        p.matched ? `${themeVariables['color-background-2']}` : 'transparent'};
 
     &:after {
-        background: ${themedPalette['sidebar-nav-item-highlighted-background']};
+        background: ${themeVariables['color-background-2']};
         border-radius: 9px;
         content: '';
         display: block;
@@ -111,7 +109,7 @@ const NavLinkText = styled.span`
     font-size: 18px;
     font-weight: 600;
     line-height: 1.4;
-    color: ${themedPalette['sidebar-nav-item-text-color']};
+    color: ${themeVariables['color-foreground-1']};
 `
 
 interface Props {

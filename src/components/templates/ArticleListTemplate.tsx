@@ -76,10 +76,9 @@ const ArticleListTemplate: FC<Props> = ({
 
     return (
         <ArticleListContainer>
-            {articles.map((article) => {
-                // return <p key={article.id}>{article.title}</p>
-                return <ArticleItem key={article.excerpt} article={article} />
-            })}
+            {articles.map((article) => (
+                <ArticleItem key={article.excerpt} article={article} />
+            ))}
             <div
                 className={css`
                     display: flex;

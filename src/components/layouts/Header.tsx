@@ -63,7 +63,7 @@ const LogoText = styled.p`
     font-size: 18px;
     line-height: 38px;
     font-weight: bold;
-    color: ${colors['oc-black']};
+    color: ${themeVariables['color-foreground-1']};
 `
 
 const MeButton = styled.p`

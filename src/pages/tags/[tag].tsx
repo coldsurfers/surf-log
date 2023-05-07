@@ -1,16 +1,16 @@
+import { themeVariables } from '@coldsurfers/ocean-road'
 import styled from '@emotion/styled'
 import { GetStaticPaths, GetStaticProps, NextPage } from 'next'
 import { useRouter } from 'next/router'
 import ArticleListTemplate from '../../components/templates/ArticleListTemplate'
 import { fetchArticleMeta } from '../../lib/fetcher/articleMeta'
 import { Article } from '../../lib/fetcher/types'
-import { themedPalette } from '../../lib/theme'
 
 const TagTitle = styled.h1`
     margin: 0px;
     margin-bottom: 10px;
     margin-left: 14px;
-    color: ${themedPalette['tag-page-title-text-color']};
+    color: ${themeVariables['color-foreground-1']};
 `
 
 interface InitialProps {

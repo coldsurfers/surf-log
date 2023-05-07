@@ -2,7 +2,7 @@ import 'prismjs/themes/prism-tomorrow.css'
 import { css } from '@emotion/css'
 import { FC, useEffect } from 'react'
 import { marked } from 'marked'
-import { themedPalette } from '../../lib/theme'
+import { themeVariables } from '@coldsurfers/ocean-road'
 
 let prism: any = null
 const isBrowser = typeof window !== 'undefined'
@@ -35,9 +35,7 @@ const MarkdownRenderer: FC<Props> = ({ text }) => {
                 blockquote {
                     border-left: 4px solid var(--oc-blue-6);
                     padding: 1rem;
-                    background: ${themedPalette[
-                        'markdown-blockquote-background-color'
-                    ]};
+                    background: ${themeVariables['color-background-2']};
                     margin-left: 0;
                     margin-right: 0;
                     p {
@@ -61,20 +59,16 @@ const MarkdownRenderer: FC<Props> = ({ text }) => {
                 p {
                     line-height: 1.5em;
                     word-break: break-word;
-                    color: ${themedPalette['markdown-text-color']};
+                    color: ${themeVariables['color-foreground-1']};
                     // 텍스트 사이의 코드
                     code {
                         font-family: ui-monospace, SFMono-Regular, SF Mono,
                             Menlo, Consolas, Liberation Mono, monospace;
-                        background: ${themedPalette[
-                            'markdown-blockquote-background-color'
-                        ]};
+                        background: ${themeVariables['color-background-2']};
                         padding: 0.25rem;
                         font-size: 0.8em;
                         color: var(--oc-blue-6);
-                        border: ${themedPalette[
-                            'markdown-code-fragment-border'
-                        ]};
+                        border: ${themeVariables['color-border-1']};
                         border-radius: 2px;
                     }
                 }

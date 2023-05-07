@@ -2,7 +2,6 @@ import styled from '@emotion/styled'
 import Link from 'next/link'
 import { FC, memo, Profiler } from 'react'
 import mediaQuery from '../../lib/mediaQuery'
-import { themedPalette } from '../../lib/theme'
 import { format } from 'date-fns'
 import { ko } from 'date-fns/locale'
 import { Article } from '../../lib/fetcher/types'
@@ -68,11 +67,11 @@ const ArticleTitle = styled.h1`
     word-wrap: break-word;
     word-break: keep-all;
 
-    color: ${themedPalette['article-title-text-color']};
+    color: ${themeVariables['color-foreground-1']};
 `
 
 const ArticleSubTitle = styled.p`
-    color: ${themedPalette['article-subtitle-text-color']};
+    color: ${themeVariables['color-foreground-3']};
     display: block;
     font-size: 13.5px;
     font-weight: 400;
@@ -94,8 +93,8 @@ const ArticleSubTitle = styled.p`
 `
 
 const ArticleDate = styled.div`
-    border-top: 1px solid ${themedPalette['article-date-border-top-color']};
-    color: ${themedPalette['article-subtitle-text-color']};
+    border-top: 1px solid ${themeVariables['color-border-1']};
+    color: ${themeVariables['color-foreground-3']};
     font-size: 12px;
     font-weight: 400;
     line-height: 25px;

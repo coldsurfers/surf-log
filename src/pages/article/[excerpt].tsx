@@ -15,10 +15,10 @@ import Link from 'next/link'
 import useRemoveArticle from '../../lib/hooks/useRemoveArticle'
 import { Article } from '../../lib/fetcher/types'
 import { fetchArticleMeta } from '../../lib/fetcher/articleMeta'
-import { themedPalette } from '../../lib/theme'
+import { themeVariables } from '@coldsurfers/ocean-road'
 
 const ContentContainer = styled.div`
-    background: ${themedPalette['markdown-background']};
+    background: ${themeVariables['color-background-3']};
     padding: 2rem;
     margin-left: 2rem;
     border-radius: 12px;
@@ -39,13 +39,13 @@ const CategoryText = styled.p`
     font-weight: bold;
     font-size: 20px;
     margin: 0px;
-    color: ${themedPalette['markdown-text-color']};
+    color: ${themeVariables['color-foreground-2']};
 `
 
 const CreatedDateText = styled.p`
     margin: 0px;
     margin-top: 4px;
-    color: ${themedPalette['markdown-text-color']};
+    color: ${themeVariables['color-foreground-2']};
 `
 
 const TagsWrapper = styled.div`
